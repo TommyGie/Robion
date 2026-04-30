@@ -1125,6 +1125,58 @@ function krParseAdres(adres) {
   }
 }
 
+// ─────────────────────────────────────────────────────────────
+// POBIERANIE DANYCH FIRMY PO NIP
+// Najpierw biała lista MF (statusVat), potem REGON (fallback dla
+// JDG bez VAT). REGON-endpoint może jeszcze nie istnieć w n8n —
+// wtedy graceful fallback na "uzupełnij ręcznie".
+// ─────────────────────────────────────────────────────────────
+
+const NIP_WEBHOOK_BIALA = 'https://piotr113-20113.wykr.es/webhook/nip';
+const NIP_WEBHOOK_REGON = 'https://piotr113-20113.wykr.es/webhook/regon';
+
+async function pobierzDaneFirmy(nip) {
+  // 1) Biała lista MF
+  try {
+    const res = await fetch(`${NIP_WEBHOOK_BIALA}?nip=${nip}`);
+    if (res.ok) {
+      const data = await res.json();
+      const p = data?.result?.subject;
+      if (p?.name) {
+        return {
+          nazwa: p.name,
+          regon: p.regon || '',
+          adres: p.workingAddress || p.residenceAddress || '',
+          statusVat: p.statusVat || '',
+          zrodlo: 'biala'
+        };
+      }
+    }
+  } catch (e) { console.warn('Biała lista — błąd:', e); }
+
+  // 2) Fallback: REGON
+  try {
+    const res = await fetch(`${NIP_WEBHOOK_REGON}?nip=${nip}`);
+    if (res.ok) {
+      const data = await res.json();
+      const p = data?.result || data;
+      if (p?.nazwa) {
+        const adres = [p.ulica, [p.kod, p.miasto].filter(Boolean).join(' ')]
+          .filter(Boolean).join(', ');
+        return {
+          nazwa: p.nazwa,
+          regon: p.regon || '',
+          adres: adres,
+          statusVat: '',
+          zrodlo: 'regon'
+        };
+      }
+    }
+  } catch (e) { console.warn('REGON — błąd lub endpoint nie istnieje:', e); }
+
+  return null;
+}
+
 async function krFetchNIP() {
   const nip = document.getElementById('krNIP').value.replace(/\D/g,'');
   if (nip.length !== 10) { showToast('Wpisz poprawny NIP (10 cyfr)'); return; }
@@ -1138,23 +1190,21 @@ async function krFetchNIP() {
   status.style.color = 'var(--text2)';
 
   try {
-    const webhookUrl = `https://piotr113-20113.wykr.es/webhook/nip?nip=${nip}`;
-    const res = await fetch(webhookUrl);
-    if (!res.ok) throw new Error('Brak odpowiedzi serwera');
-    const data = await res.json();
-    const podmiot = data?.result?.subject;
+    const dane = await pobierzDaneFirmy(nip);
+    if (!dane) throw new Error('Nie znaleziono');
 
-    if (!podmiot?.name) throw new Error('Nie znaleziono');
+    document.getElementById('krNazwa').value = dane.nazwa;
+    if (dane.regon) document.getElementById('krREGON').value = dane.regon;
+    if (dane.adres) krParseAdres(dane.adres);
 
-    document.getElementById('krNazwa').value = podmiot.name;
-    if (podmiot.regon) document.getElementById('krREGON').value = podmiot.regon;
-    const adres = podmiot.workingAddress || podmiot.residenceAddress || '';
-    if (adres) krParseAdres(adres);
-
-    const vatInfo = podmiot.statusVat === 'Czynny' ? ' · VAT: czynny' :
-                    podmiot.statusVat === 'Zwolniony' ? ' · VAT: zwolniony' :
-                    podmiot.statusVat === 'Niezarejestrowany' ? ' · Nie jest podatnikiem VAT' : '';
-    status.textContent = '✓ Dane pobrane' + vatInfo;
+    if (dane.zrodlo === 'biala') {
+      const vatInfo = dane.statusVat === 'Czynny' ? ' · VAT: czynny' :
+                      dane.statusVat === 'Zwolniony' ? ' · VAT: zwolniony' :
+                      dane.statusVat === 'Niezarejestrowany' ? ' · Nie jest podatnikiem VAT' : '';
+      status.textContent = '✓ Dane pobrane' + vatInfo;
+    } else {
+      status.textContent = '✓ Dane pobrane (z REGON)';
+    }
     status.style.color = '#34D399';
     btn.textContent = '✓';
     btn.style.background = 'rgba(52,211,153,0.12)';
@@ -1493,6 +1543,23 @@ function saveFaktura(status) {
   }
 
   localStorage.setItem('rob_faktury', JSON.stringify(faktury));
+  // Auto-snapshot przez wspólny moduł w robion-app.html (jeśli załadowany)
+  // Tu mamy osobne okno — robimy throttling sami przez localStorage
+  try {
+    const last = parseInt(localStorage.getItem('rob_lastSnapshot') || '0');
+    if (Date.now() - last > 3600000) {
+      const KLUCZE = ['rob_faktury','rob_klienci','rob_produkty','rob_ust','rob_numeracja'];
+      const dane = {};
+      KLUCZE.forEach(k => { const v = localStorage.getItem(k); if (v !== null) dane[k] = v; });
+      const snap = {wersja:1, apka:'Robion', dataUtworzenia:new Date().toISOString(), powod:'auto', dane};
+      const lista = JSON.parse(localStorage.getItem('rob_snapshots') || '[]');
+      lista.unshift(snap);
+      while (lista.length > 5) lista.pop();
+      localStorage.setItem('rob_snapshots', JSON.stringify(lista));
+      localStorage.setItem('rob_lastSnapshot', String(Date.now()));
+    }
+  } catch(e) { console.warn('Snapshot:', e); }
+
   editFvId = fvData.id;
   document.getElementById('btnDelFv').style.display = 'block';
   showToast('✓ Faktura zapisana');
