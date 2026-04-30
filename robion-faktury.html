@@ -640,6 +640,33 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   </div>
 </div>
 
+<!-- MODAL: Ostrzeżenie przed wystawieniem 1. faktury bez kopii -->
+<div class="modal-overlay" id="modalPierwszaFV">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">⚠️ Wystawiasz pierwszą fakturę</span>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:14px">
+        Zanim zaczniesz wystawiać faktury, polecam zapisać <strong>pierwszą kopię zapasową</strong>. Faktury są dokumentami które trzeba archiwizować <strong>5 lat</strong> — kopia zapasowa to Twoje zabezpieczenie.
+      </p>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px;background:rgba(52,211,153,0.08);padding:12px;border-radius:10px;border:1px solid rgba(52,211,153,0.3)">
+        🔒 <strong>Twoje faktury zostają tylko na tym urządzeniu</strong> — nikt poza Tobą nie ma do nich dostępu. Dlatego kopia zapasowa jest tak ważna.
+      </p>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:18px;background:var(--glass);padding:12px;border-radius:10px;border:1px solid var(--border)">
+        💡 Kopia zawiera <strong>wszystko</strong>: faktury, klientów, produkty, ustawienia. Wystarczy, że wczytasz ją na nowym urządzeniu i masz wszystko 1:1.
+      </p>
+      <button onclick="zapiszKopieFV();closeModal('modalPierwszaFV')" style="width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:12px;font-family:var(--font-condensed);font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;margin-bottom:10px">
+        💾 Zrób kopię teraz
+      </button>
+      <button onclick="pominPierwszaKopieFV()" style="width:100%;padding:12px;background:transparent;color:var(--text2);border:1px solid var(--border);border-radius:12px;font-size:13px;cursor:pointer">
+        Pomiń, zrobię później
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ── DATA Z GŁÓWNEJ APLIKACJI ──
 const klienci = JSON.parse(localStorage.getItem('rob_klienci') || '[]');
@@ -963,6 +990,15 @@ function czyscSzukaj() {
 
 // ── NOWA FAKTURA ──
 function nowaFaktura() {
+  // Ostrzeżenie dla pierwszego usera bez kopii zapasowej
+  const faktury = JSON.parse(localStorage.getItem('rob_faktury') || '[]');
+  const lastBackup = localStorage.getItem('rob_lastBackup');
+  const pominieto = localStorage.getItem('rob_pominPierwszaFV');
+  if (faktury.length === 0 && !lastBackup && !pominieto) {
+    document.getElementById('modalPierwszaFV').classList.add('open');
+    return; // przerywamy — user dostanie modal, po decyzji zacznie nową fakturę
+  }
+
   editFvId = null;
   selectedKlient = null;
   pozycje = [];
@@ -1950,6 +1986,38 @@ function formatKwota(v) {
 }
 
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Funkcja pomocnicza: zapis kopii w pliku faktur (dla modal pierwszej FV)
+function zapiszKopieFV() {
+  try {
+    const KLUCZE = ['rob_faktury','rob_klienci','rob_produkty','rob_ust','rob_numeracja'];
+    const dane = {};
+    KLUCZE.forEach(k => { const v = localStorage.getItem(k); if (v !== null) dane[k] = v; });
+    const kopia = { wersja: 1, apka: 'Robion', dataUtworzenia: new Date().toISOString(), dane };
+    const blob = new Blob([JSON.stringify(kopia, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const dzis = new Date().toISOString().slice(0,10);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `robion-kopia-${dzis}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    localStorage.setItem('rob_lastBackup', new Date().toISOString());
+    showToast('💾 Kopia zapisana');
+    // Po zapisie kopii — wróć do tworzenia faktury
+    setTimeout(() => nowaFaktura(), 600);
+  } catch(e) {
+    showToast('Błąd zapisu kopii');
+  }
+}
+
+function pominPierwszaKopieFV() {
+  localStorage.setItem('rob_pominPierwszaFV', '1');
+  closeModal('modalPierwszaFV');
+  setTimeout(() => nowaFaktura(), 200);
+}
 document.querySelectorAll('.modal-overlay').forEach(o => {
   o.addEventListener('click', e => { if(e.target===o) o.classList.remove('open'); });
 });
