@@ -481,6 +481,9 @@ body {
 
   <!-- PULPIT -->
   <div class="content active" id="page-pulpit">
+    <!-- Przypomnienie o kopii zapasowej (pokazuje się tylko gdy potrzeba) -->
+    <div id="backupReminder" style="display:none"></div>
+
     <!-- Statystyki -->
     <div id="pulpitStats">
       <div style="background:linear-gradient(135deg,rgba(245,166,35,0.12),rgba(245,166,35,0.04));border:1px solid var(--accent-border);border-radius:20px;padding:22px;position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(245,166,35,0.08),inset 0 1px 0 rgba(245,166,35,0.15);margin-bottom:18px">
@@ -645,6 +648,32 @@ body {
         <div class="s-value">›</div>
       </div>
     </div>
+
+    <div class="section-header"><span class="section-title">Kopia zapasowa danych</span></div>
+    <div class="settings-group">
+      <div class="settings-row" onclick="zapiszKopie()">
+        <div class="settings-left">
+          <div class="s-icon">💾</div>
+          <div><div class="s-title">Zapisz kopię teraz</div><div class="s-sub" id="lastBackupSub">Pobierz plik z wszystkimi danymi</div></div>
+        </div>
+        <div class="s-value">›</div>
+      </div>
+      <div class="settings-row" onclick="wczytajKopie()">
+        <div class="settings-left">
+          <div class="s-icon">📂</div>
+          <div><div class="s-title">Wczytaj kopię</div><div class="s-sub">Z pliku — zastąpi obecne dane</div></div>
+        </div>
+        <div class="s-value">›</div>
+      </div>
+      <div class="settings-row" onclick="pokazSnapshoty()">
+        <div class="settings-left">
+          <div class="s-icon">⏪</div>
+          <div><div class="s-title">Cofnij do wcześniejszej wersji</div><div class="s-sub" id="snapshotyCount">Automatyczne kopie wewnątrz apki</div></div>
+        </div>
+        <div class="s-value">›</div>
+      </div>
+    </div>
+    <input type="file" id="kopiaFileInput" accept=".json,application/json" style="display:none" onchange="obsluzPlikKopii(event)">
 
     <div class="section-header"><span class="section-title">Aplikacja</span></div>
     <div class="settings-group">
@@ -901,6 +930,26 @@ body {
   </div>
 </div>
 
+<!-- MODAL: Lista snapshotów (cofnięcie do wcześniejszej wersji) -->
+<div class="modal-overlay" id="modalSnapshoty">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">Cofnij do wcześniejszej wersji</span>
+      <button class="modal-close" onclick="closeModal('modalSnapshoty')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6">
+        Apka automatycznie zachowuje 5 ostatnich kopii danych. Wybierz, do której chcesz wrócić.
+      </p>
+      <div id="snapshotyLista"></div>
+      <p style="font-size:11px;color:var(--text3);margin-top:16px;line-height:1.5">
+        Te kopie są zapisane wewnątrz przeglądarki — znikną, jeśli wyczyścisz dane Safari. Dla prawdziwego archiwum używaj „Zapisz kopię teraz".
+      </p>
+    </div>
+  </div>
+</div>
+
 <script>
 // ── DATA ──
 let klienci = JSON.parse(localStorage.getItem('rob_klienci') || '[]');
@@ -914,6 +963,14 @@ const save = () => {
   localStorage.setItem('rob_klienci', JSON.stringify(klienci));
   localStorage.setItem('rob_produkty', JSON.stringify(produkty));
   localStorage.setItem('rob_ust', JSON.stringify(ust));
+  // Auto-snapshot raz na 60 min — chroni przed pomyłkowym usunięciem
+  if (typeof zrobSnapshot === 'function') {
+    const last = parseInt(localStorage.getItem('rob_lastSnapshot') || '0');
+    if (Date.now() - last > 3600000) {
+      zrobSnapshot('auto');
+      localStorage.setItem('rob_lastSnapshot', String(Date.now()));
+    }
+  }
 };
 
 // Demo data
@@ -1119,6 +1176,9 @@ function renderPulpit() {
       </div>
     </div>`;
   }).join('');
+
+  // Przypomnienie o kopii zapasowej (jeśli potrzeba)
+  if (typeof renderPrzypomnienieBackup === 'function') renderPrzypomnienieBackup();
 }
 
 // ── KLIENCI ──
@@ -1416,6 +1476,9 @@ function renderUstawienia() {
       rolaSub.textContent = 'Pełna apka: faktury, zlecenia, marketplace';
     }
   }
+
+  // Odśwież sekcję Kopia zapasowa
+  if (typeof odswiezBackupUI === 'function') odswiezBackupUI();
 }
 
 // ── ROLA W ROBION ──
@@ -1486,6 +1549,235 @@ function toggleKSeF() {
   ust.ksef = on; save(); showToast(on ? 'KSeF aktywowany' : 'KSeF wyłączony');
 }
 
+// ─────────────────────────────────────────────────────────────
+// KOPIA ZAPASOWA DANYCH
+// ─────────────────────────────────────────────────────────────
+
+// Klucze które wchodzą do kopii zapasowej. Dodawaj tu nowe gdy
+// pojawią się kolejne moduły (zlecenia, marketplace itd.)
+const KLUCZE_BACKUP = [
+  'rob_faktury', 'rob_klienci', 'rob_produkty',
+  'rob_ust', 'rob_numeracja'
+];
+const SNAPSHOT_LIMIT = 5;
+
+// Buduje obiekt kopii ze wszystkich kluczy
+function zbierzDaneDoKopii() {
+  const dane = {};
+  KLUCZE_BACKUP.forEach(k => {
+    const v = localStorage.getItem(k);
+    if (v !== null) dane[k] = v;
+  });
+  return {
+    wersja: 1,
+    apka: 'Robion',
+    dataUtworzenia: new Date().toISOString(),
+    dane: dane
+  };
+}
+
+// Eksport — pobiera plik JSON
+function zapiszKopie() {
+  try {
+    const kopia = zbierzDaneDoKopii();
+    const blob = new Blob([JSON.stringify(kopia, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const dzis = new Date().toISOString().slice(0,10); // YYYY-MM-DD
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `robion-kopia-${dzis}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    localStorage.setItem('rob_lastBackup', new Date().toISOString());
+    showToast('💾 Kopia zapisana');
+    odswiezBackupUI();
+  } catch(e) {
+    showToast('Błąd zapisu kopii');
+    console.error(e);
+  }
+}
+
+// Import — otwiera dialog wyboru pliku (faktyczna obsługa w obsluzPlikKopii)
+function wczytajKopie() {
+  document.getElementById('kopiaFileInput').click();
+}
+
+function obsluzPlikKopii(event) {
+  const plik = event.target.files[0];
+  event.target.value = ''; // reset, żeby można było wczytać ten sam plik dwa razy
+  if (!plik) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const kopia = JSON.parse(e.target.result);
+      if (!kopia.dane || kopia.apka !== 'Robion') {
+        alert('Ten plik to nie kopia zapasowa Robion.');
+        return;
+      }
+
+      const liczbaFaktur = kopia.dane.rob_faktury ? JSON.parse(kopia.dane.rob_faktury).length : 0;
+      const liczbaKlientow = kopia.dane.rob_klienci ? JSON.parse(kopia.dane.rob_klienci).length : 0;
+      const data = kopia.dataUtworzenia ? new Date(kopia.dataUtworzenia).toLocaleString('pl-PL') : 'nieznana';
+
+      const ok = confirm(
+        `Wczytać kopię?\n\n` +
+        `Data: ${data}\n` +
+        `Faktur: ${liczbaFaktur}\n` +
+        `Klientów: ${liczbaKlientow}\n\n` +
+        `UWAGA: obecne dane zostaną zastąpione.`
+      );
+      if (!ok) return;
+
+      // Zrób snapshot OBECNEGO stanu zanim podmienisz - na wypadek pomyłki
+      zrobSnapshot('przed-importem');
+
+      // Podmień dane
+      KLUCZE_BACKUP.forEach(k => {
+        if (kopia.dane[k] !== undefined) {
+          localStorage.setItem(k, kopia.dane[k]);
+        }
+      });
+      alert('Kopia wczytana. Apka się przeładuje.');
+      location.reload();
+    } catch(err) {
+      alert('Nie udało się odczytać pliku — czy to na pewno kopia Robion?');
+      console.error(err);
+    }
+  };
+  reader.readAsText(plik);
+}
+
+// ─────────────────────────────────────────────────────────────
+// SNAPSHOTY — automatyczne kopie wewnątrz apki (max 5)
+// ─────────────────────────────────────────────────────────────
+
+function pobierzSnapshoty() {
+  try {
+    return JSON.parse(localStorage.getItem('rob_snapshots') || '[]');
+  } catch(e) {
+    return [];
+  }
+}
+
+function zrobSnapshot(powod) {
+  try {
+    const snap = zbierzDaneDoKopii();
+    snap.powod = powod || 'auto';
+    const lista = pobierzSnapshoty();
+    lista.unshift(snap); // dodaj na początek
+    while (lista.length > SNAPSHOT_LIMIT) lista.pop();
+    localStorage.setItem('rob_snapshots', JSON.stringify(lista));
+  } catch(e) {
+    // Jeśli zabraknie miejsca — wywal najstarsze snapshoty i spróbuj jeszcze raz
+    if (e.name === 'QuotaExceededError') {
+      try { localStorage.removeItem('rob_snapshots'); } catch(_){}
+    }
+    console.warn('Snapshot nieudany:', e);
+  }
+}
+
+function pokazSnapshoty() {
+  const lista = pobierzSnapshoty();
+  const div = document.getElementById('snapshotyLista');
+
+  if (lista.length === 0) {
+    div.innerHTML = `<p style="text-align:center;color:var(--text3);padding:30px 20px;font-size:13px">Brak zapisanych wersji.<br><br>Kopia powstanie automatycznie przy następnym zapisie faktury, klienta lub produktu.</p>`;
+  } else {
+    div.innerHTML = lista.map((s, i) => {
+      const data = new Date(s.dataUtworzenia).toLocaleString('pl-PL', {dateStyle:'short', timeStyle:'short'});
+      const fakt = s.dane.rob_faktury ? JSON.parse(s.dane.rob_faktury).length : 0;
+      const klien = s.dane.rob_klienci ? JSON.parse(s.dane.rob_klienci).length : 0;
+      const prod = s.dane.rob_produkty ? JSON.parse(s.dane.rob_produkty).length : 0;
+      return `
+        <div onclick="przywrocSnapshot(${i})" style="padding:14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--glass);margin-bottom:8px;cursor:pointer">
+          <div style="font-family:var(--font-condensed);font-size:14px;font-weight:800;color:var(--text);margin-bottom:4px">${data}</div>
+          <div style="font-size:12px;color:var(--text2)">${fakt} faktur · ${klien} klientów · ${prod} produktów</div>
+        </div>`;
+    }).join('');
+  }
+  document.getElementById('modalSnapshoty').classList.add('open');
+}
+
+function przywrocSnapshot(index) {
+  const lista = pobierzSnapshoty();
+  const snap = lista[index];
+  if (!snap) return;
+  const data = new Date(snap.dataUtworzenia).toLocaleString('pl-PL');
+  if (!confirm(`Przywrócić wersję z ${data}?\n\nObecne dane zostaną zastąpione.`)) return;
+  // Snapshot stanu obecnego przed cofnięciem
+  zrobSnapshot('przed-cofnieciem');
+  KLUCZE_BACKUP.forEach(k => {
+    if (snap.dane[k] !== undefined) {
+      localStorage.setItem(k, snap.dane[k]);
+    }
+  });
+  alert('Wersja przywrócona. Apka się przeładuje.');
+  location.reload();
+}
+
+// ─────────────────────────────────────────────────────────────
+// UI — etykiety w Ustawieniach + przypomnienie w Pulpicie
+// ─────────────────────────────────────────────────────────────
+
+function odswiezBackupUI() {
+  const sub = document.getElementById('lastBackupSub');
+  if (sub) {
+    const last = localStorage.getItem('rob_lastBackup');
+    if (last) {
+      const dni = Math.floor((Date.now() - new Date(last).getTime()) / 86400000);
+      if (dni === 0) sub.textContent = 'Ostatnia kopia: dzisiaj';
+      else if (dni === 1) sub.textContent = 'Ostatnia kopia: wczoraj';
+      else sub.textContent = `Ostatnia kopia: ${dni} dni temu`;
+    } else {
+      sub.textContent = 'Pobierz plik z wszystkimi danymi';
+    }
+  }
+  const cnt = document.getElementById('snapshotyCount');
+  if (cnt) {
+    const n = pobierzSnapshoty().length;
+    if (n === 0) cnt.textContent = 'Automatyczne kopie wewnątrz apki';
+    else cnt.textContent = `Zapisanych wersji: ${n}`;
+  }
+}
+
+// Czy pokazać żółty pasek "czas na kopię" w Pulpicie
+// Pokazuje się gdy: minęło 14+ dni od ostatniej kopii ORAZ są jakieś faktury
+function czyPokazacPrzypomnienieBackup() {
+  const faktury = JSON.parse(localStorage.getItem('rob_faktury') || '[]');
+  if (faktury.length === 0) return false;
+  const last = localStorage.getItem('rob_lastBackup');
+  if (!last) return true; // nigdy nie robił kopii a ma faktury
+  const dni = Math.floor((Date.now() - new Date(last).getTime()) / 86400000);
+  return dni >= 14;
+}
+
+function renderPrzypomnienieBackup() {
+  const slot = document.getElementById('backupReminder');
+  if (!slot) return;
+  if (!czyPokazacPrzypomnienieBackup()) {
+    slot.style.display = 'none';
+    return;
+  }
+  const last = localStorage.getItem('rob_lastBackup');
+  const tekst = last
+    ? `Ostatnia kopia: ${Math.floor((Date.now() - new Date(last).getTime()) / 86400000)} dni temu`
+    : 'Nigdy nie robiłeś kopii zapasowej';
+  slot.style.display = 'block';
+  slot.innerHTML = `
+    <div onclick="zapiszKopie()" style="background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));border:1px solid var(--accent-border);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;cursor:pointer">
+      <div style="font-size:24px">💾</div>
+      <div style="flex:1">
+        <div style="font-family:var(--font-condensed);font-size:13px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px">Czas na kopię zapasową</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">${tekst} — tap aby zapisać</div>
+      </div>
+      <div style="color:var(--accent);font-size:18px">›</div>
+    </div>`;
+}
+
 function clearData() {
   if (confirm('Usunąć wszystkie dane?')) {
     localStorage.clear(); location.reload();
@@ -1533,6 +1825,63 @@ function parseAdres(adres) {
   }
 }
 
+// ─────────────────────────────────────────────────────────────
+// POBIERANIE DANYCH FIRMY PO NIP
+// Strategia: najpierw biała lista MF (statusVat), potem REGON (fallback dla
+// JDG bez VAT, fundacji, itp.). REGON-endpoint może jeszcze nie istnieć
+// w n8n — wtedy apka graceful fallback na "uzupełnij ręcznie".
+// ─────────────────────────────────────────────────────────────
+
+const NIP_WEBHOOK_BIALA = 'https://piotr113-20113.wykr.es/webhook/nip';
+const NIP_WEBHOOK_REGON = 'https://piotr113-20113.wykr.es/webhook/regon';
+
+// Zwraca zunifikowany obiekt: {nazwa, regon, adres, statusVat, zrodlo}
+// albo null gdy żadne źródło nie ma danych.
+async function pobierzDaneFirmy(nip) {
+  // 1) Biała lista MF
+  try {
+    const res = await fetch(`${NIP_WEBHOOK_BIALA}?nip=${nip}`);
+    if (res.ok) {
+      const data = await res.json();
+      const p = data?.result?.subject;
+      if (p?.name) {
+        return {
+          nazwa: p.name,
+          regon: p.regon || '',
+          adres: p.workingAddress || p.residenceAddress || '',
+          statusVat: p.statusVat || '',
+          zrodlo: 'biala'
+        };
+      }
+    }
+  } catch (e) { console.warn('Biała lista — błąd:', e); }
+
+  // 2) Fallback: REGON (GUS)
+  // Endpoint może jeszcze nie istnieć — wtedy fetch rzuci, łapiemy i lecimy dalej.
+  try {
+    const res = await fetch(`${NIP_WEBHOOK_REGON}?nip=${nip}`);
+    if (res.ok) {
+      const data = await res.json();
+      // Spodziewany format z n8n po sparsowaniu odpowiedzi REGON:
+      // { nazwa, regon, ulica, kod, miasto } albo { result: {...} }
+      const p = data?.result || data;
+      if (p?.nazwa) {
+        const adres = [p.ulica, [p.kod, p.miasto].filter(Boolean).join(' ')]
+          .filter(Boolean).join(', ');
+        return {
+          nazwa: p.nazwa,
+          regon: p.regon || '',
+          adres: adres,
+          statusVat: '', // REGON nie wie o VAT
+          zrodlo: 'regon'
+        };
+      }
+    }
+  } catch (e) { console.warn('REGON — błąd lub endpoint nie istnieje:', e); }
+
+  return null;
+}
+
 async function fetchNIP() {
   const nip = document.getElementById('kNIP').value.replace(/\D/g,'');
   if (nip.length !== 10) { showToast('Wpisz poprawny NIP (10 cyfr)'); return; }
@@ -1546,8 +1895,9 @@ async function fetchNIP() {
   status.textContent = 'Pobieranie danych...';
   status.style.color = 'var(--text2)';
 
-  const setOK = () => {
+  const setOK = (info) => {
     status.style.color = '#34D399';
+    status.textContent = info;
     btn.textContent = '✓';
     btn.style.background = 'rgba(52,211,153,0.12)';
     btn.style.borderColor = 'rgba(52,211,153,0.3)';
@@ -1556,24 +1906,23 @@ async function fetchNIP() {
   };
 
   try {
-    // Zapytanie przez własny webhook n8n -> API MF
-    const webhookUrl = `https://piotr113-20113.wykr.es/webhook/nip?nip=${nip}`;
-    const res = await fetch(webhookUrl);
-    if (!res.ok) throw new Error('Brak odpowiedzi serwera');
-    const data = await res.json();
-    const podmiot = data?.result?.subject;
+    const dane = await pobierzDaneFirmy(nip);
+    if (!dane) throw new Error('Nie znaleziono');
 
-    if (!podmiot?.name) throw new Error('Nie znaleziono');
+    document.getElementById('kNazwa').value = dane.nazwa;
+    if (dane.regon) document.getElementById('kREGON').value = dane.regon;
+    if (dane.adres) parseAdres(dane.adres);
 
-    document.getElementById('kNazwa').value = podmiot.name;
-    if (podmiot.regon) document.getElementById('kREGON').value = podmiot.regon;
-    const adres = podmiot.workingAddress || podmiot.residenceAddress || '';
-    if (adres) parseAdres(adres);
-    const vatInfo = podmiot.statusVat === 'Czynny' ? ' · VAT: czynny' :
-                    podmiot.statusVat === 'Zwolniony' ? ' · VAT: zwolniony' :
-                    podmiot.statusVat === 'Niezarejestrowany' ? ' · Nie jest podatnikiem VAT' : '';
-    status.textContent = '✓ Dane pobrane' + vatInfo;
-    setOK();
+    // Komunikat zależny od źródła
+    if (dane.zrodlo === 'biala') {
+      const vatInfo = dane.statusVat === 'Czynny' ? ' · VAT: czynny' :
+                      dane.statusVat === 'Zwolniony' ? ' · VAT: zwolniony' :
+                      dane.statusVat === 'Niezarejestrowany' ? ' · Nie jest podatnikiem VAT' : '';
+      setOK('✓ Dane pobrane' + vatInfo);
+    } else {
+      // REGON — brak info o VAT
+      setOK('✓ Dane pobrane (z REGON — sprawdź status VAT)');
+    }
 
   } catch (err) {
     console.error('Błąd pobierania NIP:', err);
