@@ -672,11 +672,32 @@ body {
         </div>
         <div class="s-value">›</div>
       </div>
+      <div class="settings-row" onclick="pokazTransfer()">
+        <div class="settings-left">
+          <div class="s-icon">📲</div>
+          <div><div class="s-title">Przenieś dane na inne urządzenie</div><div class="s-sub">Telefon ↔ tablet ↔ komputer</div></div>
+        </div>
+        <div class="s-value">›</div>
+      </div>
     </div>
     <input type="file" id="kopiaFileInput" accept=".json,application/json" style="display:none" onchange="obsluzPlikKopii(event)">
 
     <div class="section-header"><span class="section-title">Aplikacja</span></div>
     <div class="settings-group">
+      <div class="settings-row" onclick="pokazPomoc()">
+        <div class="settings-left">
+          <div class="s-icon">📚</div>
+          <div><div class="s-title">Centrum pomocy</div><div class="s-sub">Jak korzystać z apki</div></div>
+        </div>
+        <div class="s-value">›</div>
+      </div>
+      <div class="settings-row" onclick="pokazPrywatnosc()">
+        <div class="settings-left">
+          <div class="s-icon">🔒</div>
+          <div><div class="s-title">Prywatność i bezpieczeństwo danych</div><div class="s-sub">Co Robion robi z Twoimi danymi</div></div>
+        </div>
+        <div class="s-value">›</div>
+      </div>
       <div class="settings-row">
         <div class="settings-left">
           <div class="s-icon">📱</div>
@@ -946,6 +967,171 @@ body {
       <p style="font-size:11px;color:var(--text3);margin-top:16px;line-height:1.5">
         Te kopie są zapisane wewnątrz przeglądarki — znikną, jeśli wyczyścisz dane Safari. Dla prawdziwego archiwum używaj „Zapisz kopię teraz".
       </p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Po pobraniu kopii zapasowej (instrukcja per urządzenie) -->
+<div class="modal-overlay" id="modalKopiaInfo">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">💾 Kopia zapisana</span>
+      <button class="modal-close" onclick="closeModal('modalKopiaInfo')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="kopiaInfoTresc" style="font-size:14px;color:var(--text);line-height:1.7"></div>
+      <button onclick="closeModal('modalKopiaInfo')" style="margin-top:18px;width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:12px;font-family:var(--font-condensed);font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer">
+        OK, rozumiem
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Onboarding - pierwszy raz w apce -->
+<div class="modal-overlay" id="modalOnboarding">
+  <div class="modal" style="max-height:90vh">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">👋 Witaj w Robion</span>
+    </div>
+    <div class="modal-body">
+      <div id="onboardingStep1">
+        <p style="font-size:15px;line-height:1.6;margin-bottom:16px;color:var(--text)">
+          Robion to apka która działa <strong>w pełni na Twoim urządzeniu</strong>. Twoje faktury, klienci i wszystkie dane są zapisywane <strong>tylko tutaj</strong> — nie wysyłamy ich na żaden serwer, nie trzymamy w chmurze, nikt poza Tobą nie ma do nich dostępu.
+        </p>
+        <p style="font-size:14px;line-height:1.6;margin-bottom:16px;color:var(--text2)">
+          Aby Twoje dane były <strong>bezpieczne</strong> i nie zniknęły z urządzenia, są <strong>dwie ważne rzeczy</strong> które musisz zrobić:
+        </p>
+        <div style="background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:12px;padding:14px;margin-bottom:12px">
+          <div style="font-family:var(--font-condensed);font-weight:800;font-size:13px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">1. Dodaj apkę do ekranu głównego</div>
+          <div style="font-size:13px;color:var(--text);line-height:1.6" id="onbInstrukcjaPWA"></div>
+        </div>
+        <div style="background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:18px">
+          <div style="font-family:var(--font-condensed);font-weight:800;font-size:13px;color:var(--text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">2. Rób regularnie kopie zapasowe</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.6">
+            W Ustawieniach jest sekcja „Kopia zapasowa danych". Apka będzie sama przypominać o robieniu kopii, ale to <strong>Ty</strong> decydujesz gdzie ją przechowujesz (najlepiej w chmurze: iCloud, Drive, lub na mailu do siebie).
+          </div>
+        </div>
+        <button onclick="zakoncOnboarding()" style="width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:12px;font-family:var(--font-condensed);font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer">
+          Rozumiem, zaczynamy
+        </button>
+        <p style="font-size:11px;color:var(--text3);text-align:center;margin-top:12px">
+          Tę informację zobaczysz tylko raz. Możesz wrócić do niej w Ustawieniach.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Transfer danych między urządzeniami -->
+<div class="modal-overlay" id="modalTransfer">
+  <div class="modal" style="max-height:90vh">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">📲 Przenieś dane na inne urządzenie</span>
+      <button class="modal-close" onclick="closeModal('modalTransfer')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:16px">
+        Robion działa na każdym urządzeniu osobno (telefon, tablet, komputer). Aby mieć te same dane na kilku urządzeniach, przenieś kopię między nimi.
+      </p>
+
+      <div style="background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px">
+        <div style="font-family:var(--font-condensed);font-weight:800;font-size:13px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">Najprostsza droga — mail do siebie</div>
+        <ol style="font-size:13px;color:var(--text);line-height:1.7;padding-left:20px;margin:0">
+          <li>Na <strong>tym</strong> urządzeniu kliknij przycisk poniżej</li>
+          <li>Apka otworzy program pocztowy z gotowym mailem do siebie</li>
+          <li>Kliknij wyślij, otwórz mail na <strong>drugim</strong> urządzeniu</li>
+          <li>Pobierz załącznik, w Robion wybierz „Wczytaj kopię"</li>
+        </ol>
+      </div>
+      <button onclick="wyslijKopieMail()" style="width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:12px;font-family:var(--font-condensed);font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;margin-bottom:18px">
+        ✉️ Wyślij kopię na mój mail
+      </button>
+
+      <div style="background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:14px">
+        <div style="font-family:var(--font-condensed);font-weight:800;font-size:13px;color:var(--text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">Inne sposoby</div>
+        <div id="transferInstrukcja" style="font-size:13px;color:var(--text2);line-height:1.7"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Centrum pomocy -->
+<div class="modal-overlay" id="modalPomoc">
+  <div class="modal" style="max-height:90vh">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <button class="modal-close" id="pomocBack" onclick="wrocDoListyPomocy()" style="display:none">‹</button>
+      <span class="modal-title" id="pomocTitle">📚 Centrum pomocy</span>
+      <button class="modal-close" onclick="closeModal('modalPomoc')">✕</button>
+    </div>
+    <div class="modal-body" id="pomocBody">
+      <!-- treść wstawiana dynamicznie -->
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Prywatność i bezpieczeństwo danych -->
+<div class="modal-overlay" id="modalPrywatnosc">
+  <div class="modal" style="max-height:90vh">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">🔒 Prywatność i bezpieczeństwo danych</span>
+      <button class="modal-close" onclick="closeModal('modalPrywatnosc')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.3);border-radius:12px;padding:14px;margin-bottom:14px">
+        <div style="font-family:var(--font-condensed);font-weight:800;font-size:13px;color:#34D399;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">✓ Co Robion robi z Twoimi danymi</div>
+        <ul style="font-size:13px;color:var(--text);line-height:1.7;padding-left:20px;margin:0">
+          <li>Wszystkie dane (faktury, klienci, produkty, ustawienia) są zapisane <strong>lokalnie w przeglądarce</strong> na tym urządzeniu</li>
+          <li>Nie wysyłamy ich na żaden serwer</li>
+          <li>Nie ma logowania, nie ma kont użytkowników</li>
+          <li><strong>Twórcy Robion nie mają dostępu</strong> do Twoich danych</li>
+        </ul>
+      </div>
+
+      <div style="background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px">
+        <div style="font-family:var(--font-condensed);font-weight:800;font-size:13px;color:var(--text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">⚠️ Twoja odpowiedzialność</div>
+        <ul style="font-size:13px;color:var(--text2);line-height:1.7;padding-left:20px;margin:0">
+          <li><strong>Ty</strong> przechowujesz dane → <strong>Ty</strong> robisz kopie zapasowe</li>
+          <li>Wyczyszczenie danych przeglądarki = utrata wszystkich faktur i klientów</li>
+          <li>Polecamy: kopia raz na 2 tygodnie, najlepiej w iCloud Drive / Google Drive / na maila do siebie</li>
+        </ul>
+      </div>
+
+      <p style="font-size:11px;color:var(--text3);text-align:center;line-height:1.5">
+        Robion to apka open-source, kod jest publicznie dostępny na GitHub.<br>
+        W razie pytań: kontakt@robion.pl
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Ostrzeżenie przed wystawieniem 1. faktury bez kopii -->
+<div class="modal-overlay" id="modalPierwszaFV">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">⚠️ Wystawiasz pierwszą fakturę</span>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:14px">
+        Zanim zaczniesz wystawiać faktury, polecam zapisać <strong>pierwszą kopię zapasową</strong>. Faktury są dokumentami które trzeba archiwizować <strong>5 lat</strong> — kopia zapasowa to Twoje zabezpieczenie.
+      </p>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px;background:rgba(52,211,153,0.08);padding:12px;border-radius:10px;border:1px solid rgba(52,211,153,0.3)">
+        🔒 <strong>Twoje faktury zostają tylko na tym urządzeniu</strong> — nikt poza Tobą nie ma do nich dostępu. Dlatego kopia zapasowa jest tak ważna.
+      </p>
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:18px;background:var(--glass);padding:12px;border-radius:10px;border:1px solid var(--border)">
+        💡 Kopia zawiera <strong>wszystko</strong>: faktury, klientów, produkty, ustawienia. Wystarczy, że wczytasz ją na nowym urządzeniu i masz wszystko 1:1.
+      </p>
+      <button onclick="zapiszKopie();closeModal('modalPierwszaFV')" style="width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:12px;font-family:var(--font-condensed);font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;margin-bottom:10px">
+        💾 Zrób kopię teraz
+      </button>
+      <button onclick="pominPierwszaKopie()" style="width:100%;padding:12px;background:transparent;color:var(--text2);border:1px solid var(--border);border-radius:12px;font-size:13px;cursor:pointer">
+        Pomiń, zrobię później
+      </button>
     </div>
   </div>
 </div>
@@ -1576,6 +1762,64 @@ function zbierzDaneDoKopii() {
   };
 }
 
+// Wykrywa typ urządzenia żeby pokazać odpowiednią instrukcję po pobraniu kopii
+function wykryjUrzadzenie() {
+  const ua = navigator.userAgent;
+  if (/iPhone|iPad|iPod/i.test(ua)) return 'ios';
+  if (/Android/i.test(ua)) return 'android';
+  if (/Mac/i.test(ua)) return 'mac';
+  if (/Windows/i.test(ua)) return 'windows';
+  return 'inne';
+}
+
+// Pokazuje modal z instrukcją gdzie szukać pobranej kopii (zależnie od urządzenia)
+function pokazInstrukcjeKopii() {
+  const tresc = document.getElementById('kopiaInfoTresc');
+  const urz = wykryjUrzadzenie();
+
+  let html = '<p style="margin-bottom:14px"><strong>Plik został pobrany.</strong></p>';
+
+  if (urz === 'ios') {
+    html += `
+      <p style="margin-bottom:14px">Na iPhonie/iPadzie wybierz gdzie zapisać w panelu udostępniania który właśnie się pojawił.</p>
+      <p style="font-size:12px;color:var(--text2);background:var(--glass);padding:12px;border-radius:10px;border:1px solid var(--border)">
+        💡 <strong>Polecam:</strong> iCloud Drive → utwórz folder <em>Robion</em>.<br>
+        Kopie z każdego urządzenia (iPhone, iPad, Mac) trafią w to samo miejsce.
+      </p>`;
+  } else if (urz === 'android') {
+    html += `
+      <p style="margin-bottom:14px">Na Androidzie plik trafia automatycznie do folderu <strong>Pobrane / Downloads</strong>.</p>
+      <p style="font-size:12px;color:var(--text2);background:var(--glass);padding:12px;border-radius:10px;border:1px solid var(--border)">
+        💡 Aby wybierać lokalizację przy każdym pobieraniu:<br>
+        Chrome → ⋮ → <strong>Ustawienia</strong> → <strong>Pobrane</strong> → włącz <em>„Zapytaj, gdzie zapisać każdy plik".</em>
+      </p>`;
+  } else if (urz === 'mac') {
+    html += `
+      <p style="margin-bottom:14px">Plik trafił do folderu <strong>Pobrane / Downloads</strong>.</p>
+      <p style="font-size:12px;color:var(--text2);background:var(--glass);padding:12px;border-radius:10px;border:1px solid var(--border)">
+        💡 Aby wybierać lokalizację przy każdym pobieraniu:<br>
+        <strong>Safari</strong> → Ustawienia → Ogólne → <em>„Lokalizacja pobierania" → „Pytaj przy każdym pobieraniu"</em><br><br>
+        <strong>Chrome</strong> → ⋮ → Ustawienia → Pobrane → włącz <em>„Zapytaj przed pobraniem"</em>
+      </p>`;
+  } else if (urz === 'windows') {
+    html += `
+      <p style="margin-bottom:14px">Plik trafił do folderu <strong>Pobrane / Downloads</strong>.</p>
+      <p style="font-size:12px;color:var(--text2);background:var(--glass);padding:12px;border-radius:10px;border:1px solid var(--border)">
+        💡 Aby wybierać lokalizację przy każdym pobieraniu:<br>
+        <strong>Chrome / Edge</strong> → ⋮ → Ustawienia → Pobrane → włącz <em>„Zapytaj przed pobraniem"</em>
+      </p>`;
+  } else {
+    html += `<p>Plik trafił do domyślnego folderu pobierania Twojej przeglądarki.</p>`;
+  }
+
+  html += `<p style="font-size:11px;color:var(--text3);margin-top:14px;line-height:1.5">
+    Kopia zawiera wszystkie Twoje dane (faktury, klienci, produkty, ustawienia). Trzymaj ją w bezpiecznym miejscu — najlepiej w chmurze (iCloud, Drive, Dropbox) albo wyślij na maila do siebie.
+  </p>`;
+
+  tresc.innerHTML = html;
+  document.getElementById('modalKopiaInfo').classList.add('open');
+}
+
 // Eksport — pobiera plik JSON
 function zapiszKopie() {
   try {
@@ -1592,8 +1836,9 @@ function zapiszKopie() {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
 
     localStorage.setItem('rob_lastBackup', new Date().toISOString());
-    showToast('💾 Kopia zapisana');
     odswiezBackupUI();
+    // Pokaż modal z instrukcją gdzie szukać pliku (zależnie od urządzenia)
+    setTimeout(() => pokazInstrukcjeKopii(), 300);
   } catch(e) {
     showToast('Błąd zapisu kopii');
     console.error(e);
@@ -1755,27 +2000,420 @@ function czyPokazacPrzypomnienieBackup() {
   return dni >= 14;
 }
 
+// ─────────────────────────────────────────────────────────────
+// ONBOARDING — pokazywany przy pierwszym uruchomieniu apki
+// ─────────────────────────────────────────────────────────────
+
+function pokazOnboarding() {
+  const urz = wykryjUrzadzenie();
+  const slot = document.getElementById('onbInstrukcjaPWA');
+  let html = '';
+
+  if (urz === 'ios') {
+    html = `Tap przycisk <strong>udostępniania</strong> ⬆️ w pasku Safari na dole → wybierz <strong>„Dodaj do ekranu początkowego"</strong>. Apka pojawi się jak normalna aplikacja, a Twoje dane będą bezpieczne.`;
+  } else if (urz === 'android') {
+    html = `W Chrome tap menu <strong>⋮</strong> w prawym górnym rogu → wybierz <strong>„Dodaj do ekranu głównego"</strong> lub <strong>„Zainstaluj aplikację"</strong>. Apka pojawi się jak normalna aplikacja.`;
+  } else if (urz === 'mac') {
+    html = `W Safari (lub Chrome) wybierz menu <strong>Plik → Dodaj do Docka</strong> lub <strong>Zainstaluj Robion</strong>. Apka będzie miała własne okno i ikonę.`;
+  } else if (urz === 'windows') {
+    html = `W Chrome lub Edge kliknij ikonę <strong>instalacji</strong> w pasku adresu (po prawej, ikona z ⊕) lub menu <strong>⋮ → Zainstaluj Robion</strong>. Apka pojawi się jak normalny program.`;
+  } else {
+    html = `Sprawdź w menu Twojej przeglądarki opcję „Zainstaluj jako aplikację" lub „Dodaj do ekranu głównego".`;
+  }
+  slot.innerHTML = html;
+  document.getElementById('modalOnboarding').classList.add('open');
+}
+
+function zakoncOnboarding() {
+  localStorage.setItem('rob_onboarded', '1');
+  document.getElementById('modalOnboarding').classList.remove('open');
+}
+
+function pokazPrywatnosc() {
+  document.getElementById('modalPrywatnosc').classList.add('open');
+}
+
+// ─────────────────────────────────────────────────────────────
+// CENTRUM POMOCY
+// ─────────────────────────────────────────────────────────────
+
+const POMOC_TEMATY = [
+  {
+    id: 'start',
+    ikona: '🚀',
+    tytul: 'Jak zacząć?',
+    krotko: 'W trzech krokach do pierwszej faktury',
+    tresc: `
+      <p>Robion w trzech krokach:</p>
+      <h3>1. Uzupełnij dane swojej firmy</h3>
+      <p>Zakładka <strong>Ustawienia</strong> → <strong>Dane firmy</strong>. Wpisz nazwę, NIP, adres, numer konta. To te dane będą szły na każdej fakturze jako sprzedawca.</p>
+      <p>Obok wybierz <strong>status VAT</strong> (vatowiec / zwolniony / ryczałt / marża) — od tego zależy wygląd faktury.</p>
+      <h3>2. Dodaj pierwszego klienta</h3>
+      <p>Zakładka <strong>Klienci</strong> → przycisk <strong>+</strong>. Wpisz NIP — apka sama pobierze nazwę i adres z państwowych rejestrów. Resztę uzupełnij ręcznie (telefon, email).</p>
+      <p>Klientów dodaje się raz, potem są dostępni na fakturach jednym kliknięciem.</p>
+      <h3>3. Wystaw pierwszą fakturę</h3>
+      <p>Zakładka <strong>Faktury</strong> → przycisk <strong>+</strong> → wybierz typ (zwykle <strong>FV</strong>). Wybierz klienta, dodaj pozycje (towary albo usługi), zapisz.</p>
+      <p>Apka sama nadaje kolejny numer i podlicza VAT. Możesz wydrukować lub zapisać jako PDF (drukuj → zapisz jako PDF).</p>
+      <p style="font-size:13px;color:var(--text2);margin-top:14px;background:var(--glass);padding:12px;border-radius:10px">💡 <strong>Najpierw zrób kopię zapasową</strong> (Ustawienia → Kopia zapasowa danych). Apka zapisuje wszystko lokalnie — kopia to Twoje archiwum.</p>
+    `
+  },
+  {
+    id: 'typy',
+    ikona: '📄',
+    tytul: 'Sześć typów dokumentów',
+    krotko: 'Kiedy używać FV, PF, RK, KS, FK, FZ',
+    tresc: `
+      <p>Robion obsługuje sześć typów dokumentów. Każdy ma osobne zastosowanie:</p>
+      <h3>FV — Faktura VAT</h3>
+      <p>Standardowy dokument sprzedaży. Wystawiasz po wykonaniu usługi lub dostarczeniu towaru. To 90% Twoich dokumentów.</p>
+      <h3>PF — Proforma</h3>
+      <p>Dokument przed sprzedażą — informujesz klienta ile zapłaci, on Ci przelewa. <strong>Proforma to nie faktura</strong> — nie powstaje obowiązek podatkowy. Po dostaniu zapłaty <strong>konwertujesz proformę na fakturę</strong> (zielony przycisk w edycji), apka zachowuje ten sam numer w bazie.</p>
+      <h3>RK — Rachunek</h3>
+      <p>Dla podatników <strong>zwolnionych z VAT</strong> (art. 113). Jeśli jesteś vatowcem — nie używaj RK, używaj FV.</p>
+      <h3>KS — Kasowa (paragon)</h3>
+      <p>Sprzedaż detaliczna kasowa. Mały zakres zastosowań w usługach budowlanych — głównie sklepy.</p>
+      <h3>FK — Faktura korygująca</h3>
+      <p>Gdy musisz poprawić wcześniej wystawioną fakturę: zmiana ceny, zwrot towaru, błąd w nazwie towaru. <strong>Nie wystawiaj nowej FV "zamiast"</strong> — zawsze korekta.</p>
+      <h3>FZ — Faktura zaliczkowa</h3>
+      <p>Gdy bierzesz <strong>zaliczkę</strong> przed wykonaniem pełnej usługi. Po dokończeniu robisz fakturę końcową na resztę.</p>
+      <p style="font-size:13px;color:var(--text2);margin-top:14px;background:var(--glass);padding:12px;border-radius:10px">💡 W razie wątpliwości — <strong>zawsze FV</strong>. To bezpieczny domyślny wybór dla większości sytuacji.</p>
+    `
+  },
+  {
+    id: 'vat',
+    ikona: '💼',
+    tytul: 'VAT — jaki status wybrać?',
+    krotko: 'Vatowiec, zwolniony, ryczałt, marża',
+    tresc: `
+      <p>Status VAT ustawiasz <strong>raz</strong> w Ustawieniach (Dane firmy → Status VAT). Decyduje o tym jak wyglądają Twoje faktury.</p>
+      <h3>Vatowiec (VAT czynny)</h3>
+      <p>Najczęstszy wybór dla firm budowlanych. Doliczasz VAT do każdej faktury (zwykle 23% albo 8% dla usług remontowych w mieszkaniach do 150m²).</p>
+      <p>Wymaga rejestracji jako podatnik VAT w US (formularz VAT-R).</p>
+      <h3>Zwolniony z VAT</h3>
+      <p>Dla firm z obrotem do <strong>200 000 zł rocznie</strong> które nie zarejestrowały się jako VAT-owcy (zwolnienie podmiotowe, art. 113). Wystawiasz <strong>rachunki RK</strong> bez VAT.</p>
+      <p>Plus: prościej, mniej formalności. Minus: nie odliczasz VAT-u od zakupów.</p>
+      <h3>Ryczałt ewidencjonowany</h3>
+      <p>Forma <strong>opodatkowania PIT</strong>, nie status VAT. Płacisz % od przychodu, nie od dochodu. Stawki: 8,5%, 12%, 14%, 17% (zależnie od rodzaju usług).</p>
+      <p>W apce wybierz tę opcję jeśli rozliczasz PIT ryczałtem ALE jesteś też vatowcem — apka dostosuje wygląd faktury.</p>
+      <h3>VAT marża</h3>
+      <p>Specyficzna opcja dla handlu używanymi towarami, dziełami sztuki, antykami. <strong>Niedotyczy</strong> typowych usług budowlanych. Jeśli nie wiesz czy to dla Ciebie — to znaczy że nie.</p>
+      <p style="font-size:13px;color:var(--text2);margin-top:14px;background:rgba(245,166,35,0.1);padding:12px;border-radius:10px;border:1px solid var(--accent-border)">⚠️ <strong>Status VAT to decyzja podatkowa</strong>, nie kosmetyczna. Jeśli nie masz pewności — zapytaj księgowej. Złe ustawienie = problemy z US.</p>
+    `
+  },
+  {
+    id: 'zaliczki',
+    ikona: '💰',
+    tytul: 'Zaliczki i faktury końcowe',
+    krotko: 'Proforma → zaliczkowa → końcowa',
+    tresc: `
+      <p>Najczęstszy scenariusz w branży: dostajesz zlecenie na 10 000 zł, klient płaci zaliczkę 3 000 zł "na materiały", potem kończysz robotę i bierzesz resztę.</p>
+      <h3>Klasyczna kolejność</h3>
+      <p><strong>1. Proforma (PF)</strong> — wystawiasz na całą kwotę 10 000 zł, wysyłasz klientowi. To dokument informacyjny, nie ma jeszcze obowiązku VAT.</p>
+      <p><strong>2. Klient płaci zaliczkę 3 000 zł.</strong></p>
+      <p><strong>3. Faktura zaliczkowa (FZ)</strong> — wystawiasz na 3 000 zł (otrzymane). Tu już powstaje obowiązek VAT od tej kwoty.</p>
+      <p><strong>4. Robisz robotę, klient płaci resztę 7 000 zł.</strong></p>
+      <p><strong>5. Faktura końcowa (FV)</strong> — wystawiasz na <strong>całość 10 000 zł</strong>, ale w pozycjach pomniejszasz o już zafakturowane 3 000 zł zaliczki. Klient zapłacił do tej pory 10 000 zł, US widzi pełen obrót.</p>
+      <h3>Uproszczony scenariusz (bez zaliczki)</h3>
+      <p>Jeśli klient płaci wszystko po wykonaniu roboty — pomijasz PF i FZ. Robisz tylko jedną <strong>FV</strong> na całość po skończonej robocie.</p>
+      <p style="font-size:13px;color:var(--text2);margin-top:14px;background:var(--glass);padding:12px;border-radius:10px">💡 Konwersja w apce: w edycji proformy jest <strong>zielony przycisk "Konwertuj na FV"</strong> — gdy klient zapłaci całość bez zaliczek pośrednich.</p>
+    `
+  },
+  {
+    id: 'korekta',
+    ikona: '✏️',
+    tytul: 'Korekta — kiedy i jak',
+    krotko: 'Gdy się pomylisz lub coś się zmieniło',
+    tresc: `
+      <p>Faktura korygująca (<strong>FK</strong>) to jedyny legalny sposób poprawienia wystawionej już faktury. <strong>Nie usuwaj</strong> faktur, nie wystawiaj "nowej zamiast starej".</p>
+      <h3>Kiedy wystawiać korektę</h3>
+      <p><strong>Pomyłka w cenie</strong> — wystawiłeś za 1000 zł, miało być 1200 zł. Korekta na różnicę +200 zł.</p>
+      <p><strong>Pomyłka w nazwie towaru/usługi</strong> — wpisałeś "wymiana okna" zamiast "remont łazienki".</p>
+      <p><strong>Zwrot towaru</strong> — klient zwrócił część. Korekta in minus.</p>
+      <p><strong>Rabat po sprzedaży</strong> — dałeś klientowi 10% rabatu po fakcie.</p>
+      <p><strong>Pomyłka w danych klienta</strong> — zły NIP, zły adres. Korekta poprawiająca dane.</p>
+      <h3>Czego NIE robić</h3>
+      <p>❌ <strong>Nie kasuj</strong> błędnej faktury. Nawet jeśli klient nie dostał — w apce zostaje, korekta to dokumentuje.</p>
+      <p>❌ <strong>Nie wystawiaj duplikatu</strong> "tej dobrej". Korekta odnosi się do oryginału.</p>
+      <p>❌ <strong>Nie zmieniaj numeru faktury</strong> ręcznie. Numeracja musi być ciągła.</p>
+      <h3>Jak wystawić w apce</h3>
+      <p>Faktury → + → wybierz typ <strong>FK</strong>. W polu "Korekta do" wpisz numer oryginalnej faktury. Wpisz różnicę (in plus albo in minus).</p>
+      <p style="font-size:13px;color:var(--text2);margin-top:14px;background:rgba(245,166,35,0.1);padding:12px;border-radius:10px;border:1px solid var(--accent-border)">⚠️ Jeśli sprawa jest niejasna (np. korekta przeszłorocznej faktury, korekta + zmiana stawki VAT) — <strong>zapytaj księgowej</strong>. Korekty mają niuanse.</p>
+    `
+  },
+  {
+    id: 'dane',
+    ikona: '🔒',
+    tytul: 'Twoje dane są tylko u Ciebie',
+    krotko: 'Jak działa lokalne przechowywanie',
+    tresc: `
+      <p>Robion to apka która <strong>nie ma serwera</strong>. Wszystkie Twoje dane (faktury, klienci, produkty, ustawienia) są zapisywane <strong>tylko w pamięci tego urządzenia</strong>.</p>
+      <h3>Co to znaczy w praktyce</h3>
+      <p>✓ Nie ma logowania, nie ma haseł</p>
+      <p>✓ Twoich faktur nikt nie widzi — ani my, ani Anthropic, ani GitHub</p>
+      <p>✓ Apka działa offline po pierwszym wczytaniu</p>
+      <p>✓ Nie płacisz za "miejsce w chmurze" bo nie ma chmury</p>
+      <h3>Czego NIE rób</h3>
+      <p>❌ Nie czyść danych Safari/Chrome bez uprzedniego zrobienia kopii — wyczyścisz wszystkie faktury</p>
+      <p>❌ Nie używaj trybu prywatnego/incognito do pracy z apką — wszystko zniknie po zamknięciu okna</p>
+      <p>❌ Nie zakładaj że dane same się gdzieś synchronizują — telefon i komputer to dwie osobne kopie</p>
+      <h3>Co musisz robić sam</h3>
+      <p>Apka pomaga, ale <strong>Ty jesteś odpowiedzialny</strong> za:</p>
+      <p>→ Robienie kopii zapasowych (apka przypomina, ale Ty klikasz)</p>
+      <p>→ Przechowywanie tych kopii w bezpiecznym miejscu (najlepiej iCloud / Google Drive / mail do siebie)</p>
+      <p>→ Synchronizację między urządzeniami (przez kopię zapasową)</p>
+      <p style="font-size:13px;color:var(--text2);margin-top:14px;background:var(--glass);padding:12px;border-radius:10px">💡 Faktury trzeba archiwizować <strong>5 lat</strong>. Zrób sobie regularny rytuał: kopia zapasowa raz na 2 tygodnie, plik na maila do siebie.</p>
+    `
+  },
+  {
+    id: 'kopie',
+    ikona: '💾',
+    tytul: 'Jak nie stracić faktur',
+    krotko: 'Kopie zapasowe i transfer między urządzeniami',
+    tresc: `
+      <p>Najważniejsza zasada: <strong>nigdy nie pracuj bez kopii zapasowej</strong>. Apka przypomina, ale to Ty wykonujesz akcję.</p>
+      <h3>Jak zrobić kopię</h3>
+      <p>Ustawienia → Kopia zapasowa danych → <strong>Zapisz kopię teraz</strong>. Apka pobierze plik (typu <code>robion-kopia-2026-04-30.json</code>). Wybierz gdzie zapisać:</p>
+      <p>→ <strong>iPhone/iPad:</strong> iCloud Drive (najlepiej folder "Robion")</p>
+      <p>→ <strong>Android:</strong> Google Drive</p>
+      <p>→ <strong>Mac/PC:</strong> dowolna chmura albo folder na dysku</p>
+      <p>→ <strong>Każdemu</strong> polecam dodatkowo: <strong>wysłać sobie mailem</strong>. Mail trzyma się latami, jest archiwum w razie czego.</p>
+      <h3>Jak wczytać kopię</h3>
+      <p>Ustawienia → Kopia zapasowa → <strong>Wczytaj kopię</strong> → wybierz plik. Apka pyta czy nadpisać aktualne dane — potwierdzasz.</p>
+      <h3>Transfer telefon ↔ komputer</h3>
+      <p>Apka działa osobno na każdym urządzeniu. Aby mieć te same dane wszędzie:</p>
+      <p>1. Zrób kopię na <strong>jednym</strong> urządzeniu</p>
+      <p>2. Przerzuć plik (mail, AirDrop, Drive)</p>
+      <p>3. Wczytaj kopię na <strong>drugim</strong> urządzeniu</p>
+      <p>Skrót w apce: Ustawienia → <strong>Przenieś dane na inne urządzenie</strong> — krok po kroku z przyciskiem mailowym.</p>
+      <h3>Automatyczne zabezpieczenie</h3>
+      <p>Apka sama trzyma <strong>5 ostatnich snapshotów</strong> w pamięci wewnętrznej. Jeśli przypadkiem usuniesz fakturę albo coś się popsuje — Ustawienia → <strong>Cofnij do wcześniejszej wersji</strong> i wybierasz kiedy.</p>
+      <p style="font-size:13px;color:var(--text2);margin-top:14px;background:rgba(248,113,113,0.1);padding:12px;border-radius:10px;border:1px solid rgba(248,113,113,0.3)">⚠️ Snapshoty <strong>nie chronią</strong> przed wyczyszczeniem danych przeglądarki — siedzą w tej samej pamięci. Tylko zewnętrzna kopia (plik na dysku/w chmurze) chroni przed totalną utratą.</p>
+    `
+  },
+  {
+    id: 'ksef',
+    ikona: '🏛️',
+    tytul: 'KSeF — czy mnie dotyczy?',
+    krotko: 'Krajowy System e-Faktur — co i kiedy',
+    tresc: `
+      <p>KSeF to państwowy system do wystawiania faktur. Od pewnego momentu każda firma musi go używać.</p>
+      <h3>Stan na dziś</h3>
+      <p>Od <strong>1 kwietnia 2026</strong> KSeF jest obowiązkowy dla większości firm. Ale jest <strong>okres przejściowy</strong> do końca 2026:</p>
+      <p>→ Jeśli sprzedaż w danym miesiącu nie przekracza <strong>10 000 zł brutto</strong>, możesz wystawiać faktury "po staremu" (papier / PDF / Robion).</p>
+      <p>→ Mikrofirmy z obrotem do 10 tys. zł miesięcznie — pełen obowiązek dopiero od <strong>1 stycznia 2027</strong>.</p>
+      <h3>Co Robion robi w sprawie KSeF</h3>
+      <p>Pełna integracja z KSeF jest <strong>w przygotowaniu</strong> — będzie dostępna przed 1 stycznia 2027 (deadline pełnej obowiązkowości).</p>
+      <p>Do tego czasu Robion:</p>
+      <p>→ Działa normalnie dla firm w okresie przejściowym (do 10k/miesiąc)</p>
+      <p>→ Generuje faktury w formacie standardowym (PDF/druk) — legalnym do końca 2026</p>
+      <p>→ Trzyma archiwum lokalnie — łatwo będzie potem zmigrować</p>
+      <h3>Co Ty powinieneś zrobić</h3>
+      <p>1. Sprawdź czy mieścisz się w wyjątku 10k/miesiąc — jeśli tak, możesz dalej spokojnie używać Robion</p>
+      <p>2. Zarejestruj się jako podatnik w KSeF (jeśli jeszcze nie) — w aplikacji Podatnika KSeF na platformie podatki.gov.pl</p>
+      <p>3. <strong>Odbieraj faktury w KSeF</strong> — to obowiązek niezależny od wystawiania, dotyczy wszystkich od 1 lutego 2026</p>
+      <p style="font-size:13px;color:var(--text2);margin-top:14px;background:rgba(245,166,35,0.1);padding:12px;border-radius:10px;border:1px solid var(--accent-border)">⚠️ <strong>Jeśli przekraczasz 10 000 zł brutto miesięcznie</strong> — Robion nie wystarczy do końca 2026. Rozważ tymczasowo apkę z integracją KSeF (np. wfirma, ifirma, fakturownia). Pełna integracja w Robion jest planowana do końca roku.</p>
+    `
+  }
+];
+
+let pomocBiezacyTemat = null;
+
+function pokazPomoc() {
+  pomocBiezacyTemat = null;
+  renderujListePomocy();
+  document.getElementById('modalPomoc').classList.add('open');
+}
+
+function renderujListePomocy() {
+  document.getElementById('pomocTitle').textContent = '📚 Centrum pomocy';
+  document.getElementById('pomocBack').style.display = 'none';
+  const body = document.getElementById('pomocBody');
+  body.innerHTML = `
+    <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px">
+      Najważniejsze rzeczy o korzystaniu z apki. Wybierz temat aby przeczytać.
+    </p>
+    ${POMOC_TEMATY.map(t => `
+      <div onclick="otworzTematPomocy('${t.id}')" style="display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--glass);margin-bottom:8px;cursor:pointer">
+        <div style="font-size:24px">${t.ikona}</div>
+        <div style="flex:1">
+          <div style="font-family:var(--font-condensed);font-weight:800;font-size:14px;color:var(--text);text-transform:uppercase;letter-spacing:0.3px">${t.tytul}</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px">${t.krotko}</div>
+        </div>
+        <div style="color:var(--text3);font-size:18px">›</div>
+      </div>
+    `).join('')}
+    <p style="font-size:11px;color:var(--text3);text-align:center;margin-top:16px;line-height:1.5">
+      Czegoś brakuje? Napisz: kontakt@robion.pl
+    </p>
+  `;
+}
+
+function otworzTematPomocy(id) {
+  const temat = POMOC_TEMATY.find(t => t.id === id);
+  if (!temat) return;
+  pomocBiezacyTemat = id;
+  document.getElementById('pomocTitle').textContent = temat.ikona + ' ' + temat.tytul;
+  document.getElementById('pomocBack').style.display = 'block';
+  const body = document.getElementById('pomocBody');
+  body.innerHTML = `
+    <div style="font-size:14px;color:var(--text);line-height:1.7" id="pomocTresc">
+      ${temat.tresc}
+    </div>
+    <button onclick="wrocDoListyPomocy()" style="margin-top:18px;width:100%;padding:12px;background:transparent;color:var(--text2);border:1px solid var(--border);border-radius:12px;font-size:13px;cursor:pointer">
+      ‹ Wróć do listy tematów
+    </button>
+  `;
+  // Style nagłówków h3 w treści tematów
+  body.querySelectorAll('#pomocTresc h3').forEach(h => {
+    h.style.fontFamily = 'var(--font-condensed)';
+    h.style.fontWeight = '800';
+    h.style.fontSize = '14px';
+    h.style.color = 'var(--accent)';
+    h.style.textTransform = 'uppercase';
+    h.style.letterSpacing = '0.3px';
+    h.style.marginTop = '16px';
+    h.style.marginBottom = '6px';
+  });
+  body.querySelectorAll('#pomocTresc p').forEach(p => {
+    if (!p.style.marginBottom) p.style.marginBottom = '10px';
+  });
+  // Scroll na początek treści
+  body.scrollTop = 0;
+}
+
+function wrocDoListyPomocy() {
+  renderujListePomocy();
+}
+
+// ─────────────────────────────────────────────────────────────
+// TRANSFER MIĘDZY URZĄDZENIAMI
+// ─────────────────────────────────────────────────────────────
+
+function pokazTransfer() {
+  const urz = wykryjUrzadzenie();
+  const slot = document.getElementById('transferInstrukcja');
+  let html = '';
+
+  if (urz === 'ios') {
+    html = `
+      <strong>AirDrop:</strong> w Plikach znajdź pobraną kopię → tap → udostępnij → AirDrop na drugiego Maca/iPhone'a/iPada<br><br>
+      <strong>iCloud Drive:</strong> zapisz kopię w iCloud Drive → otworzy się automatycznie na każdym Twoim urządzeniu Apple<br><br>
+      <strong>Komunikator (WhatsApp/Telegram):</strong> wyślij plik samemu sobie w „Notatkach" lub czacie z samym sobą`;
+  } else if (urz === 'android') {
+    html = `
+      <strong>Google Drive:</strong> zapisz kopię w Drive → otworzy się na każdym urządzeniu z tym samym kontem Google<br><br>
+      <strong>Komunikator (WhatsApp/Telegram):</strong> wyślij plik samemu sobie w czacie z sobą<br><br>
+      <strong>Bluetooth:</strong> w eksploratorze plików znajdź kopię → udostępnij → Bluetooth`;
+  } else {
+    html = `
+      <strong>Chmura (iCloud/Drive/Dropbox):</strong> zapisz kopię w chmurze → otworzy się na drugim urządzeniu<br><br>
+      <strong>USB:</strong> skopiuj plik na pendrive → przenieś na drugi komputer<br><br>
+      <strong>Mail do siebie:</strong> użyj przycisku powyżej`;
+  }
+
+  slot.innerHTML = html;
+  document.getElementById('modalTransfer').classList.add('open');
+}
+
+function wyslijKopieMail() {
+  try {
+    const kopia = zbierzDaneDoKopii();
+    const dzis = new Date().toISOString().slice(0,10);
+    const liczbaFaktur = kopia.dane.rob_faktury ? JSON.parse(kopia.dane.rob_faktury).length : 0;
+    const liczbaKlientow = kopia.dane.rob_klienci ? JSON.parse(kopia.dane.rob_klienci).length : 0;
+
+    const temat = `Kopia zapasowa Robion (${dzis})`;
+    const tresc = `Kopia zapasowa apki Robion z dnia ${dzis}.
+
+Faktur: ${liczbaFaktur}
+Klientów: ${liczbaKlientow}
+
+UWAGA: Aby przenieść dane na inne urządzenie, najpierw zapisz tę wiadomość, otwórz załącznik (jeśli jest) lub wklej zawartość kopii w plik tekstowy z rozszerzeniem .json. Następnie w apce Robion wybierz „Wczytaj kopię".
+
+Aby załączyć kopię jako plik:
+1. Najpierw kliknij „Zapisz kopię teraz" w apce
+2. Potem do tego maila dodaj plik jako załącznik
+3. Wyślij na swój drugi mail/urządzenie
+
+Robion · https://robion.pl`;
+
+    // mailto bez załącznika (mailto nie obsługuje załączników)
+    // Użytkownik dopina plik ręcznie
+    const link = `mailto:?subject=${encodeURIComponent(temat)}&body=${encodeURIComponent(tresc)}`;
+    window.location.href = link;
+
+    setTimeout(() => {
+      // Po 800ms pobierz też plik, żeby user mógł go dołączyć ręcznie
+      zapiszKopie();
+    }, 800);
+  } catch(e) {
+    showToast('Błąd przygotowania maila');
+    console.error(e);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// OSTRZEŻENIE PRZED 1. FAKTURĄ BEZ KOPII
+// ─────────────────────────────────────────────────────────────
+
+function sprawdzCzyPokazacOstrzezeniePierwszaFV() {
+  // Pokazuje się gdy: 0 faktur do tej pory ORAZ nigdy nie było kopii
+  const faktury = JSON.parse(localStorage.getItem('rob_faktury') || '[]');
+  const last = localStorage.getItem('rob_lastBackup');
+  const pominieto = localStorage.getItem('rob_pominPierwszaFV');
+  return faktury.length === 0 && !last && !pominieto;
+}
+
+function pominPierwszaKopie() {
+  localStorage.setItem('rob_pominPierwszaFV', '1');
+  document.getElementById('modalPierwszaFV').classList.remove('open');
+}
+
+// ─────────────────────────────────────────────────────────────
+// ROZSZERZONE PRZYPOMNIENIE NA PULPICIE (czerwony pasek)
+// ─────────────────────────────────────────────────────────────
+
+// Nadpisuje istniejącą funkcję — teraz rozróżnia 3 stany
 function renderPrzypomnienieBackup() {
   const slot = document.getElementById('backupReminder');
   if (!slot) return;
-  if (!czyPokazacPrzypomnienieBackup()) {
-    slot.style.display = 'none';
+
+  const faktury = JSON.parse(localStorage.getItem('rob_faktury') || '[]');
+  const last = localStorage.getItem('rob_lastBackup');
+
+  // Stan 1: nigdy nie robił kopii a ma już kilka faktur — CZERWONY
+  if (!last && faktury.length >= 3) {
+    slot.style.display = 'block';
+    slot.innerHTML = `
+      <div onclick="zapiszKopie()" style="background:linear-gradient(135deg,rgba(248,113,113,0.15),rgba(248,113,113,0.05));border:1px solid rgba(248,113,113,0.4);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;cursor:pointer">
+        <div style="font-size:24px">⚠️</div>
+        <div style="flex:1">
+          <div style="font-family:var(--font-condensed);font-size:13px;font-weight:800;color:#F87171;text-transform:uppercase;letter-spacing:0.5px">Nigdy nie robiłeś kopii</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px">Masz już ${faktury.length} faktur — zrób kopię, by ich nie stracić</div>
+        </div>
+        <div style="color:#F87171;font-size:18px">›</div>
+      </div>`;
     return;
   }
-  const last = localStorage.getItem('rob_lastBackup');
-  const tekst = last
-    ? `Ostatnia kopia: ${Math.floor((Date.now() - new Date(last).getTime()) / 86400000)} dni temu`
-    : 'Nigdy nie robiłeś kopii zapasowej';
-  slot.style.display = 'block';
-  slot.innerHTML = `
-    <div onclick="zapiszKopie()" style="background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));border:1px solid var(--accent-border);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;cursor:pointer">
-      <div style="font-size:24px">💾</div>
-      <div style="flex:1">
-        <div style="font-family:var(--font-condensed);font-size:13px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px">Czas na kopię zapasową</div>
-        <div style="font-size:12px;color:var(--text2);margin-top:2px">${tekst} — tap aby zapisać</div>
-      </div>
-      <div style="color:var(--accent);font-size:18px">›</div>
-    </div>`;
+
+  // Stan 2: kopia była, ale 14+ dni temu — ŻÓŁTY
+  if (czyPokazacPrzypomnienieBackup()) {
+    const dni = Math.floor((Date.now() - new Date(last).getTime()) / 86400000);
+    slot.style.display = 'block';
+    slot.innerHTML = `
+      <div onclick="zapiszKopie()" style="background:linear-gradient(135deg,rgba(245,166,35,0.15),rgba(245,166,35,0.05));border:1px solid var(--accent-border);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;cursor:pointer">
+        <div style="font-size:24px">💾</div>
+        <div style="flex:1">
+          <div style="font-family:var(--font-condensed);font-size:13px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px">Czas na kopię zapasową</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px">Ostatnia kopia: ${dni} dni temu — tap aby zapisać</div>
+        </div>
+        <div style="color:var(--accent);font-size:18px">›</div>
+      </div>`;
+    return;
+  }
+
+  // Stan 3: wszystko OK — schowaj
+  slot.style.display = 'none';
 }
 
 function clearData() {
@@ -1965,6 +2603,11 @@ loadBaner();
 
 // FAB ukryty na pulpicie (domyślny widok)
 document.getElementById('fabBtn').classList.add('hidden');
+
+// Onboarding pierwszego usera (jeśli jeszcze nie był pokazany)
+if (!localStorage.getItem('rob_onboarded')) {
+  setTimeout(() => pokazOnboarding(), 600);
+}
 
 // ── SCROLL DETECTION (chowanie banera + nazwy działu przy scrollu) ──
 let lastScrollY = 0;
