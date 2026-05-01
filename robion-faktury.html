@@ -59,6 +59,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .nav-item.active::after{content:'';position:absolute;top:-1px;left:25%;right:25%;height:2px;background:var(--accent);border-radius:0 0 2px 2px;box-shadow:0 0 8px var(--accent)}
 .nav-icon{font-size:20px}
 .nav-label{font-family:var(--font-c);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3)}
+.nav-version-info{display:none}
 .nav-item.active .nav-label{color:var(--accent)}
 
 /* CONTENT VIEWS */
@@ -238,6 +239,64 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   .fv-preview-stage{height:auto!important;overflow:visible!important}
   .fv-preview{transform:none!important;width:100%!important;box-shadow:none;border-radius:0;margin:0}
   .app{padding:0;max-width:100%}
+}
+
+/* DESKTOP LAYOUT (≥1024px) — sidebar zamiast bottom-nav */
+@media (min-width: 1024px) {
+  body { padding-left: 220px; }
+  .bottom-nav {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: 220px; max-width: 220px;
+    transform: none;
+    flex-direction: column; justify-content: flex-start; align-items: stretch;
+    padding: 24px 12px 12px;
+    background: rgba(15,15,15,0.95);
+    border-right: 1px solid var(--border);
+    border-top: none;
+    gap: 4px;
+  }
+  .bottom-nav::before {
+    top: 0; right: 0; bottom: 0; left: auto;
+    width: 1px; height: auto;
+    background: linear-gradient(180deg, transparent, rgba(245,166,35,0.4) 30%, transparent);
+  }
+  .bottom-nav::after {
+    content: 'ROBION'; display: block;
+    font-family: var(--font-c); font-weight: 800; font-size: 22px;
+    letter-spacing: 2px; color: white;
+    padding: 0 8px 16px; margin-bottom: 12px;
+    border-bottom: 1px solid var(--border); order: -1;
+  }
+  .nav-item {
+    flex: 0 0 auto; flex-direction: row;
+    justify-content: flex-start; gap: 12px;
+    padding: 10px 14px; border-radius: 10px; width: 100%;
+  }
+  .nav-item.active {
+    background: rgba(245,166,35,0.12); border: none;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0; padding-left: 11px;
+  }
+  .nav-item.active::after { display: none; }
+  .nav-icon { font-size: 18px; width: 22px; text-align: center; }
+  .nav-label {
+    font-size: 13px; letter-spacing: 0.5px;
+    color: var(--text2); text-transform: capitalize;
+  }
+  .nav-item.active .nav-label { color: var(--accent); }
+  .nav-version-info {
+    display: block; margin-top: auto;
+    padding: 12px 14px; border-top: 1px solid var(--border);
+    font-size: 10px; color: var(--text3); letter-spacing: 0.5px;
+  }
+  .app { max-width: 880px; margin: 0 auto; padding-bottom: 24px; }
+  .header { background: transparent; border-bottom: none; padding: 24px 20px 12px; }
+  .header::after { display: none; }
+  .header-top { display: none; }
+  .page-title { font-size: 28px; margin-top: 8px; }
+  .content { padding: 24px 20px; }
+  .fab { display: none !important; }
+  .modal { max-width: 600px; margin: 0 auto; }
 }
 </style>
 </head>
@@ -456,18 +515,22 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
-  <a class="nav-item" href="robion-app.html">
+  <a class="nav-item" href="index.html#pulpit">
+    <div class="nav-icon">🏠</div><div class="nav-label">Pulpit</div>
+  </a>
+  <a class="nav-item" href="index.html#klienci">
     <div class="nav-icon">👥</div><div class="nav-label">Klienci</div>
   </a>
-  <a class="nav-item" href="robion-app.html#produkty">
+  <a class="nav-item" href="index.html#produkty">
     <div class="nav-icon">📦</div><div class="nav-label">Produkty</div>
   </a>
   <div class="nav-item active">
     <div class="nav-icon">🧾</div><div class="nav-label">Faktury</div>
   </div>
-  <a class="nav-item" href="robion-app.html#ustawienia">
+  <a class="nav-item" href="index.html#ustawienia">
     <div class="nav-icon">⚙️</div><div class="nav-label">Ustawienia</div>
   </a>
+  <div class="nav-version-info">Beta · 0.1.0</div>
 </div>
 
 <button class="fab" onclick="nowaFaktura()">+</button>
