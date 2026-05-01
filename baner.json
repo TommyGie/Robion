@@ -1,10 +1,9 @@
 {
-  "id": "1777617055313",
+  "id": "2026-05-01-001",
+  "active": true,
   "type": "info",
-  "text": "Witaj w Robion! Aplikacja jest w fazie beta — chętnie posłuchamy uwag.",
+  "text": "Witaj w Robion! Apka jest w fazie beta — daj znać jak Ci się korzysta. kontakt@robion.pl",
   "link": "",
   "linkLabel": "",
-  "img": "",
-  "active": true,
-  "publishedAt": "2026-05-01T06:30:55.313Z"
+  "img": ""
 }

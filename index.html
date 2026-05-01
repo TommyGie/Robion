@@ -7,6 +7,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Robion">
 <meta name="theme-color" content="#111111">
+
+<!-- Ikony aplikacji -->
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Robion">
 <title>Robion</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -114,10 +122,20 @@ body {
   font-family: var(--font-condensed);
   font-size: 32px; font-weight: 900;
   letter-spacing: 5px; text-transform: uppercase;
-  color: var(--text);
+  background: linear-gradient(180deg, #ffffff 0%, #ffffff 40%, #b0b0b0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 1px 0 rgba(0,0,0,0.4));
   transition: font-size 0.25s ease, letter-spacing 0.25s ease;
 }
-.logo span { color: var(--accent); }
+.logo span {
+  background: linear-gradient(180deg, #FFD580 0%, #F5A623 50%, #8B5410 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 .header-badge {
   font-size: 10px; font-weight: 800; letter-spacing: 1px;
   padding: 3px 10px; border-radius: 4px;
@@ -495,7 +513,12 @@ body {
     font-weight: 800;
     font-size: 22px;
     letter-spacing: 2px;
-    color: white;
+    background: linear-gradient(180deg, #ffffff 0%, #ffffff 40%, #b0b0b0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    filter: drop-shadow(0 1px 0 rgba(0,0,0,0.4));
     padding: 0 8px 16px;
     margin-bottom: 12px;
     border-bottom: 1px solid var(--border);
@@ -589,9 +612,77 @@ body {
     margin: 0 auto;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   LIQUID GLASS IKONY — gradient pomarańczowy + ramka
+   Używane wszędzie zamiast emoji: w nav, settings-row, modalach
+   ════════════════════════════════════════════════════════════════ */
+.rb-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(245,166,35,0.25));
+}
+.rb-icon.lg { width: 28px; height: 28px; }
+
+.rb-icon-frame {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border-radius: 9px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.06));
+  border: 1px solid rgba(245,166,35,0.15);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    inset 0 -1px 0 rgba(0,0,0,0.2);
+  flex-shrink: 0;
+}
+.rb-icon-frame.active,
+.nav-item.active .rb-icon-frame {
+  border-color: rgba(245,166,35,0.45);
+  background: linear-gradient(180deg, rgba(245,166,35,0.1), rgba(0,0,0,0.1));
+  box-shadow:
+    inset 0 1px 0 rgba(255,200,100,0.15),
+    inset 0 -1px 0 rgba(0,0,0,0.25),
+    0 0 8px rgba(245,166,35,0.15);
+}
+
+/* W mobilnym bottom-nav frame mniejsza i bez tła (oszczędność miejsca) */
+.bottom-nav .rb-icon-frame {
+  padding: 3px;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+.bottom-nav .nav-item.active .rb-icon-frame {
+  border-color: rgba(245,166,35,0.3);
+  background: linear-gradient(180deg, rgba(245,166,35,0.08), transparent);
+}
 </style>
 </head>
 <body>
+
+<!-- Definicje gradientów SVG - używane przez wszystkie ikony Liquid Glass -->
+<svg width="0" height="0" style="position:absolute;pointer-events:none" aria-hidden="true">
+  <defs>
+    <linearGradient id="rg-orange" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFC470"/>
+      <stop offset="50%" stop-color="#F5A623"/>
+      <stop offset="100%" stop-color="#8B5410"/>
+    </linearGradient>
+    <linearGradient id="rg-orange-bright" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFD580"/>
+      <stop offset="50%" stop-color="#FFAA28"/>
+      <stop offset="100%" stop-color="#A0610C"/>
+    </linearGradient>
+    <linearGradient id="rg-gray" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#aaa"/>
+      <stop offset="100%" stop-color="#444"/>
+    </linearGradient>
+  </defs>
+</svg>
 
 <!-- Tool texture background — ikonki z przesłanego arkusza, kolor #2a2a2a -->
 <div class="tool-texture">
@@ -707,7 +798,7 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="showFirmaModal()">
         <div class="settings-left">
-          <div class="s-icon">🏢</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="14" rx="1"/><path d="M8 10h2M14 10h2M8 14h2M14 14h2"/><path d="M4 6l8-4 8 4"/></svg></div>
           <div><div class="s-title" id="firmaNazwaRow">Uzupełnij dane firmy</div><div class="s-sub" id="firmaNIPRow">NIP: —</div></div>
         </div>
         <div class="s-value">›</div>
@@ -718,14 +809,14 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="showVATModal()">
         <div class="settings-left">
-          <div class="s-icon">🧾</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h10l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M16 3v5h4"/><path d="M8 12h8M8 15h8M8 18h5"/></svg></div>
           <div><div class="s-title">Status podatnika VAT</div><div class="s-sub" id="vatStatusRow">Nie ustawiono</div></div>
         </div>
         <div class="s-value"><span id="vatBadge" class="s-badge" style="display:none"></span>›</div>
       </div>
       <div class="settings-row">
         <div class="settings-left">
-          <div class="s-icon">💡</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21h6"/><path d="M12 17v-2"/><path d="M12 4a6 6 0 0 0-3 11.2V17h6v-1.8A6 6 0 0 0 12 4z"/></svg></div>
           <div><div class="s-title">Domyślna stawka VAT</div><div class="s-sub">Auto dla nowych produktów</div></div>
         </div>
         <div class="s-value" id="defaultVATValue" style="color:var(--accent);font-weight:800">—</div>
@@ -736,14 +827,14 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="window.location.href='robion-faktury.html'">
         <div class="settings-left">
-          <div class="s-icon">🔢</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg></div>
           <div><div class="s-title">Numeracja faktur</div><div class="s-sub" id="numeracjaRow">Ustaw schemat i numer startowy</div></div>
         </div>
         <div class="s-value">›</div>
       </div>
       <div class="settings-row" onclick="document.getElementById('logoInput').click()">
         <div class="settings-left">
-          <div class="s-icon">🖼️</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div>
           <div><div class="s-title">Logo firmy</div><div class="s-sub" id="logoRow">Pojawi się na fakturze PDF</div></div>
         </div>
         <div class="s-value" id="logoPreview">›</div>
@@ -751,7 +842,7 @@ body {
       <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="uploadLogo(this)">
       <div class="settings-row">
         <div class="settings-left">
-          <div class="s-icon">📅</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></div>
           <div><div class="s-title">Domyślny termin płatności</div><div class="s-sub">Dni od daty wystawienia</div></div>
         </div>
         <select class="form-select" id="terminSelect" style="width:80px;padding:8px;font-size:13px" onchange="saveTermin(this.value)">
@@ -767,7 +858,7 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="toggleKSeF()">
         <div class="settings-left">
-          <div class="s-icon">🔐</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1"/></svg></div>
           <div><div class="s-title">Certyfikat KSeF</div><div class="s-sub" id="ksefStatusRow">Brak certyfikatu</div></div>
         </div>
         <div class="toggle" id="ksefToggle"></div>
@@ -778,7 +869,7 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="showRolaModal()">
         <div class="settings-left">
-          <div class="s-icon">👤</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/></svg></div>
           <div><div class="s-title" id="rolaTitleRow">Wytwórca / Rzemieślnik</div><div class="s-sub" id="rolaSubRow">Pełna apka: faktury, zlecenia, marketplace</div></div>
         </div>
         <div class="s-value">›</div>
@@ -789,28 +880,28 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="zapiszKopie()">
         <div class="settings-left">
-          <div class="s-icon">💾</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h12l4 4v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M7 5v6h8V5M9 17h6"/></svg></div>
           <div><div class="s-title">Zapisz kopię teraz</div><div class="s-sub" id="lastBackupSub">Pobierz plik z wszystkimi danymi</div></div>
         </div>
         <div class="s-value">›</div>
       </div>
       <div class="settings-row" onclick="wczytajKopie()">
         <div class="settings-left">
-          <div class="s-icon">📂</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 13l5-3h13"/></svg></div>
           <div><div class="s-title">Wczytaj kopię</div><div class="s-sub">Z pliku — zastąpi obecne dane</div></div>
         </div>
         <div class="s-value">›</div>
       </div>
       <div class="settings-row" onclick="pokazSnapshoty()">
         <div class="settings-left">
-          <div class="s-icon">⏪</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 4v5h5"/></svg></div>
           <div><div class="s-title">Cofnij do wcześniejszej wersji</div><div class="s-sub" id="snapshotyCount">Automatyczne kopie wewnątrz apki</div></div>
         </div>
         <div class="s-value">›</div>
       </div>
       <div class="settings-row" onclick="pokazTransfer()">
         <div class="settings-left">
-          <div class="s-icon">📲</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M11 18h2"/><path d="M9 7h6"/></svg></div>
           <div><div class="s-title">Przenieś dane na inne urządzenie</div><div class="s-sub">Telefon ↔ tablet ↔ komputer</div></div>
         </div>
         <div class="s-value">›</div>
@@ -822,28 +913,35 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="pokazPomoc()">
         <div class="settings-left">
-          <div class="s-icon">📚</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h13a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M4 17a3 3 0 0 1 3-3h13"/><path d="M9 8h6M9 12h6"/></svg></div>
           <div><div class="s-title">Centrum pomocy</div><div class="s-sub">Jak korzystać z apki</div></div>
+        </div>
+        <div class="s-value">›</div>
+      </div>
+      <div class="settings-row" onclick="pokazFeedback()">
+        <div class="settings-left">
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-7l-5 4v-4H6a3 3 0 0 1-3-3z"/></svg></div>
+          <div><div class="s-title">Zgłoś uwagę</div><div class="s-sub">Pomysły, problemy, opinie</div></div>
         </div>
         <div class="s-value">›</div>
       </div>
       <div class="settings-row" onclick="pokazPrywatnosc()">
         <div class="settings-left">
-          <div class="s-icon">🔒</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
           <div><div class="s-title">Prywatność i bezpieczeństwo danych</div><div class="s-sub">Co Robion robi z Twoimi danymi</div></div>
         </div>
         <div class="s-value">›</div>
       </div>
       <div class="settings-row">
         <div class="settings-left">
-          <div class="s-icon">📱</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><circle cx="12" cy="18" r="0.5"/></svg></div>
           <div><div class="s-title">Wersja Robion</div><div class="s-sub">Beta</div></div>
         </div>
         <div class="s-value">0.1.0</div>
       </div>
       <div class="settings-row" onclick="clearData()">
         <div class="settings-left">
-          <div class="s-icon">🗑️</div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14"/><path d="M10 11v6M14 11v6"/></svg></div>
           <div><div class="s-title" style="color:var(--danger)">Wyczyść dane</div><div class="s-sub">Usuwa wszystkie dane lokalne</div></div>
         </div>
         <div class="s-value">›</div>
@@ -855,19 +953,24 @@ body {
 <!-- Bottom nav -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="navigate('pulpit',this)">
-    <div class="nav-icon">🏠</div><div class="nav-label">Pulpit</div>
+    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 4l9 8"/><path d="M5 11v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8"/><path d="M10 20v-5h4v5"/></svg></div>
+    <div class="nav-label">Pulpit</div>
   </div>
   <div class="nav-item" onclick="navigate('klienci',this)">
-    <div class="nav-icon">👥</div><div class="nav-label">Klienci</div>
+    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 2.5-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2 2-3 4-3 1.5 0 3 .8 3 3"/></svg></div>
+    <div class="nav-label">Klienci</div>
   </div>
   <div class="nav-item" onclick="navigate('produkty',this)">
-    <div class="nav-icon">📦</div><div class="nav-label">Produkty</div>
+    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M3 5h18v3H3z"/><path d="M10 12h4"/></svg></div>
+    <div class="nav-label">Produkty</div>
   </div>
   <div class="nav-item" onclick="window.location.href='robion-faktury.html'">
-    <div class="nav-icon">🧾</div><div class="nav-label">Faktury</div>
+    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h10l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M16 3v5h4"/><path d="M8 12h8M8 15h8M8 18h5"/></svg></div>
+    <div class="nav-label">Faktury</div>
   </div>
   <div class="nav-item" onclick="navigate('ustawienia',this)">
-    <div class="nav-icon">⚙️</div><div class="nav-label">Ustawienia</div>
+    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+    <div class="nav-label">Ustawienia</div>
   </div>
   <div class="nav-version-info">Beta · 0.1.0</div>
 </div>
@@ -1206,6 +1309,41 @@ body {
     </div>
     <div class="modal-body" id="pomocBody">
       <!-- treść wstawiana dynamicznie -->
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Zgłoś uwagę / problem (n8n webhook + mailto fallback) -->
+<div class="modal-overlay" id="modalFeedback">
+  <div class="modal" style="max-height:90vh">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">💬 Zgłoś uwagę</span>
+      <button class="modal-close" onclick="closeModal('modalFeedback')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px">
+        Twoja opinia pomaga nam ulepszać Robion. Napisz co Ci się podoba, co nie działa, co byś dodał — każda uwaga się liczy.
+      </p>
+
+      <label style="display:block;font-family:var(--font-condensed);font-weight:800;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Krótko, o co chodzi</label>
+      <input type="text" id="fbTytul" maxlength="80" placeholder="np. Coś nie działa / Mam pomysł / Pochwała"
+        style="width:100%;padding:12px 14px;background:var(--glass);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;margin-bottom:14px;font-family:inherit">
+
+      <label style="display:block;font-family:var(--font-condensed);font-weight:800;font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Treść</label>
+      <textarea id="fbTresc" rows="6" maxlength="2000" placeholder="Napisz szczegóły. Im więcej konkretów (co kliknąłeś, co miało się stać, co się stało), tym łatwiej nam to naprawić."
+        style="width:100%;padding:12px 14px;background:var(--glass);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;margin-bottom:14px;font-family:inherit;resize:vertical;min-height:120px"></textarea>
+
+      <label style="display:block;font-family:var(--font-condensed);font-weight:800;font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Twój email <span style="color:var(--text3);text-transform:none;letter-spacing:normal">(opcjonalnie — żebyśmy mogli odpisać)</span></label>
+      <input type="email" id="fbEmail" placeholder="adres@example.com"
+        style="width:100%;padding:12px 14px;background:var(--glass);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;margin-bottom:18px;font-family:inherit">
+
+      <button onclick="wyslijFeedback()" id="fbBtnSend" style="width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:12px;font-family:var(--font-condensed);font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;margin-bottom:8px">
+        ✉️ Wyślij uwagę
+      </button>
+      <p style="font-size:11px;color:var(--text3);text-align:center;line-height:1.5">
+        Lub napisz bezpośrednio: <strong>kontakt@robion.pl</strong>
+      </p>
     </div>
   </div>
 </div>
@@ -2168,6 +2306,71 @@ function zakoncOnboarding() {
 
 function pokazPrywatnosc() {
   document.getElementById('modalPrywatnosc').classList.add('open');
+}
+
+// ─────────────────────────────────────────────────────────────
+// FEEDBACK — modal do zgłaszania uwag
+// ─────────────────────────────────────────────────────────────
+
+const FEEDBACK_WEBHOOK = 'https://piotr113-20113.wykr.es/webhook/feedback';
+
+function pokazFeedback() {
+  // Wyczyść poprzednie pola
+  document.getElementById('fbTytul').value = '';
+  document.getElementById('fbTresc').value = '';
+  document.getElementById('fbEmail').value = '';
+  document.getElementById('fbBtnSend').textContent = '✉️ Wyślij uwagę';
+  document.getElementById('fbBtnSend').disabled = false;
+  document.getElementById('modalFeedback').classList.add('open');
+}
+
+async function wyslijFeedback() {
+  const tytul = document.getElementById('fbTytul').value.trim();
+  const tresc = document.getElementById('fbTresc').value.trim();
+  const email = document.getElementById('fbEmail').value.trim();
+  const btn = document.getElementById('fbBtnSend');
+
+  // Walidacja
+  if (!tresc || tresc.length < 5) {
+    showToast('Napisz coś więcej w treści');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Wysyłanie...';
+
+  // Dane do wysłania
+  const payload = {
+    tytul: tytul || '(bez tytułu)',
+    tresc: tresc,
+    email: email || '(brak)',
+    urzadzenie: navigator.userAgent,
+    wersja: '0.1.0',
+    data: new Date().toISOString()
+  };
+
+  try {
+    // Próba 1: wysłanie do webhooka n8n
+    const response = await fetch(FEEDBACK_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!response.ok) throw new Error('webhook returned ' + response.status);
+
+    // Sukces
+    btn.textContent = '✓ Wysłane, dzięki!';
+    showToast('Dzięki za feedback!');
+    setTimeout(() => closeModal('modalFeedback'), 1500);
+  } catch(e) {
+    // Fallback: otwórz mailto z gotową treścią
+    console.warn('Webhook feedback nie odpowiada, używam mailto:', e);
+    const tematM = encodeURIComponent(tytul ? `Robion: ${tytul}` : 'Robion: uwaga');
+    const trescM = encodeURIComponent(`${tresc}\n\n---\nKontakt zwrotny: ${email || '(brak)'}\nWersja: 0.1.0\nUrządzenie: ${navigator.userAgent}`);
+    window.location.href = `mailto:kontakt@robion.pl?subject=${tematM}&body=${trescM}`;
+    btn.textContent = '✓ Wysłane, dzięki!';
+    setTimeout(() => closeModal('modalFeedback'), 1500);
+  }
 }
 
 // ─────────────────────────────────────────────────────────────
