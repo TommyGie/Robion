@@ -335,19 +335,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <!-- Definicje gradientów SVG - używane przez wszystkie ikony Liquid Glass -->
 <svg width="0" height="0" style="position:absolute;pointer-events:none" aria-hidden="true">
   <defs>
+    <linearGradient id="orange-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFB54E"/>
+      <stop offset="100%" stop-color="#E0941A"/>
+    </linearGradient>
+    <linearGradient id="white-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#dedede"/>
+    </linearGradient>
     <linearGradient id="rg-orange" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFC470"/>
-      <stop offset="50%" stop-color="#F5A623"/>
-      <stop offset="100%" stop-color="#8B5410"/>
-    </linearGradient>
-    <linearGradient id="rg-orange-bright" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFD580"/>
-      <stop offset="50%" stop-color="#FFAA28"/>
-      <stop offset="100%" stop-color="#A0610C"/>
-    </linearGradient>
-    <linearGradient id="rg-gray" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#aaa"/>
-      <stop offset="100%" stop-color="#444"/>
+      <stop offset="0%" stop-color="#FFB54E"/>
+      <stop offset="100%" stop-color="#E0941A"/>
     </linearGradient>
   </defs>
 </svg>
@@ -567,15 +565,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div class="bottom-nav">
   <img class="sidebar-logo" src="logo-robion.png" alt="Robion">
   <a class="nav-item" href="index.html#pulpit">
-    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 4l9 8"/><path d="M5 11v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8"/><path d="M10 20v-5h4v5"/></svg></div>
+    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="url(#orange-grad)"/><rect x="13" y="3" width="8" height="8" rx="1.5" stroke="url(#orange-grad)"/><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="url(#white-grad)"/><rect x="13" y="13" width="8" height="8" rx="1.5" stroke="url(#orange-grad)"/></svg></div>
     <div class="nav-label">Pulpit</div>
   </a>
   <a class="nav-item" href="index.html#klienci">
-    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 2.5-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2 2-3 4-3 1.5 0 3 .8 3 3"/></svg></div>
+    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5" stroke="url(#white-grad)"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6" stroke="url(#orange-grad)"/></svg></div>
     <div class="nav-label">Klienci</div>
   </a>
   <a class="nav-item" href="index.html#produkty">
-    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M3 5h18v3H3z"/><path d="M10 12h4"/></svg></div>
+    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l8-4 8 4v10l-8 4-8-4z" stroke="url(#orange-grad)"/><path d="M4 7l8 4 8-4M12 11v10" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Produkty</div>
   </a>
   <div class="nav-item active">
@@ -583,7 +581,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="nav-label">Faktury</div>
   </div>
   <a class="nav-item" href="index.html#ustawienia">
-    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="url(#orange-grad)"/><circle cx="12" cy="12" r="3" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Ustawienia</div>
   </a>
   <div class="nav-version-info">Beta · 0.1.0</div>

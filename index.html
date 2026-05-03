@@ -661,19 +661,17 @@ body {
 <!-- Definicje gradientów SVG - używane przez wszystkie ikony Liquid Glass -->
 <svg width="0" height="0" style="position:absolute;pointer-events:none" aria-hidden="true">
   <defs>
+    <linearGradient id="orange-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFB54E"/>
+      <stop offset="100%" stop-color="#E0941A"/>
+    </linearGradient>
+    <linearGradient id="white-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#dedede"/>
+    </linearGradient>
     <linearGradient id="rg-orange" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFC470"/>
-      <stop offset="50%" stop-color="#F5A623"/>
-      <stop offset="100%" stop-color="#8B5410"/>
-    </linearGradient>
-    <linearGradient id="rg-orange-bright" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFD580"/>
-      <stop offset="50%" stop-color="#FFAA28"/>
-      <stop offset="100%" stop-color="#A0610C"/>
-    </linearGradient>
-    <linearGradient id="rg-gray" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#aaa"/>
-      <stop offset="100%" stop-color="#444"/>
+      <stop offset="0%" stop-color="#FFB54E"/>
+      <stop offset="100%" stop-color="#E0941A"/>
     </linearGradient>
   </defs>
 </svg>
@@ -792,7 +790,7 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="showFirmaModal()">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="14" rx="1"/><path d="M8 10h2M14 10h2M8 14h2M14 14h2"/><path d="M4 6l8-4 8 4"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V8h16v13z" stroke="url(#orange-grad)"/><path d="M3 8l9-5 9 5" stroke="url(#white-grad)"/><path d="M9 13h2M13 13h2M9 17h2M13 17h2" stroke="url(#orange-grad)"/></svg></div>
           <div><div class="s-title" id="firmaNazwaRow">Uzupełnij dane firmy</div><div class="s-sub" id="firmaNIPRow">NIP: —</div></div>
         </div>
         <div class="s-value">›</div>
@@ -803,14 +801,14 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="showVATModal()">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h10l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M16 3v5h4"/><path d="M8 12h8M8 15h8M8 18h5"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h10l4 4v14H6z" stroke="url(#orange-grad)"/><path d="M16 3v4h4" stroke="url(#orange-grad)"/><path d="M9 13l2 2 4-4" stroke="url(#white-grad)"/></svg></div>
           <div><div class="s-title">Status podatnika VAT</div><div class="s-sub" id="vatStatusRow">Nie ustawiono</div></div>
         </div>
         <div class="s-value"><span id="vatBadge" class="s-badge" style="display:none"></span>›</div>
       </div>
       <div class="settings-row">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21h6"/><path d="M12 17v-2"/><path d="M12 4a6 6 0 0 0-3 11.2V17h6v-1.8A6 6 0 0 0 12 4z"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4" stroke="url(#white-grad)"/><path d="M12 3a6 6 0 0 0-3 11.2V18h6v-3.8A6 6 0 0 0 12 3z" stroke="url(#orange-grad)"/></svg></div>
           <div><div class="s-title">Domyślna stawka VAT</div><div class="s-sub">Auto dla nowych produktów</div></div>
         </div>
         <div class="s-value" id="defaultVATValue" style="color:var(--accent);font-weight:800">—</div>
@@ -821,14 +819,14 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="window.location.href='robion-faktury.html'">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3" stroke="url(#orange-grad)"/><path d="M9 7v10M15 7v10" stroke="url(#orange-grad)"/><path d="M7 10h10M7 14h10" stroke="url(#white-grad)"/></svg></div>
           <div><div class="s-title">Numeracja faktur</div><div class="s-sub" id="numeracjaRow">Ustaw schemat i numer startowy</div></div>
         </div>
         <div class="s-value">›</div>
       </div>
       <div class="settings-row" onclick="document.getElementById('logoInput').click()">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" stroke="url(#orange-grad)"/><circle cx="9" cy="9" r="2" stroke="url(#white-grad)"/><path d="M21 16l-5-5L7 21" stroke="url(#white-grad)"/></svg></div>
           <div><div class="s-title">Logo firmy</div><div class="s-sub" id="logoRow">Pojawi się na fakturze PDF</div></div>
         </div>
         <div class="s-value" id="logoPreview">›</div>
@@ -836,7 +834,7 @@ body {
       <input type="file" id="logoInput" accept="image/*" style="display:none" onchange="uploadLogo(this)">
       <div class="settings-row">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2" stroke="url(#orange-grad)"/><path d="M8 3v4M16 3v4M3 9h18" stroke="url(#orange-grad)"/><circle cx="12" cy="15" r="2" stroke="url(#white-grad)"/></svg></div>
           <div><div class="s-title">Domyślny termin płatności</div><div class="s-sub">Dni od daty wystawienia</div></div>
         </div>
         <select class="form-select" id="terminSelect" style="width:80px;padding:8px;font-size:13px" onchange="saveTermin(this.value)">
@@ -852,7 +850,7 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="toggleKSeF()">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2" stroke="url(#orange-grad)"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="url(#orange-grad)"/><circle cx="12" cy="16" r="1.2" stroke="url(#white-grad)" fill="url(#white-grad)"/></svg></div>
           <div><div class="s-title">Certyfikat KSeF</div><div class="s-sub" id="ksefStatusRow">Brak certyfikatu</div></div>
         </div>
         <div class="toggle" id="ksefToggle"></div>
@@ -863,7 +861,7 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="showRolaModal()">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="4"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5" stroke="url(#white-grad)"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6" stroke="url(#orange-grad)"/></svg></div>
           <div><div class="s-title" id="rolaTitleRow">Wytwórca / Rzemieślnik</div><div class="s-sub" id="rolaSubRow">Pełna apka: faktury, zlecenia, marketplace</div></div>
         </div>
         <div class="s-value">›</div>
@@ -874,28 +872,28 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="zapiszKopie()">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h12l4 4v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M7 5v6h8V5M9 17h6"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h12l4 4v14H3V5a2 2 0 0 1 2-2z" stroke="url(#orange-grad)"/><path d="M7 3v6h8V3" stroke="url(#white-grad)"/><path d="M8 14h8" stroke="url(#white-grad)"/></svg></div>
           <div><div class="s-title">Zapisz kopię teraz</div><div class="s-sub" id="lastBackupSub">Pobierz plik z wszystkimi danymi</div></div>
         </div>
         <div class="s-value">›</div>
       </div>
       <div class="settings-row" onclick="wczytajKopie()">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 13l5-3h13"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke="url(#orange-grad)"/><path d="M12 11v6M9 14l3 3 3-3" stroke="url(#white-grad)"/></svg></div>
           <div><div class="s-title">Wczytaj kopię</div><div class="s-sub">Z pliku — zastąpi obecne dane</div></div>
         </div>
         <div class="s-value">›</div>
       </div>
       <div class="settings-row" onclick="pokazSnapshoty()">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 4v5h5"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9" stroke="url(#orange-grad)"/><path d="M3 4v5h5" stroke="url(#white-grad)"/></svg></div>
           <div><div class="s-title">Cofnij do wcześniejszej wersji</div><div class="s-sub" id="snapshotyCount">Automatyczne kopie wewnątrz apki</div></div>
         </div>
         <div class="s-value">›</div>
       </div>
       <div class="settings-row" onclick="pokazTransfer()">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M11 18h2"/><path d="M9 7h6"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2" stroke="url(#orange-grad)"/><path d="M11 18h2" stroke="url(#orange-grad)"/><path d="M9 11l3-3 3 3M12 8v6" stroke="url(#white-grad)"/></svg></div>
           <div><div class="s-title">Przenieś dane na inne urządzenie</div><div class="s-sub">Telefon ↔ tablet ↔ komputer</div></div>
         </div>
         <div class="s-value">›</div>
@@ -907,35 +905,35 @@ body {
     <div class="settings-group">
       <div class="settings-row" onclick="pokazPomoc()">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h13a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M4 17a3 3 0 0 1 3-3h13"/><path d="M9 8h6M9 12h6"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h13a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z" stroke="url(#orange-grad)"/><path d="M4 17a3 3 0 0 1 3-3h13" stroke="url(#orange-grad)"/><path d="M9 8h7M9 12h7" stroke="url(#white-grad)"/></svg></div>
           <div><div class="s-title">Centrum pomocy</div><div class="s-sub">Jak korzystać z apki</div></div>
         </div>
         <div class="s-value">›</div>
       </div>
       <div class="settings-row" onclick="pokazFeedback()">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-7l-5 4v-4H6a3 3 0 0 1-3-3z"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-7l-5 4v-4H6a3 3 0 0 1-3-3z" stroke="url(#orange-grad)"/><path d="M8 8h8M8 12h5" stroke="url(#white-grad)"/></svg></div>
           <div><div class="s-title">Zgłoś uwagę</div><div class="s-sub">Pomysły, problemy, opinie</div></div>
         </div>
         <div class="s-value">›</div>
       </div>
       <div class="settings-row" onclick="pokazPrywatnosc()">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2" stroke="url(#orange-grad)"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="url(#orange-grad)"/><circle cx="12" cy="16" r="1.2" stroke="url(#white-grad)" fill="url(#white-grad)"/></svg></div>
           <div><div class="s-title">Prywatność i bezpieczeństwo danych</div><div class="s-sub">Co Robion robi z Twoimi danymi</div></div>
         </div>
         <div class="s-value">›</div>
       </div>
       <div class="settings-row">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><circle cx="12" cy="18" r="0.5"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2" stroke="url(#orange-grad)"/><text x="12" y="15.5" font-family="Barlow Condensed,sans-serif" font-size="9" font-weight="800" fill="url(#white-grad)" text-anchor="middle" stroke="none">R</text></svg></div>
           <div><div class="s-title">Wersja Robion</div><div class="s-sub">Beta</div></div>
         </div>
         <div class="s-value">0.1.0</div>
       </div>
       <div class="settings-row" onclick="clearData()">
         <div class="settings-left">
-          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14"/><path d="M10 11v6M14 11v6"/></svg></div>
+          <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14" stroke="url(#orange-grad)"/><path d="M3 6h18" stroke="url(#white-grad)"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" stroke="url(#orange-grad)"/><path d="M10 11v6M14 11v6" stroke="url(#white-grad)"/></svg></div>
           <div><div class="s-title" style="color:var(--danger)">Wyczyść dane</div><div class="s-sub">Usuwa wszystkie dane lokalne</div></div>
         </div>
         <div class="s-value">›</div>
@@ -952,19 +950,19 @@ body {
     <div class="nav-label">Pulpit</div>
   </div>
   <div class="nav-item" onclick="navigate('klienci',this)">
-    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 2.5-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M15 20c0-2 2-3 4-3 1.5 0 3 .8 3 3"/></svg></div>
+    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5" stroke="url(#white-grad)"/><path d="M5 21c0-4 3-6 7-6s7 2 7 6" stroke="url(#orange-grad)"/></svg></div>
     <div class="nav-label">Klienci</div>
   </div>
   <div class="nav-item" onclick="navigate('produkty',this)">
-    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14v11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M3 5h18v3H3z"/><path d="M10 12h4"/></svg></div>
+    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l8-4 8 4v10l-8 4-8-4z" stroke="url(#orange-grad)"/><path d="M4 7l8 4 8-4M12 11v10" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Produkty</div>
   </div>
   <div class="nav-item" onclick="window.location.href='robion-faktury.html'">
-    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h10l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M16 3v5h4"/><path d="M8 12h8M8 15h8M8 18h5"/></svg></div>
+    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h10l4 4v14H6z" stroke="url(#orange-grad)"/><path d="M16 3v4h4" stroke="url(#orange-grad)"/><path d="M9 13l2 2 4-4" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Faktury</div>
   </div>
   <div class="nav-item" onclick="navigate('ustawienia',this)">
-    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+    <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="url(#orange-grad)"/><circle cx="12" cy="12" r="3" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Ustawienia</div>
   </div>
   <div class="nav-version-info">Beta · 0.1.0</div>
