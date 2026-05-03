@@ -9,7 +9,7 @@
 <meta name="theme-color" content="#111111">
 
 <!-- Ikony aplikacji -->
-<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -69,6 +69,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .nav-icon{font-size:20px}
 .nav-label{font-family:var(--font-c);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;color:var(--text3)}
 .nav-version-info{display:none}
+.sidebar-logo{display:none}
 .nav-item.active .nav-label{color:var(--accent)}
 
 /* CONTENT VIEWS */
@@ -279,6 +280,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     filter: drop-shadow(0 1px 0 rgba(0,0,0,0.4));
     padding: 0 8px 16px; margin-bottom: 12px;
     border-bottom: 1px solid var(--border); order: -1;
+    display: none;
+  }
+  .sidebar-logo {
+    display: block;
+    width: calc(100% - 16px);
+    max-width: 180px;
+    height: auto;
+    margin: 0 auto 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    order: -1;
   }
   .nav-item {
     flex: 0 0 auto; flex-direction: row;
@@ -308,7 +320,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   .header-top { display: none; }
   .page-title { display: none; }
   .content { padding: 24px 20px; }
-  .fab { display: none !important; }
+  /* FAB pozostaje widoczny - to główny sposób tworzenia faktury */
   .modal { max-width: 600px; margin: 0 auto; }
 }
 
@@ -350,7 +362,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <div class="app">
   <div class="header">
     <div class="header-top">
-      <div class="logo">ROBI<span>ON</span></div>
+      <div class="logo"><img src="logo-robion.png" alt="Robion" style="height:32px;width:auto;display:block"></div>
       <div class="header-badge">BETA</div>
     </div>
     <div class="page-title" id="pageTitle">Faktury</div>
@@ -553,6 +565,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
+  <img class="sidebar-logo" src="logo-robion.png" alt="Robion">
   <a class="nav-item" href="index.html#pulpit">
     <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke="url(#rg-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 4l9 8"/><path d="M5 11v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8"/><path d="M10 20v-5h4v5"/></svg></div>
     <div class="nav-label">Pulpit</div>
