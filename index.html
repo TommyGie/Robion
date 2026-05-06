@@ -662,6 +662,148 @@ body {
   border-color: rgba(245,166,35,0.3);
   background: linear-gradient(180deg, rgba(245,166,35,0.08), transparent);
 }
+/* ═══════════════════════════════════════════════════════════ */
+/* CSS FAKTUR — wstrzyknięty z robion-faktury.html (update_017) */
+/* ═══════════════════════════════════════════════════════════ */
+
+/* Faktury — sub-views (lista / forma / podglad) wewnątrz #page-faktury */
+#page-faktury .view{flex:1;display:none;animation:fadeUp 0.3s ease}
+#page-faktury .view.active{display:block}
+
+/* FAKTURA LIST ITEM */
+.fv-item{background:var(--glass);backdrop-filter:var(--blur);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:13px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.3),inset 0 1px 0 var(--glass-strong);margin-bottom:8px}
+.fv-item::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--accent),rgba(245,166,35,0.2))}
+.fv-item:active{transform:scale(0.98)}
+.fv-status{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-left:4px}
+.fv-status.draft{background:#666}
+.fv-status.issued{background:#7BA7E0;box-shadow:0 0 6px #7BA7E0}
+.fv-status.ksef_pending{background:#F5A623;box-shadow:0 0 6px var(--accent);animation:pulseDot 1.4s ease-in-out infinite}
+.fv-status.ksef_ok{background:var(--green);box-shadow:0 0 6px var(--green)}
+.fv-status.ksef_error{background:var(--danger);box-shadow:0 0 6px var(--danger)}
+.fv-status.sent{background:var(--green);box-shadow:0 0 6px var(--green)}
+.fv-status.ksef{background:var(--accent);box-shadow:0 0 6px var(--accent)}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:0.4}}
+.fv-info{flex:1;min-width:0}
+.fv-nr{font-family:var(--font-c);font-size:14px;font-weight:800;color:var(--text);letter-spacing:0.5px}
+.fv-klient{font-size:11px;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fv-kwota{text-align:right;flex-shrink:0}
+.fv-brutto{font-family:var(--font-c);font-size:16px;font-weight:800;color:var(--accent)}
+.fv-data{font-size:10px;color:var(--text3)}
+
+/* TYP CHIPS — filtry typu dokumentu */
+.typ-chip{padding:6px 12px;background:var(--glass);border:1px solid var(--border);border-radius:6px;color:var(--text2);font-family:var(--font-c);font-weight:800;font-size:11px;letter-spacing:0.5px;cursor:pointer;transition:all 0.15s;white-space:nowrap;flex-shrink:0}
+.typ-chip[data-typ="all"]{font-weight:700;text-transform:uppercase;font-size:10px}
+.typ-chip:hover{color:var(--text)}
+.typ-chip.active{background:var(--c,var(--accent));border-color:var(--c,var(--accent));color:#000}
+.typ-chip[data-typ="all"].active{background:var(--accent);border-color:var(--accent);color:#000}
+
+/* TERMIN CHIPS */
+.termin-chip{padding:7px 11px;background:var(--glass);border:1px solid var(--border);border-radius:8px;color:var(--text2);font-family:var(--font-c);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.termin-chip:hover{border-color:var(--accent-border);color:var(--text)}
+.termin-chip.active{background:rgba(245,166,35,0.15);border-color:var(--accent);color:var(--accent)}
+
+/* BTN VARIANTS specyficzne dla faktur */
+.btn-secondary{width:100%;padding:13px;border-radius:var(--radius-sm);background:var(--glass);color:var(--text2);font-family:var(--font-c);font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;border:1px solid var(--border);cursor:pointer;margin-top:8px;transition:all 0.2s}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.btn-icon{padding:13px;border-radius:var(--radius-sm);background:var(--glass);color:var(--text2);font-family:var(--font-c);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-icon.accent{background:var(--accent-dim);border-color:var(--accent-border);color:var(--accent)}
+.btn-icon.green{background:rgba(52,211,153,0.1);border-color:rgba(52,211,153,0.25);color:var(--green)}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* POZYCJA FAKTURY */
+.pozycja-row{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px;position:relative}
+.pozycja-row::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);border-radius:2px 0 0 2px;opacity:0.5}
+.pozycja-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px}
+.pozycja-controls{display:grid;grid-template-columns:1fr 80px 80px 80px 28px;gap:6px;align-items:center}
+.pozycja-input{padding:8px 10px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;color:var(--text);outline:none;width:100%;text-align:center}
+.pozycja-input:focus{border-color:var(--accent-border)}
+.pozycja-label{font-family:var(--font-c);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);text-align:center;margin-bottom:3px}
+.pozycja-del{width:28px;height:28px;border-radius:8px;background:rgba(255,82,82,0.1);border:1px solid rgba(255,82,82,0.2);color:var(--danger);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;align-self:flex-end;margin-bottom:1px}
+
+/* SUMA TABLE */
+.suma-table{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;margin-top:16px}
+.suma-row{display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--border);font-size:13px}
+.suma-row:last-child{border-bottom:none;background:var(--accent-dim);padding:13px 16px}
+.suma-row .lbl{color:var(--text3);font-weight:500}
+.suma-row .val{font-weight:700;color:var(--text)}
+.suma-row:last-child .lbl{font-family:var(--font-c);font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--accent)}
+.suma-row:last-child .val{font-family:var(--font-c);font-size:18px;font-weight:900;color:var(--accent)}
+
+/* STATUS BADGE — plakietki statusu na liście i podglądzie */
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-family:var(--font-c);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap}
+.status-draft{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--text3)}
+.status-issued{background:rgba(123,167,224,0.1);border:1px solid rgba(123,167,224,0.25);color:#7BA7E0}
+.status-ksef_pending{background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)}
+.status-ksef_ok{background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.25);color:var(--green)}
+.status-ksef_error{background:rgba(255,82,82,0.1);border:1px solid rgba(255,82,82,0.25);color:var(--danger)}
+.status-sent{background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.25);color:var(--green)}
+.status-ksef{background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)}
+
+/* KLIENT PICKER */
+.klient-option{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px 15px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:7px;transition:all 0.2s}
+.klient-option:active,.klient-option.selected{background:var(--accent-dim);border-color:var(--accent-border)}
+.klient-avatar{width:36px;height:36px;border-radius:10px;background:var(--accent-dim);border:1px solid var(--accent-border);display:flex;align-items:center;justify-content:center;font-family:var(--font-c);font-size:13px;font-weight:900;color:var(--accent);flex-shrink:0}
+.klient-name{font-size:13px;font-weight:700;color:var(--text)}
+.klient-nip{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* PRODUKT PICKER (na widoku faktury — różny od listy produktów w app) */
+.prod-option{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:6px;transition:all 0.2s}
+.prod-option:active{background:var(--accent-dim);border-color:var(--accent-border)}
+.prod-option-info{flex:1;min-width:0}
+.prod-option-name{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prod-option-sub{font-size:10px;color:var(--text3);margin-top:2px}
+.prod-option-price{font-family:var(--font-c);font-size:14px;font-weight:800;color:var(--accent);flex-shrink:0}
+
+/* PODGLĄD FAKTURY — drukowany wygląd */
+.fv-preview-stage{position:relative;overflow:hidden;margin-bottom:20px;border-radius:var(--radius)}
+.fv-preview{width:794px;background:white;color:#111;box-shadow:0 20px 60px rgba(0,0,0,0.5);transform-origin:top left}
+.fv-preview-inner{padding:32px;font-family:'Barlow',sans-serif;font-size:13px;line-height:1.5}
+.fv-preview h1{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#111;margin-bottom:4px}
+.fv-preview .fv-nr-preview{font-size:14px;font-weight:700;color:#555;margin-bottom:20px}
+.fv-preview .fv-dates{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px;padding:14px;background:#f8f8f8;border-radius:8px}
+.fv-preview .fv-date-item label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#888;display:block;margin-bottom:3px}
+.fv-preview .fv-date-item span{font-size:13px;font-weight:700;color:#111}
+.fv-preview .strony{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.fv-preview .strona label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#888;display:block;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid #F5A623}
+.fv-preview .strona .firma-nazwa{font-size:14px;font-weight:800;color:#111;margin-bottom:4px}
+.fv-preview .strona .firma-dane{font-size:12px;color:#555;line-height:1.6}
+.fv-preview table{width:100%;border-collapse:collapse;margin-bottom:16px}
+.fv-preview table th{background:#111;color:white;padding:8px 10px;text-align:left;font-family:'Barlow Condensed',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;font-weight:700}
+.fv-preview table th:last-child,.fv-preview table td:last-child{text-align:right}
+.fv-preview table th:nth-child(3),.fv-preview table td:nth-child(3),
+.fv-preview table th:nth-child(4),.fv-preview table td:nth-child(4),
+.fv-preview table th:nth-child(5),.fv-preview table td:nth-child(5){text-align:right}
+.fv-preview table td{padding:9px 10px;border-bottom:1px solid #eee;font-size:12px;color:#333}
+.fv-preview table tr:nth-child(even) td{background:#fafafa}
+.fv-preview .fv-suma-table{margin-left:auto;width:260px;margin-bottom:20px}
+.fv-preview .fv-suma-table .s-row{display:flex;justify-content:space-between;padding:6px 12px;font-size:12px;border-bottom:1px solid #eee}
+.fv-preview .fv-suma-table .s-row:last-child{background:#F5A623;color:#000;font-weight:800;font-size:14px;padding:10px 12px;border-radius:0 0 6px 6px;border-bottom:none}
+.fv-preview .fv-suma-table .s-row span:first-child{color:#666}
+.fv-preview .fv-suma-table .s-row:last-child span{color:#000}
+.fv-preview .fv-platnosc{padding:14px;background:#f8f8f8;border-radius:8px;margin-bottom:16px}
+.fv-preview .fv-platnosc label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#888;display:block;margin-bottom:8px}
+.fv-preview .fv-platnosc .konto{font-size:13px;font-weight:700;color:#111;margin-bottom:4px}
+.fv-preview .fv-platnosc .platnosc-info{font-size:12px;color:#555}
+.fv-preview .fv-logo{max-height:60px;max-width:160px;object-fit:contain;margin-bottom:16px}
+.fv-preview .qr-area{display:flex;align-items:center;gap:12px;padding:12px;background:#f8f8f8;border-radius:8px;border:1px dashed #ddd}
+.fv-preview .qr-placeholder{width:60px;height:60px;background:#111;border-radius:4px;display:flex;align-items:center;justify-content:center;color:white;font-size:8px;text-align:center;font-weight:700;flex-shrink:0}
+.fv-preview .ksef-info{font-size:11px;color:#555;line-height:1.5}
+.fv-preview .ksef-nr{font-size:12px;font-weight:800;color:#111;margin-top:4px;font-family:'Barlow Condensed',sans-serif;letter-spacing:0.5px}
+
+/* KSeF status box — w widoku podglądu */
+#ksefStatusBox{padding:12px 14px;background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:14px;font-size:13px}
+#ksefStatusBox.ok{background:rgba(52,211,153,0.08);border-color:rgba(52,211,153,0.25)}
+#ksefStatusBox.pending{background:var(--accent-dim);border-color:var(--accent-border)}
+#ksefStatusBox.err{background:rgba(255,82,82,0.08);border-color:rgba(255,82,82,0.25)}
+
+@media print{
+  .tool-texture,.glow-blob,.header,.bottom-nav,.fab,.action-bar,.btn-row,.section-header,#ksefStatusBox{display:none!important}
+  .fv-preview-stage{height:auto!important;overflow:visible!important}
+  .fv-preview{transform:none!important;width:100%!important;box-shadow:none;border-radius:0;margin:0}
+  body{background:white}
+  .app{padding:0;max-width:100%}
+}
+
 </style>
 </head>
 <body>
@@ -732,7 +874,7 @@ body {
       <span class="section-title">Szybkie akcje</span>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px">
-      <button class="action-tile primary" onclick="window.location.href='robion-faktury.html'">
+      <button class="action-tile primary" onclick="goToFaktury(true)">
         <div class="action-icon">🧾</div>
         <div class="action-title">Nowa faktura</div>
         <div class="action-sub">Wystaw FV/PF/RK/KS</div>
@@ -747,7 +889,7 @@ body {
         <div class="action-title">Nowy produkt</div>
         <div class="action-sub">Dodaj do cennika</div>
       </button>
-      <button class="action-tile" onclick="window.location.href='robion-faktury.html'">
+      <button class="action-tile" onclick="goToFaktury(false)">
         <div class="action-icon">📋</div>
         <div class="action-title">Wszystkie faktury</div>
         <div class="action-sub">Historia, filtry, szukaj</div>
@@ -757,7 +899,7 @@ body {
     <!-- Ostatnie faktury -->
     <div class="section-header">
       <span class="section-title">Ostatnie faktury</span>
-      <span class="section-action" onclick="window.location.href='robion-faktury.html'">Wszystkie ›</span>
+      <span class="section-action" onclick="goToFaktury(false)">Wszystkie ›</span>
     </div>
     <div id="pulpitOstatnie"></div>
   </div>
@@ -829,7 +971,7 @@ body {
 
     <div class="section-header"><span class="section-title">Faktury</span></div>
     <div class="settings-group">
-      <div class="settings-row" onclick="window.location.href='robion-faktury.html'">
+      <div class="settings-row" onclick="goToFakturyINumeracja()">
         <div class="settings-left">
           <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3" stroke="url(#orange-grad)"/><path d="M9 7v10M15 7v10" stroke="url(#orange-grad)"/><path d="M7 10h10M7 14h10" stroke="url(#white-grad)"/></svg></div>
           <div><div class="s-title">Numeracja faktur</div><div class="s-sub" id="numeracjaRow">Ustaw schemat i numer startowy</div></div>
@@ -941,7 +1083,7 @@ body {
           <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2" stroke="url(#orange-grad)"/><text x="12" y="15.5" font-family="Barlow Condensed,sans-serif" font-size="9" font-weight="800" fill="url(#white-grad)" text-anchor="middle" stroke="none">R</text></svg></div>
           <div><div class="s-title">Wersja Robion</div><div class="s-sub">Beta</div></div>
         </div>
-        <div class="s-value">0.1.0</div>
+        <div class="s-value" id="settingsVersionValue">0.2.0</div>
       </div>
       <div class="settings-row" onclick="clearData()">
         <div class="settings-left">
@@ -951,6 +1093,202 @@ body {
         <div class="s-value">›</div>
       </div>
     </div>
+  </div>
+
+  <!-- FAKTURY (page-faktury) — migracja z robion-faktury.html -->
+  <div class="content" id="page-faktury">
+
+  <!-- LISTA FAKTUR -->
+  <div class="view active" id="view-lista">
+    <!-- Wyszukiwarka -->
+    <div style="position:relative;margin-bottom:10px">
+      <input class="form-input" id="fvSzukaj" placeholder="🔍 Szukaj po numerze lub kliencie..." oninput="onSzukajChange(this.value)" style="padding-right:36px">
+      <span id="fvSzukajClear" onclick="czyscSzukaj()" style="display:none;position:absolute;right:10px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;background:var(--glass-strong);color:var(--text2);font-size:11px;align-items:center;justify-content:center;cursor:pointer">✕</span>
+    </div>
+
+    <!-- Filtr: jeden rząd z chipami typu + Robocze + ikonka numeracji -->
+    <div style="display:flex;gap:6px;align-items:center;margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px">
+      <button type="button" class="typ-chip" data-typ="all" onclick="filterTypDok('all')">Wszystkie</button>
+      <button type="button" class="typ-chip" data-typ="FV" onclick="filterTypDok('FV')" style="--c:#F5A623">FV</button>
+      <button type="button" class="typ-chip" data-typ="PF" onclick="filterTypDok('PF')" style="--c:#888">PF</button>
+      <button type="button" class="typ-chip" data-typ="RK" onclick="filterTypDok('RK')" style="--c:#7BA7E0">RK</button>
+      <button type="button" class="typ-chip" data-typ="KS" onclick="filterTypDok('KS')" style="--c:#A07BE0">KS</button>
+      <button type="button" class="typ-chip" data-typ="FK" onclick="filterTypDok('FK')" style="--c:#E07B7B">FK</button>
+      <button type="button" class="typ-chip" data-typ="FZ" onclick="filterTypDok('FZ')" style="--c:#7BE0A0">FZ</button>
+      <span style="width:1px;background:var(--border);align-self:stretch;margin:0 4px;flex-shrink:0"></span>
+      <button type="button" class="typ-chip" id="pillDraft" onclick="toggleRobocze()" style="text-transform:uppercase">Robocze</button>
+      <div style="flex:1;min-width:6px"></div>
+      <span class="section-action" style="color:var(--accent);flex-shrink:0;padding:0 4px" onclick="otworzModalNumeracji()" title="Schematy numeracji">🔢</span>
+    </div>
+
+    <!-- Pasek wyników (X dokumentów) -->
+    <div id="listaPodsumowanie" style="font-size:11px;color:var(--text3);margin-bottom:8px;font-family:var(--font-c);letter-spacing:1px;text-transform:uppercase;padding-left:4px"></div>
+
+    <div id="listaFaktur"></div>
+  </div>
+
+  <!-- NOWA / EDYCJA FAKTURY -->
+  <div class="view" id="view-forma">
+    <div class="section-header" style="margin-top:0">
+      <span class="section-title" id="formaTitle">Nowa faktura</span>
+      <span class="section-action" style="color:var(--text3)" onclick="showView('lista')">✕ Anuluj</span>
+    </div>
+
+    <!-- Numer faktury -->
+    <div class="glass-card" style="padding:14px 16px;margin-bottom:14px">
+      <div class="form-row">
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Numer faktury</label>
+          <input class="form-input" id="fvNumer" placeholder="FV/001/04/2026" style="font-family:var(--font-c);font-weight:800;letter-spacing:0.5px">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Typ</label>
+          <select class="form-select" id="fvTyp" onchange="onTypChange()">
+            <option value="FV">Faktura VAT</option>
+            <option value="PF">Pro forma</option>
+            <option value="RK">Rachunek</option>
+            <option value="KS">Kosztorys</option>
+            <option value="FK">Faktura korygująca</option>
+            <option value="FZ">Faktura zaliczkowa</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daty -->
+    <div class="glass-card" style="padding:14px 16px;margin-bottom:14px">
+      <div class="form-row-3">
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Data wystawienia</label>
+          <input class="form-input" id="fvDataWyst" type="date" onchange="onDataWystChange()">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Data sprzedaży</label>
+          <input class="form-input" id="fvDataSprzed" type="date">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Termin (dni)</label>
+          <input class="form-input" id="fvTerminDni" type="number" min="0" step="1" oninput="onTerminDniChange()" style="font-family:var(--font-c);font-weight:800;text-align:center">
+        </div>
+      </div>
+      <!-- Chipy szybkiego wyboru -->
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+        <button type="button" class="termin-chip" onclick="setTerminDni(0)">w dniu wyst.</button>
+        <button type="button" class="termin-chip" onclick="setTerminDni(3)">3 dni</button>
+        <button type="button" class="termin-chip" onclick="setTerminDni(7)">7 dni</button>
+        <button type="button" class="termin-chip" onclick="setTerminDni(14)">14 dni</button>
+        <button type="button" class="termin-chip" onclick="setTerminDni(21)">21 dni</button>
+        <button type="button" class="termin-chip" onclick="setTerminDni(30)">30 dni</button>
+      </div>
+      <!-- Pole z datą -->
+      <div class="form-group" style="margin:12px 0 0">
+        <label class="form-label">Termin płatności (data)</label>
+        <input class="form-input" id="fvDataPlatn" type="date" onchange="onDataPlatnChange()">
+      </div>
+    </div>
+
+    <!-- Forma płatności -->
+    <div class="glass-card" style="padding:14px 16px;margin-bottom:14px">
+      <div class="form-row">
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Forma płatności</label>
+          <select class="form-select" id="fvPlatnosc">
+            <option value="przelew">Przelew</option>
+            <option value="gotowka">Gotówka</option>
+            <option value="karta">Karta</option>
+            <option value="blik">BLIK</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label">Waluta</label>
+          <select class="form-select" id="fvWaluta">
+            <option value="PLN">PLN</option>
+            <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nabywca -->
+    <div class="section-header">
+      <span class="section-title">Nabywca</span>
+      <span class="section-action" onclick="showKlientPicker()">Wybierz</span>
+    </div>
+
+    <div id="nabywcaBox" class="glass-card glass-card-accent" style="padding:14px 16px;margin-bottom:14px;cursor:pointer" onclick="showKlientPicker()">
+      <div id="nabywcaEmpty" style="text-align:center;padding:10px 0;color:var(--text3);font-size:13px">
+        Kliknij aby wybrać klienta →
+      </div>
+      <div id="nabywcaInfo" style="display:none">
+        <div style="font-family:var(--font-c);font-size:15px;font-weight:800;color:var(--text)" id="nabywcaNazwa"></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px" id="nabywcaDane"></div>
+      </div>
+    </div>
+
+    <!-- Pozycje -->
+    <div class="section-header">
+      <span class="section-title">Pozycje faktury</span>
+      <span class="section-action" onclick="showProduktPicker()">+ Dodaj</span>
+    </div>
+
+    <div id="pozycjeList"></div>
+
+    <button class="btn-secondary" onclick="showProduktPicker()" style="margin-bottom:14px">
+      + Dodaj pozycję z cennika
+    </button>
+    <button class="btn-secondary" onclick="dodajPozycjeReczna()" style="margin-top:4px;margin-bottom:14px">
+      + Wpisz pozycję ręcznie
+    </button>
+
+    <!-- Sumy -->
+    <div id="sumaBox"></div>
+
+    <!-- Uwagi -->
+    <div class="form-group" style="margin-top:16px">
+      <label class="form-label">Uwagi / adnotacje</label>
+      <textarea class="form-textarea" id="fvUwagi" placeholder="Opcjonalne uwagi na fakturze..." style="height:64px"></textarea>
+    </div>
+
+    <!-- Akcje -->
+    <button class="btn-primary" onclick="wystawFakture()" style="background:linear-gradient(135deg,var(--accent),var(--accent2));font-size:18px">✓ Wystaw fakturę</button>
+    <button class="btn-primary" onclick="saveFaktura('draft')" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a);color:var(--text2);box-shadow:none;border:1px solid var(--border)">💾 Zapisz jako roboczą</button>
+    <button class="btn-primary" onclick="showPodglad()" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a);color:var(--accent);box-shadow:none;border:1px solid var(--accent-border)">👁 Podgląd faktury</button>
+    <button class="btn-primary" id="btnKonwertujPF" style="display:none;background:linear-gradient(135deg,#1a3a1a,#2a4a2a);color:#7BE0A0;box-shadow:none;border:1px solid #7BE0A055" onclick="konwertujProforme()">→ Konwertuj na fakturę VAT</button>
+    <button class="btn-danger" id="btnDelFv" style="display:none" onclick="deleteFaktura()">Usuń fakturę</button>
+  </div>
+
+  <!-- PODGLĄD FAKTURY -->
+  <div class="view" id="view-podglad">
+    <div class="section-header" style="margin-top:0">
+      <span class="section-title">Podgląd</span>
+      <span class="section-action" style="color:var(--text3)" onclick="showView('forma')">← Wróć</span>
+    </div>
+
+    <!-- Akcje podglądu -->
+    <div class="btn-row" style="margin-bottom:14px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px">
+      <button class="btn-icon" onclick="drukuj()">🖨️<br><span style="font-size:9px">Drukuj</span></button>
+      <button class="btn-icon accent" onclick="zapiszPDF()">📄<br><span style="font-size:9px">PDF</span></button>
+      <button class="btn-icon" onclick="wyslijMail()">📧<br><span style="font-size:9px">Email</span></button>
+      <button class="btn-icon green" onclick="wyslijKSeF()">🏛️<br><span style="font-size:9px">KSeF</span></button>
+    </div>
+
+    <!-- Status KSeF -->
+    <div id="ksefStatusBox" style="margin-bottom:14px;display:none">
+      <div class="glass-card glass-card-accent" style="padding:12px 16px;display:flex;align-items:center;gap:12px">
+        <span style="font-size:20px">✅</span>
+        <div>
+          <div style="font-family:var(--font-c);font-size:12px;font-weight:800;color:var(--accent)">WYSŁANO DO KSEF</div>
+          <div style="font-size:11px;color:var(--text3)" id="ksefNrBox"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Faktura HTML — kontener skalujący A4 do szerokości ekranu -->
+    <div class="fv-preview-stage" id="podgladStage">
+      <div id="podgladFaktury"></div>
+    </div>
+  </div>
   </div>
 </div>
 
@@ -969,7 +1307,7 @@ body {
     <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7l8-4 8 4v10l-8 4-8-4z" stroke="url(#orange-grad)"/><path d="M4 7l8 4 8-4M12 11v10" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Produkty</div>
   </div>
-  <div class="nav-item" onclick="window.location.href='robion-faktury.html'">
+  <div class="nav-item" onclick="navigate('faktury',this)">
     <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h10l4 4v14H6z" stroke="url(#orange-grad)"/><path d="M16 3v4h4" stroke="url(#orange-grad)"/><path d="M9 13l2 2 4-4" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Faktury</div>
   </div>
@@ -977,10 +1315,227 @@ body {
     <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="url(#orange-grad)"/><circle cx="12" cy="12" r="3" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Ustawienia</div>
   </div>
-  <div class="nav-version-info">Beta · 0.1.0</div>
+  <div class="nav-version-info" id="navVersionInfo">Beta · 0.2.0</div>
 </div>
 
 <button class="fab" id="fabBtn" onclick="fabAction()">+</button>
+
+<!-- ════ MODALE FAKTUR (update_017) ════ -->
+<!-- MODAL: Wybór klienta -->
+<div class="modal-overlay" id="modalKlientPicker">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">Wybierz nabywcę</span>
+      <button class="modal-close" onclick="closeModal('modalKlientPicker')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input class="form-input" placeholder="🔍 Szukaj..." oninput="filterKlientPicker(this.value)" style="margin-bottom:12px">
+      <div id="klientPickerList"></div>
+      <button class="btn-secondary" onclick="wybierzKlientReczny()">+ Wpisz dane ręcznie</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Klient ręczny -->
+<div class="modal-overlay" id="modalKlientReczny">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">Dane nabywcy</span>
+      <button class="modal-close" onclick="closeModal('modalKlientReczny')">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- NIP z przyciskiem Pobierz -->
+      <div class="form-group">
+        <label class="form-label">NIP — pobierz dane automatycznie</label>
+        <div style="display:flex;gap:8px;align-items:stretch">
+          <input class="form-input" id="krNIP" placeholder="0000000000" style="flex:1" oninput="krNipReset()">
+          <button id="krNipBtn" onclick="krFetchNIP()" style="padding:0 16px;background:rgba(245,166,35,0.12);border:1px solid var(--accent-border);border-radius:10px;color:var(--accent);font-family:var(--font-c);font-weight:800;font-size:13px;letter-spacing:0.5px;cursor:pointer;text-transform:uppercase;white-space:nowrap;transition:all 0.2s">⬇ Pobierz</button>
+        </div>
+        <div id="krNipStatus" style="font-size:11px;color:var(--text3);margin-top:6px;font-family:var(--font-c);letter-spacing:0.5px;min-height:14px">Wpisz NIP i naciśnij Pobierz (lub uzupełnij ręcznie poniżej)</div>
+      </div>
+
+      <div class="form-group"><label class="form-label">Nazwa *</label><input class="form-input" id="krNazwa" placeholder="Nazwa firmy lub imię i nazwisko"></div>
+      <div class="form-group"><label class="form-label">REGON</label><input class="form-input" id="krREGON" placeholder="000000000"></div>
+      <div class="form-group"><label class="form-label">Ulica i numer</label><input class="form-input" id="krUlica" placeholder="ul. Przykładowa 1"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Kod</label><input class="form-input" id="krKod" placeholder="00-000"></div>
+        <div class="form-group"><label class="form-label">Miasto</label><input class="form-input" id="krMiasto" placeholder="Warszawa"></div>
+      </div>
+      <button class="btn-primary" onclick="zatwierdzKlientReczny()">Zatwierdź</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Zapamiętać klienta? -->
+<div class="modal-overlay" id="modalZapamietajKlienta">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">💾 Zapamiętać klienta?</span>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:16px">
+        Klient <strong id="zkNazwa" style="color:var(--accent);font-family:var(--font-c)">—</strong> nie jest jeszcze w Twojej kartotece.
+      </p>
+      <div id="zkPodglad" style="background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:var(--text2);line-height:1.6"></div>
+      <p style="font-size:13px;color:var(--text3);margin-bottom:16px;line-height:1.5">
+        Dodać go do kartoteki, żeby przy następnej fakturze wybrać go z listy?
+      </p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button onclick="zapamietajKlientaNie()" style="padding:14px;background:var(--glass-strong);color:var(--text2);border:1px solid var(--border);border-radius:12px;font-family:var(--font-c);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:1px;cursor:pointer">Nie, dziękuję</button>
+        <button onclick="zapamietajKlientaTak()" class="btn-primary" style="margin:0">✓ Zapamiętaj</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Wybór jednostki -->
+<div class="modal-overlay" id="modalJednostka">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">Jednostka</span>
+      <button class="modal-close" onclick="closeModal('modalJednostka')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input class="form-input" id="jednostkaCustom" placeholder="Lub wpisz własną..." style="margin-bottom:14px" onkeydown="if(event.key==='Enter'){zatwierdzJednostkeCustom()}">
+      <button class="btn-primary" onclick="zatwierdzJednostkeCustom()" style="margin-bottom:16px">Użyj wpisanej</button>
+      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-family:var(--font-c);font-weight:700;margin-bottom:10px;padding-left:4px">Najczęściej używane</div>
+      <div id="jednostkiGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Wybór produktu -->
+<div class="modal-overlay" id="modalProduktPicker">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">Dodaj pozycję</span>
+      <button class="modal-close" onclick="closeModal('modalProduktPicker')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input class="form-input" placeholder="🔍 Szukaj..." oninput="filterProduktPicker(this.value)" style="margin-bottom:12px">
+      <div id="produktPickerList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Schemat numeracji -->
+<div class="modal-overlay" id="modalNumeracja">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">Numeracja dokumentów</span>
+      <button class="modal-close" onclick="closeModal('modalNumeracja')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6">
+        Każdy typ dokumentu ma osobny licznik. Faktura VAT i pro forma współdzielą numerację (po konwersji PF→FV numer pozostaje ten sam).<br>
+        Znaczniki: <code style="color:var(--accent)">{NR}</code> numer &nbsp;
+        <code style="color:var(--accent)">{MM}</code> miesiąc &nbsp;
+        <code style="color:var(--accent)">{RRRR}</code> rok
+      </p>
+
+      <!-- FV + PF -->
+      <div class="glass-card" style="padding:14px 16px;margin-bottom:14px">
+        <div style="font-size:12px;color:var(--accent);font-weight:800;letter-spacing:1px;margin-bottom:10px">FAKTURA VAT + PRO FORMA</div>
+        <div class="form-group">
+          <label class="form-label">Schemat (bez prefixu — dokleja się automatycznie FV/ lub PF/)</label>
+          <input class="form-input" id="schematFvInput" placeholder="{NR}/{MM}/{RRRR}" style="font-family:var(--font-c);letter-spacing:0.5px" oninput="podgladNumeruUpdate()">
+        </div>
+        <div class="form-group" style="margin-bottom:10px">
+          <label class="form-label">Numer startowy</label>
+          <input class="form-input" id="nrStartFvInput" placeholder="1" type="number" min="1" oninput="podgladNumeruUpdate()">
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px">Podgląd:</div>
+        <div style="font-family:var(--font-c);font-size:15px;font-weight:800;color:var(--accent)" id="podgladFv">FV/001/04/2026 · PF/001/04/2026</div>
+      </div>
+
+      <!-- RK -->
+      <div class="glass-card" style="padding:14px 16px;margin-bottom:14px">
+        <div style="font-size:12px;color:var(--accent);font-weight:800;letter-spacing:1px;margin-bottom:10px">RACHUNEK</div>
+        <div class="form-group">
+          <label class="form-label">Schemat (prefix RK/ doklejany automatycznie)</label>
+          <input class="form-input" id="schematRkInput" placeholder="{NR}/{MM}/{RRRR}" style="font-family:var(--font-c);letter-spacing:0.5px" oninput="podgladNumeruUpdate()">
+        </div>
+        <div class="form-group" style="margin-bottom:10px">
+          <label class="form-label">Numer startowy</label>
+          <input class="form-input" id="nrStartRkInput" placeholder="1" type="number" min="1" oninput="podgladNumeruUpdate()">
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px">Podgląd:</div>
+        <div style="font-family:var(--font-c);font-size:15px;font-weight:800;color:var(--accent)" id="podgladRk">RK/001/04/2026</div>
+      </div>
+
+      <!-- KS -->
+      <div class="glass-card" style="padding:14px 16px;margin-bottom:14px">
+        <div style="font-size:12px;color:var(--accent);font-weight:800;letter-spacing:1px;margin-bottom:10px">KOSZTORYS</div>
+        <div class="form-group">
+          <label class="form-label">Schemat (prefix KS/ doklejany automatycznie)</label>
+          <input class="form-input" id="schematKsInput" placeholder="{NR}/{MM}/{RRRR}" style="font-family:var(--font-c);letter-spacing:0.5px" oninput="podgladNumeruUpdate()">
+        </div>
+        <div class="form-group" style="margin-bottom:10px">
+          <label class="form-label">Numer startowy</label>
+          <input class="form-input" id="nrStartKsInput" placeholder="1" type="number" min="1" oninput="podgladNumeruUpdate()">
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px">Podgląd:</div>
+        <div style="font-family:var(--font-c);font-size:15px;font-weight:800;color:var(--accent)" id="podgladKs">KS/001/04/2026</div>
+      </div>
+
+      <button class="btn-primary" onclick="saveNumeracja()">Zapisz schematy</button>
+    </div>
+  </div>
+</div>
+<!-- modalPierwszaFV pominięty - app.html ma własny -->
+
+<!-- MODAL: Co dalej po wystawieniu faktury (update_017 punkt 8) -->
+<div class="modal-overlay" id="modalCoDalej">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">✓ Faktura wystawiona</span>
+      <button class="modal-close" onclick="poZamknieciuCoDalej()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;color:var(--text);line-height:1.5;margin-bottom:6px" id="coDalejNumer">Faktura nr —</p>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:18px">Co chcesz teraz zrobić?</p>
+
+      <button id="btnCoDalejKSeF" class="btn-icon green" style="width:100%;padding:14px;margin-bottom:8px;justify-content:flex-start;text-align:left" onclick="coDalej_KSeF()">
+        <span style="font-size:20px;margin-right:6px">🏛️</span>
+        <span style="display:flex;flex-direction:column;align-items:flex-start;gap:2px">
+          <span style="font-size:13px;font-weight:800">Wyślij do KSeF</span>
+          <span style="font-size:10px;color:var(--text3);font-weight:500;letter-spacing:0;text-transform:none">Krajowy System e-Faktur — automatyczna wysyłka</span>
+        </span>
+      </button>
+
+      <button class="btn-icon" style="width:100%;padding:14px;margin-bottom:8px;justify-content:flex-start;text-align:left" onclick="coDalej_PDF()">
+        <span style="font-size:20px;margin-right:6px">📄</span>
+        <span style="display:flex;flex-direction:column;align-items:flex-start;gap:2px">
+          <span style="font-size:13px;font-weight:800">Pobierz PDF</span>
+          <span style="font-size:10px;color:var(--text3);font-weight:500;letter-spacing:0;text-transform:none">Otwórz okno drukowania → Zapisz jako PDF</span>
+        </span>
+      </button>
+
+      <button class="btn-icon" style="width:100%;padding:14px;margin-bottom:8px;justify-content:flex-start;text-align:left" onclick="coDalej_Mail()">
+        <span style="font-size:20px;margin-right:6px">✉️</span>
+        <span style="display:flex;flex-direction:column;align-items:flex-start;gap:2px">
+          <span style="font-size:13px;font-weight:800">Wyślij mailem</span>
+          <span style="font-size:10px;color:var(--text3);font-weight:500;letter-spacing:0;text-transform:none">Otwórz klienta poczty z gotową treścią</span>
+        </span>
+      </button>
+
+      <div class="divider"></div>
+
+      <button class="btn-icon" style="width:100%;padding:12px;justify-content:center" onclick="poZamknieciuCoDalej();showView('lista');renderLista()">
+        Zamknij — wrócę do listy
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ KONIEC MODALI FAKTUR ════ -->
 
 <!-- MODAL: Klient -->
 <div class="modal-overlay" id="modalKlient">
@@ -1535,17 +2090,17 @@ body {
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-header">
-      <span class="modal-title">⚠️ Wystawiasz pierwszą fakturę</span>
+      <span class="modal-title">✓ Pierwsza faktura wystawiona</span>
     </div>
     <div class="modal-body">
       <p style="font-size:14px;color:var(--text);line-height:1.6;margin-bottom:14px">
-        Zanim zaczniesz wystawiać faktury, polecam zapisać <strong>pierwszą kopię zapasową</strong>. Faktury są dokumentami które trzeba archiwizować <strong>5 lat</strong> — kopia zapasowa to Twoje zabezpieczenie.
+        Sama faktura jest bezpieczna — KSeF archiwizuje ją <strong>10 lat</strong>. Ale wszystko, co zbudowałeś w aplikacji <strong>jest tylko na tym urządzeniu</strong>.
       </p>
-      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px;background:rgba(52,211,153,0.08);padding:12px;border-radius:10px;border:1px solid rgba(52,211,153,0.3)">
-        🔒 <strong>Twoje faktury zostają tylko na tym urządzeniu</strong> — nikt poza Tobą nie ma do nich dostępu. Dlatego kopia zapasowa jest tak ważna.
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:14px;background:var(--glass);padding:12px;border-radius:10px;border:1px solid var(--border)">
+        💾 Kopia zapasowa zawiera: <strong>klientów, cennik, ustawienia firmy, numerację, robocze faktury</strong>. Jeśli wyczyścisz przeglądarkę albo zmienisz urządzenie — wczytasz kopię i masz wszystko 1:1.
       </p>
-      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:18px;background:var(--glass);padding:12px;border-radius:10px;border:1px solid var(--border)">
-        💡 Kopia zawiera <strong>wszystko</strong>: faktury, klientów, produkty, ustawienia. Wystarczy, że wczytasz ją na nowym urządzeniu i masz wszystko 1:1.
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:18px;background:rgba(52,211,153,0.08);padding:12px;border-radius:10px;border:1px solid rgba(52,211,153,0.3)">
+        🔒 To dobry moment — pierwsza faktura już wystawiona, masz w bazie realne dane. Wystarczy raz, potem aplikacja przypomni o aktualizacji.
       </p>
       <button onclick="zapiszKopie();closeModal('modalPierwszaFV')" style="width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:12px;font-family:var(--font-condensed);font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;margin-bottom:10px">
         💾 Zrób kopię teraz
@@ -1674,22 +2229,62 @@ function closeBaner(id) {
 // ── NAVIGATE ──
 function navigate(page, el) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  el.classList.add('active');
+  if (el) el.classList.add('active');
+  else {
+    // Fallback - znajdź nav-item po onclick
+    const map = {pulpit:0,klienci:1,produkty:2,faktury:3,ustawienia:4};
+    const idx = map[page];
+    const items = document.querySelectorAll('.nav-item');
+    if (items[idx]) items[idx].classList.add('active');
+  }
   document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
+  const tgt = document.getElementById('page-'+page);
+  if (tgt) tgt.classList.add('active');
   currentPage = page;
   const titles = {pulpit:'Pulpit',klienci:'Klienci',produkty:'Produkty',faktury:'Faktury',ustawienia:'Ustawienia'};
   document.getElementById('pageTitle').textContent = titles[page] || page;
   const fab = document.getElementById('fabBtn');
-  // FAB widoczny tylko na klienci + produkty
-  fab.classList.toggle('hidden', !(page==='klienci' || page==='produkty'));
+  // FAB widoczny na klienci, produkty i faktury (dla faktur to nowa faktura)
+  fab.classList.toggle('hidden', !(page==='klienci' || page==='produkty' || page==='faktury'));
   if (page==='ustawienia') renderUstawienia();
   if (page==='pulpit') renderPulpit();
+  if (page==='faktury') {
+    // Pokaż widok listy (mogliśmy być w forma/podglad)
+    if (typeof showView === 'function') showView('lista');
+    if (typeof renderLista === 'function') renderLista();
+  }
 }
 
 function fabAction() {
   if (currentPage==='klienci') showAddKlient();
   else if (currentPage==='produkty') showAddProdukt();
+  else if (currentPage==='faktury' && typeof nowaFaktura === 'function') nowaFaktura();
+}
+
+// Pomocnicze: nawigacja do faktur z kontekstem
+function goToFaktury(noweOd) {
+  const items = document.querySelectorAll('.nav-item');
+  const navItem = items[3]; // faktury - 4. pozycja
+  navigate('faktury', navItem);
+  if (noweOd && typeof nowaFaktura === 'function') {
+    setTimeout(() => nowaFaktura(), 60);
+  }
+}
+function goToFakturyEdit(id) {
+  const items = document.querySelectorAll('.nav-item');
+  navigate('faktury', items[3]);
+  if (typeof editFaktura === 'function') {
+    // id z onclick bywa stringiem - rzutuj na number jeśli to liczba
+    const fid = (typeof id === 'string' && /^\d+$/.test(id)) ? parseInt(id, 10) : id;
+    setTimeout(() => editFaktura(fid), 60);
+  }
+}
+function goToFakturyINumeracja() {
+  const items = document.querySelectorAll('.nav-item');
+  navigate('faktury', items[3]);
+  if (typeof otworzModalNumeracji === 'function') {
+    setTimeout(() => otworzModalNumeracji(), 60);
+  }
 }
 
 // Pomocnicza: przejście do zakładki + wykonanie akcji (dla kafelków pulpitu)
@@ -1768,7 +2363,7 @@ function renderPulpit() {
   cont.innerHTML = ostatnie.map(f => {
     const t = f.typ || 'FV';
     const draftClass = f.status === 'draft' ? 'draft' : '';
-    return `<div class="pulpit-fv-item" onclick="window.location.href='robion-faktury.html'">
+    return `<div class="pulpit-fv-item" onclick="goToFakturyEdit(${f.id})">
       <div class="pulpit-fv-status ${draftClass}"></div>
       <div class="pulpit-fv-info">
         <div class="pulpit-fv-nr">
@@ -2866,7 +3461,7 @@ async function wyslijFeedback() {
     tresc: tresc,
     email: email || '(brak)',
     urzadzenie: navigator.userAgent,
-    wersja: '0.1.0',
+    wersja: (typeof ROBION_VERSION !== 'undefined' ? ROBION_VERSION : '0.2.0'),
     data: new Date().toISOString()
   };
 
@@ -2887,7 +3482,7 @@ async function wyslijFeedback() {
     // Fallback: otwórz mailto z gotową treścią
     console.warn('Webhook feedback nie odpowiada, używam mailto:', e);
     const tematM = encodeURIComponent(tytul ? `Robion: ${tytul}` : 'Robion: uwaga');
-    const trescM = encodeURIComponent(`${tresc}\n\n---\nKontakt zwrotny: ${email || '(brak)'}\nWersja: 0.1.0\nUrządzenie: ${navigator.userAgent}`);
+    const trescM = encodeURIComponent(`${tresc}\n\n---\nKontakt zwrotny: ${email || '(brak)'}\nWersja: ${typeof ROBION_VERSION !== 'undefined' ? ROBION_VERSION : '0.2.0'}\nUrządzenie: ${navigator.userAgent}`);
     window.location.href = `mailto:kontakt@robion.pl?subject=${tematM}&body=${trescM}`;
     btn.textContent = '✓ Wysłane, dzięki!';
     setTimeout(() => closeModal('modalFeedback'), 1500);
@@ -3470,13 +4065,22 @@ if (!localStorage.getItem('rob_onboarded')) {
   setTimeout(() => pokazOnboarding(), 600);
 }
 
-// Obsługa #hash w URL — gdy user wraca z robion-faktury.html via index.html#klienci
+// Plakietka wersji w sidebarze + settings - aktualizowane z centralnej stałej
+setTimeout(() => {
+  if (typeof ROBION_VERSION !== 'undefined') {
+    const v = document.getElementById('navVersionInfo');
+    if (v) v.textContent = 'Beta · ' + ROBION_VERSION;
+    const sv = document.getElementById('settingsVersionValue');
+    if (sv) sv.textContent = ROBION_VERSION;
+  }
+}, 0);
+
+// Obsługa #hash w URL — w pełni zintegrowana po migracji (wszystkie strony są tu)
 function obsluzHashURL() {
   const hash = (window.location.hash || '').replace('#', '').toLowerCase();
   if (!hash) return;
   const validPages = {
-    pulpit: 0, klienci: 1, produkty: 2, ustawienia: 4
-    // 3 to "faktury" - nie przełączamy bo to inna strona, kliknięcie tam idzie przez href
+    pulpit: 0, klienci: 1, produkty: 2, faktury: 3, ustawienia: 4
   };
   if (validPages[hash] !== undefined) {
     const navItems = document.querySelectorAll('.bottom-nav .nav-item');
@@ -3517,6 +4121,1645 @@ function handleScroll() {
 window.addEventListener('scroll', () => {
   if (!scrollTicking) { scrollTicking = true; requestAnimationFrame(handleScroll); }
 }, { passive: true });
+
+// ════════════════════════════════════════════════════════════════════
+// ══════ JAVASCRIPT FAKTUR (migracja z robion-faktury.html) ═════════
+// ════════════════════════════════════════════════════════════════════
+
+let faktury = JSON.parse(localStorage.getItem('rob_faktury') || '[]');
+
+// ── NUMERACJA — 3 niezależne liczniki (FV+PF wspólny, RK osobny, KS osobny) ──
+let numeracja = JSON.parse(localStorage.getItem('rob_numeracja') || 'null');
+
+// Migracja ze starej struktury {schemat, nrStart, nrNext}
+if (numeracja && numeracja.schemat && !numeracja.fv) {
+  // Stary format — przepisz do fv (usuń ewentualny prefix typu "FV/" ze schematu)
+  const oldSchemat = numeracja.schemat.replace(/^[A-Z]{2}\//, '');
+  numeracja = {
+    fv: { schemat: oldSchemat || '{NR}/{MM}/{RRRR}', nrNext: numeracja.nrNext || 1 },
+    rk: { schemat: '{NR}/{MM}/{RRRR}', nrNext: 1 },
+    ks: { schemat: '{NR}/{MM}/{RRRR}', nrNext: 1 }
+  };
+  localStorage.setItem('rob_numeracja', JSON.stringify(numeracja));
+}
+// Brak danych — domyślne
+if (!numeracja || !numeracja.fv) {
+  numeracja = {
+    fv: { schemat: '{NR}/{MM}/{RRRR}', nrNext: 1 },
+    rk: { schemat: '{NR}/{MM}/{RRRR}', nrNext: 1 },
+    ks: { schemat: '{NR}/{MM}/{RRRR}', nrNext: 1 }
+  };
+  localStorage.setItem('rob_numeracja', JSON.stringify(numeracja));
+}
+
+// Mapowanie typu dokumentu na grupę numeracji
+function grupaNumeracji(typ) {
+  if (typ === 'RK') return 'rk';
+  if (typ === 'KS') return 'ks';
+  return 'fv'; // FV, PF, FK, FZ — wszystkie używają licznika fv
+}
+
+// Prefix doklejany do schematu zależnie od typu
+function prefixTypu(typ) {
+  return (typ || 'FV') + '/';
+}
+
+// Aktualnie edytowana faktura
+let fv = null; // obiekt roboczy
+let editFvId = null;
+let selectedKlient = null;
+let pozycje = []; // [{nazwa,ilosc,jednostka,cena,vat,wartNetto,wartVAT,wartBrutto}]
+let filterMode = 'all';
+let filterTyp = 'all';
+let searchQuery = '';
+
+// ── VIEWS ──
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  const titles = {lista:'Faktury', forma: editFvId ? 'Edytuj fakturę' : 'Nowa faktura', podglad:'Podgląd'};
+  document.getElementById('pageTitle').textContent = titles[name] || 'Faktury';
+  const fab = document.querySelector('.fab');
+  fab.style.display = name === 'lista' ? 'flex' : 'none';
+  window.scrollTo(0,0);
+  // Po pokazaniu widoku podglądu — przeskaluj fakturę (teraz kontener ma już szerokość)
+  if (name === 'podglad') {
+    requestAnimationFrame(() => skalujPodglad());
+  }
+}
+
+// ── GENEROWANIE NUMERU ──
+function generujNumer(typ) {
+  typ = typ || 'FV';
+  const grupa = grupaNumeracji(typ);
+  const cfg = numeracja[grupa];
+  const d = new Date();
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const rrrr = d.getFullYear();
+  const nr = String(cfg.nrNext).padStart(3,'0');
+  return prefixTypu(typ) + cfg.schemat
+    .replace('{NR}', nr)
+    .replace('{MM}', mm)
+    .replace('{RRRR}', rrrr);
+}
+
+// Reakcja na zmianę typu dokumentu w formularzu
+function onTypChange() {
+  // Tylko dla nowej faktury — przy edycji nie zmieniamy numeru
+  if (editFvId) return;
+  const typ = document.getElementById('fvTyp').value;
+  document.getElementById('fvNumer').value = generujNumer(typ);
+}
+
+// ── TERMIN PŁATNOŚCI — synchronizacja chipy ↔ dni ↔ data ──
+function dodajDniDoDaty(dataISO, dni) {
+  if (!dataISO) return '';
+  const [y,m,d] = dataISO.split('-').map(Number);
+  const dt = new Date(y, m-1, d);
+  dt.setDate(dt.getDate() + dni);
+  const yy = dt.getFullYear();
+  const mm = String(dt.getMonth()+1).padStart(2,'0');
+  const dd = String(dt.getDate()).padStart(2,'0');
+  return `${yy}-${mm}-${dd}`;
+}
+
+function roznicaDni(dataOdISO, dataDoISO) {
+  if (!dataOdISO || !dataDoISO) return null;
+  const [y1,m1,d1] = dataOdISO.split('-').map(Number);
+  const [y2,m2,d2] = dataDoISO.split('-').map(Number);
+  const od = new Date(y1, m1-1, d1);
+  const dod = new Date(y2, m2-1, d2);
+  return Math.round((dod - od) / 86400000);
+}
+
+function aktualizujChipy(dni) {
+  document.querySelectorAll('.termin-chip').forEach(c => c.classList.remove('active'));
+  const lookup = {0:0, 3:1, 7:2, 14:3, 21:4, 30:5};
+  const idx = lookup[dni];
+  if (idx !== undefined) {
+    const chips = document.querySelectorAll('.termin-chip');
+    if (chips[idx]) chips[idx].classList.add('active');
+  }
+}
+
+function setTerminDni(dni) {
+  document.getElementById('fvTerminDni').value = dni;
+  const dataWyst = document.getElementById('fvDataWyst').value;
+  document.getElementById('fvDataPlatn').value = dodajDniDoDaty(dataWyst, dni);
+  aktualizujChipy(dni);
+}
+
+function onTerminDniChange() {
+  const dni = parseInt(document.getElementById('fvTerminDni').value);
+  if (isNaN(dni) || dni < 0) return;
+  const dataWyst = document.getElementById('fvDataWyst').value;
+  document.getElementById('fvDataPlatn').value = dodajDniDoDaty(dataWyst, dni);
+  aktualizujChipy(dni);
+}
+
+function onDataPlatnChange() {
+  const dataWyst = document.getElementById('fvDataWyst').value;
+  const dataPlatn = document.getElementById('fvDataPlatn').value;
+  const dni = roznicaDni(dataWyst, dataPlatn);
+  if (dni !== null && dni >= 0) {
+    document.getElementById('fvTerminDni').value = dni;
+    aktualizujChipy(dni);
+  }
+}
+
+function onDataWystChange() {
+  // Zmieniła się data wystawienia — przelicz datę płatności zachowując liczbę dni
+  const dni = parseInt(document.getElementById('fvTerminDni').value);
+  if (isNaN(dni)) return;
+  const dataWyst = document.getElementById('fvDataWyst').value;
+  document.getElementById('fvDataPlatn').value = dodajDniDoDaty(dataWyst, dni);
+}
+
+function podgladNumeruUpdate() {
+  const d = new Date();
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const rrrr = d.getFullYear();
+
+  const buduj = (schemat, nrStart, prefix) => {
+    const nr = String(nrStart).padStart(3,'0');
+    return prefix + (schemat || '{NR}/{MM}/{RRRR}')
+      .replace('{NR}', nr).replace('{MM}', mm).replace('{RRRR}', rrrr);
+  };
+
+  // FV + PF
+  const sFv = document.getElementById('schematFvInput').value;
+  const nFv = parseInt(document.getElementById('nrStartFvInput').value) || numeracja.fv.nrNext;
+  document.getElementById('podgladFv').textContent =
+    buduj(sFv, nFv, 'FV/') + ' · ' + buduj(sFv, nFv, 'PF/');
+
+  // RK
+  const sRk = document.getElementById('schematRkInput').value;
+  const nRk = parseInt(document.getElementById('nrStartRkInput').value) || numeracja.rk.nrNext;
+  document.getElementById('podgladRk').textContent = buduj(sRk, nRk, 'RK/');
+
+  // KS
+  const sKs = document.getElementById('schematKsInput').value;
+  const nKs = parseInt(document.getElementById('nrStartKsInput').value) || numeracja.ks.nrNext;
+  document.getElementById('podgladKs').textContent = buduj(sKs, nKs, 'KS/');
+}
+
+function saveNumeracja() {
+  numeracja.fv.schemat = document.getElementById('schematFvInput').value || '{NR}/{MM}/{RRRR}';
+  numeracja.fv.nrNext = parseInt(document.getElementById('nrStartFvInput').value) || numeracja.fv.nrNext;
+  numeracja.rk.schemat = document.getElementById('schematRkInput').value || '{NR}/{MM}/{RRRR}';
+  numeracja.rk.nrNext = parseInt(document.getElementById('nrStartRkInput').value) || numeracja.rk.nrNext;
+  numeracja.ks.schemat = document.getElementById('schematKsInput').value || '{NR}/{MM}/{RRRR}';
+  numeracja.ks.nrNext = parseInt(document.getElementById('nrStartKsInput').value) || numeracja.ks.nrNext;
+  localStorage.setItem('rob_numeracja', JSON.stringify(numeracja));
+  closeModal('modalNumeracja');
+  showToast('✓ Schematy numeracji zapisane');
+}
+
+// Otwarcie modala — wczytanie aktualnych wartości
+function otworzModalNumeracji() {
+  document.getElementById('schematFvInput').value = numeracja.fv.schemat;
+  document.getElementById('nrStartFvInput').value = numeracja.fv.nrNext;
+  document.getElementById('schematRkInput').value = numeracja.rk.schemat;
+  document.getElementById('nrStartRkInput').value = numeracja.rk.nrNext;
+  document.getElementById('schematKsInput').value = numeracja.ks.schemat;
+  document.getElementById('nrStartKsInput').value = numeracja.ks.nrNext;
+  podgladNumeruUpdate();
+  document.getElementById('modalNumeracja').classList.add('open');
+}
+
+// ── LISTA FAKTUR ──
+function renderLista() {
+  const container = document.getElementById('listaFaktur');
+  const podsum = document.getElementById('listaPodsumowanie');
+
+  // Filtr 1: stan (wszystkie / robocze)
+  let lista = filterMode === 'draft' ? faktury.filter(f => f.status === 'draft') : [...faktury];
+
+  // Filtr 2: typ dokumentu
+  if (filterTyp !== 'all') {
+    lista = lista.filter(f => (f.typ || 'FV') === filterTyp);
+  }
+
+  // Filtr 3: wyszukiwarka (numer lub nazwa klienta)
+  const q = searchQuery.trim().toLowerCase();
+  if (q) {
+    lista = lista.filter(f => {
+      const numer = (f.numer || '').toLowerCase();
+      const klient = (f.nabywca?.nazwa || '').toLowerCase();
+      return numer.includes(q) || klient.includes(q);
+    });
+  }
+
+  lista.sort((a,b) => b.id - a.id);
+
+  // Aktualizacja UI filtrów (podświetlenia)
+  aktualizujUiFiltrow();
+
+  // Podsumowanie
+  if (lista.length) {
+    podsum.textContent = `${lista.length} ${lista.length === 1 ? 'dokument' : (lista.length < 5 ? 'dokumenty' : 'dokumentów')}`;
+  } else {
+    podsum.textContent = '';
+  }
+
+  if (!lista.length) {
+    const filtryAktywne = filterMode !== 'all' || filterTyp !== 'all' || q;
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">${filtryAktywne ? '🔍' : '🧾'}</div>
+      <div class="empty-title">${filtryAktywne ? 'Brak wyników' : 'Brak faktur'}</div>
+      <div class="empty-sub">${filtryAktywne ? 'Spróbuj zmienić filtry lub wyczyścić wyszukiwanie' : 'Utwórz pierwszą fakturę przyciskiem +'}</div>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = lista.map(f => {
+    // Stare statusy (kompatybilność wsteczna): sent → issued, ksef → ksef_ok
+    const rawStatus = f.status || 'draft';
+    const statusKey = rawStatus === 'sent' ? 'issued' : (rawStatus === 'ksef' ? 'ksef_ok' : rawStatus);
+    const statusLabels = {
+      draft:'Robocza',
+      issued:'Wystawiona',
+      ksef_pending:'KSeF…',
+      ksef_ok:'W KSeF',
+      ksef_error:'Błąd KSeF'
+    };
+    const typLabels = {FV:'FV',PF:'PF',RK:'RK',KS:'KS',FK:'FK',FZ:'FZ'};
+    const typColors = {FV:'#F5A623',PF:'#888',RK:'#7BA7E0',KS:'#A07BE0',FK:'#E07B7B',FZ:'#7BE0A0'};
+    const t = f.typ || 'FV';
+    const badge = `<span style="display:inline-block;background:${typColors[t]||'#888'};color:#000;font-weight:800;font-size:10px;padding:2px 6px;border-radius:4px;letter-spacing:0.5px;margin-right:6px;vertical-align:1px;font-family:var(--font-c)">${typLabels[t]||t}</span>`;
+    const statusBadge = statusLabels[statusKey]
+      ? `<span class="status-badge status-${statusKey}" style="margin-left:6px;vertical-align:1px">${statusLabels[statusKey]}</span>`
+      : '';
+    return `<div class="fv-item" onclick="editFaktura(${f.id})">
+      <div class="fv-status ${statusKey}"></div>
+      <div class="fv-info">
+        <div class="fv-nr">${badge}${f.numer}${statusBadge}</div>
+        <div class="fv-klient">${f.nabywca?.nazwa || '—'}</div>
+      </div>
+      <div class="fv-kwota">
+        <div class="fv-brutto">${formatKwota(f.sumaBrutto)} ${f.waluta||'PLN'}</div>
+        <div class="fv-data">${f.dataWyst||''}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function aktualizujUiFiltrow() {
+  // Robocze (toggle)
+  const pDraft = document.getElementById('pillDraft');
+  if (pDraft) pDraft.classList.toggle('active', filterMode === 'draft');
+  // Chipy typu
+  document.querySelectorAll('.typ-chip[data-typ]').forEach(c => {
+    c.classList.toggle('active', c.dataset.typ === filterTyp);
+  });
+  // Krzyżyk wyszukiwarki
+  const clear = document.getElementById('fvSzukajClear');
+  if (clear) clear.style.display = searchQuery ? 'flex' : 'none';
+}
+
+function filterFaktury(mode) {
+  filterMode = mode;
+  renderLista();
+}
+
+// Toggle: klik włącza filtr "tylko robocze", ponowny klik wyłącza
+function toggleRobocze() {
+  filterMode = (filterMode === 'draft') ? 'all' : 'draft';
+  renderLista();
+}
+
+function filterTypDok(typ) {
+  filterTyp = typ;
+  renderLista();
+}
+
+function onSzukajChange(val) {
+  searchQuery = val;
+  renderLista();
+}
+
+function czyscSzukaj() {
+  searchQuery = '';
+  document.getElementById('fvSzukaj').value = '';
+  renderLista();
+}
+
+// ── NOWA FAKTURA ──
+function nowaFaktura() {
+  // (update_018: usunięto blokadę modalPierwszaFV - kopia oferowana po pierwszej fakturze, nie przed)
+
+  editFvId = null;
+  selectedKlient = null;
+  pozycje = [];
+  document.getElementById('btnDelFv').style.display = 'none';
+  document.getElementById('btnKonwertujPF').style.display = 'none';
+  document.getElementById('formaTitle').textContent = 'Nowa faktura';
+
+  // Ustaw domyślne wartości
+  const dzis = new Date().toISOString().split('T')[0];
+  const terminDni = parseInt(ust.terminPlatnosci) || 14;
+
+  document.getElementById('fvNumer').value = generujNumer('FV');
+  document.getElementById('fvTyp').value = 'FV';
+  document.getElementById('fvDataWyst').value = dzis;
+  document.getElementById('fvDataSprzed').value = dzis;
+  // Termin płatności — pole dni + data + chip aktywny
+  setTerminDni(terminDni);
+  document.getElementById('fvPlatnosc').value = ust.formaPlatnosci || 'przelew';
+  document.getElementById('fvWaluta').value = 'PLN';
+  document.getElementById('fvUwagi').value = '';
+
+  resetNabywca();
+  renderPozycje();
+  showView('forma');
+}
+
+// ── EDYCJA FAKTURY ──
+function editFaktura(id) {
+  const f = faktury.find(x => x.id === id);
+  if (!f) return;
+  editFvId = id;
+  selectedKlient = f.nabywca || null;
+  pozycje = f.pozycje || [];
+
+  document.getElementById('formaTitle').textContent = 'Edytuj fakturę';
+  document.getElementById('btnDelFv').style.display = 'block';
+  // Przycisk konwersji — tylko dla pro formy
+  document.getElementById('btnKonwertujPF').style.display = (f.typ === 'PF') ? 'block' : 'none';
+  document.getElementById('fvNumer').value = f.numer;
+  document.getElementById('fvTyp').value = f.typ || 'FV';
+  document.getElementById('fvDataWyst').value = f.dataWyst;
+  document.getElementById('fvDataSprzed').value = f.dataSprzed;
+  document.getElementById('fvDataPlatn').value = f.dataPlatn;
+  // Przelicz pole dni z różnicy dat (zachowując poprawność dla dokumentów archiwalnych)
+  const dni = roznicaDni(f.dataWyst, f.dataPlatn);
+  document.getElementById('fvTerminDni').value = (dni !== null && dni >= 0) ? dni : '';
+  aktualizujChipy(dni);
+  document.getElementById('fvPlatnosc').value = f.platnosc;
+  document.getElementById('fvWaluta').value = f.waluta || 'PLN';
+  document.getElementById('fvUwagi').value = f.uwagi || '';
+
+  if (selectedKlient) setNabywca(selectedKlient);
+  else resetNabywca();
+  renderPozycje();
+  showView('forma');
+}
+
+// ── NABYWCA ──
+function resetNabywca() {
+  document.getElementById('nabywcaEmpty').style.display = 'block';
+  document.getElementById('nabywcaInfo').style.display = 'none';
+}
+
+function setNabywca(k) {
+  selectedKlient = k;
+  document.getElementById('nabywcaEmpty').style.display = 'none';
+  document.getElementById('nabywcaInfo').style.display = 'block';
+  document.getElementById('nabywcaNazwa').textContent = k.nazwa;
+  const dane = [k.nip ? 'NIP: '+k.nip : '', [k.ulica, k.kod+' '+k.miasto].filter(Boolean).join(', ')].filter(Boolean).join(' · ');
+  document.getElementById('nabywcaDane').textContent = dane;
+}
+
+function showKlientPicker() {
+  renderKlientPicker(klienci);
+  document.querySelector('#modalKlientPicker .form-input').value = '';
+  document.getElementById('modalKlientPicker').classList.add('open');
+}
+
+function renderKlientPicker(lista) {
+  const c = document.getElementById('klientPickerList');
+  if (!lista.length) {
+    c.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px">Brak klientów w kartotece</div>';
+    return;
+  }
+  const colors = ['#F5A623','#FF6B35','#34D399','#60A5FA','#A78BFA'];
+  c.innerHTML = lista.map(k => {
+    const init = k.nazwa.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+    const col = colors[k.id % colors.length];
+    return `<div class="klient-option" onclick="wybierzKlient(${k.id})">
+      <div class="klient-avatar" style="color:${col};border-color:${col}44;background:${col}22">${init}</div>
+      <div>
+        <div class="klient-name">${k.nazwa}</div>
+        <div class="klient-nip">${k.nip ? 'NIP: '+k.nip+' · ' : ''}${k.miasto}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterKlientPicker(q) {
+  renderKlientPicker(klienci.filter(k =>
+    k.nazwa.toLowerCase().includes(q.toLowerCase()) ||
+    (k.nip && k.nip.includes(q))
+  ));
+}
+
+function wybierzKlient(id) {
+  const k = klienci.find(x => x.id === id);
+  if (k) setNabywca(k);
+  closeModal('modalKlientPicker');
+}
+
+function wybierzKlientReczny() {
+  closeModal('modalKlientPicker');
+  ['krNazwa','krNIP','krREGON','krUlica','krKod','krMiasto'].forEach(id => document.getElementById(id).value = '');
+  krNipReset();
+  document.getElementById('modalKlientReczny').classList.add('open');
+}
+
+function zatwierdzKlientReczny() {
+  const nazwa = document.getElementById('krNazwa').value.trim();
+  if (!nazwa) { showToast('Podaj nazwę nabywcy'); return; }
+  setNabywca({
+    nazwa,
+    nip: document.getElementById('krNIP').value.trim(),
+    regon: document.getElementById('krREGON').value.trim(),
+    ulica: document.getElementById('krUlica').value.trim(),
+    kod: document.getElementById('krKod').value.trim(),
+    miasto: document.getElementById('krMiasto').value.trim(),
+  });
+  closeModal('modalKlientReczny');
+}
+
+// ── POBIERANIE NIP W MODALU NABYWCY ──
+function krNipReset() {
+  const btn = document.getElementById('krNipBtn');
+  const status = document.getElementById('krNipStatus');
+  btn.textContent = '⬇ Pobierz';
+  btn.style.background = 'rgba(245,166,35,0.12)';
+  btn.style.borderColor = 'var(--accent-border)';
+  btn.style.color = 'var(--accent)';
+  btn.disabled = false;
+  status.textContent = 'Wpisz NIP i naciśnij Pobierz (lub uzupełnij ręcznie poniżej)';
+  status.style.color = 'var(--text3)';
+}
+
+function krParseAdres(adres) {
+  const parts = adres.split(',').map(s => s.trim());
+  if (parts.length >= 2) {
+    document.getElementById('krUlica').value = parts[0] || '';
+    const kodMiasto = parts[1] || '';
+    const kodMatch = kodMiasto.match(/^(\d{2}-\d{3})\s+(.+)$/);
+    if (kodMatch) {
+      document.getElementById('krKod').value = kodMatch[1];
+      document.getElementById('krMiasto').value = kodMatch[2];
+    } else {
+      document.getElementById('krMiasto').value = kodMiasto;
+    }
+  } else {
+    document.getElementById('krUlica').value = adres;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// POBIERANIE DANYCH FIRMY PO NIP
+// Najpierw biała lista MF (statusVat), potem REGON (fallback dla
+// JDG bez VAT). REGON-endpoint może jeszcze nie istnieć w n8n —
+// wtedy graceful fallback na "uzupełnij ręcznie".
+// ─────────────────────────────────────────────────────────────
+
+async function krFetchNIP() {
+  const nip = document.getElementById('krNIP').value.replace(/\D/g,'');
+  if (nip.length !== 10) { showToast('Wpisz poprawny NIP (10 cyfr)'); return; }
+
+  const btn = document.getElementById('krNipBtn');
+  const status = document.getElementById('krNipStatus');
+
+  btn.textContent = '⏳';
+  btn.disabled = true;
+  status.textContent = 'Pobieranie danych...';
+  status.style.color = 'var(--text2)';
+
+  try {
+    const dane = await pobierzDaneFirmy(nip);
+    if (!dane) throw new Error('Nie znaleziono');
+
+    document.getElementById('krNazwa').value = dane.nazwa;
+    if (dane.regon) document.getElementById('krREGON').value = dane.regon;
+    if (dane.adres) krParseAdres(dane.adres);
+
+    if (dane.zrodlo === 'biala') {
+      const vatInfo = dane.statusVat === 'Czynny' ? ' · VAT: czynny' :
+                      dane.statusVat === 'Zwolniony' ? ' · VAT: zwolniony' :
+                      dane.statusVat === 'Niezarejestrowany' ? ' · Nie jest podatnikiem VAT' : '';
+      status.textContent = '✓ Dane pobrane' + vatInfo;
+    } else {
+      status.textContent = '✓ Dane pobrane (z REGON)';
+    }
+    status.style.color = '#34D399';
+    btn.textContent = '✓';
+    btn.style.background = 'rgba(52,211,153,0.12)';
+    btn.style.borderColor = 'rgba(52,211,153,0.3)';
+    btn.style.color = '#34D399';
+    showToast('✓ Dane firmy pobrane');
+
+  } catch (err) {
+    console.error('Błąd pobierania NIP:', err);
+    status.textContent = '✗ Nie znaleziono — uzupełnij ręcznie';
+    status.style.color = 'var(--danger)';
+    btn.textContent = 'Ponów';
+    showToast('Nie znaleziono firmy dla tego NIP');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// ── POZYCJE ──
+function showProduktPicker() {
+  renderProduktPicker(getSortedProduktyFV());
+  document.querySelector('#modalProduktPicker .form-input').value = '';
+  document.getElementById('modalProduktPicker').classList.add('open');
+}
+
+function getSortedProduktyFV() {
+  const ulub = produkty.filter(p=>p.ulubiony).slice(0,10);
+  const reszta = produkty.filter(p=>!p.ulubiony).sort((a,b)=>a.nazwa.localeCompare(b.nazwa,'pl'));
+  return [...ulub,...reszta];
+}
+
+function renderProduktPicker(lista) {
+  const c = document.getElementById('produktPickerList');
+  if (!lista.length) {
+    c.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px">Brak pozycji w cenniku</div>';
+    return;
+  }
+  c.innerHTML = lista.map(p => `
+    <div class="prod-option" onclick="dodajZCennika(${p.id})">
+      <div style="font-size:16px">${p.ulubiony?'⭐':'📦'}</div>
+      <div class="prod-option-info">
+        <div class="prod-option-name">${p.nazwa}</div>
+        <div class="prod-option-sub">${p.typ==='usluga'?'Usługa':'Towar'} · VAT ${p.vat}% · ${p.jednostka}</div>
+      </div>
+      <div class="prod-option-price">${formatKwota(p.cena)} zł</div>
+    </div>`).join('');
+}
+
+function filterProduktPicker(q) {
+  renderProduktPicker(getSortedProduktyFV().filter(p =>
+    p.nazwa.toLowerCase().includes(q.toLowerCase())
+  ));
+}
+
+function dodajZCennika(id) {
+  const p = produkty.find(x=>x.id===id);
+  if (!p) return;
+  pozycje.push({
+    id: Date.now(),
+    nazwa: p.nazwa,
+    ilosc: p.ilosc || 1,
+    jednostka: p.jednostka,
+    cena: p.cena,
+    cenaTryb: 'netto',  // cennik zawsze trzyma netto
+    vat: p.vat,
+  });
+  closeModal('modalProduktPicker');
+  renderPozycje();
+  obliczSumy();
+}
+
+function dodajPozycjeReczna() {
+  pozycje.push({
+    id: Date.now(),
+    nazwa: '',
+    ilosc: 1,
+    jednostka: 'szt',
+    cena: 0,
+    cenaTryb: 'netto',  // 'netto' lub 'brutto' — w jakim trybie użytkownik wpisuje cenę
+    vat: ust.vatDefaultStawka || '23',
+  });
+  renderPozycje();
+}
+
+function renderPozycje() {
+  const c = document.getElementById('pozycjeList');
+  if (!pozycje.length) {
+    c.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px;border:1px dashed var(--border);border-radius:var(--radius-sm);margin-bottom:14px">Brak pozycji — dodaj z cennika lub ręcznie</div>`;
+    obliczSumy();
+    return;
+  }
+  c.innerHTML = pozycje.map((p,i) => {
+    const tryb = p.cenaTryb || 'netto';
+    const isBrutto = tryb === 'brutto';
+    return `
+    <div class="pozycja-row">
+      <input class="pozycja-input" style="width:100%;margin-bottom:8px;text-align:left" value="${p.nazwa}" placeholder="Nazwa pozycji" oninput="updatePozycja(${i},'nazwa',this.value)">
+      <div style="display:grid;grid-template-columns:80px 70px 80px 80px 28px;gap:6px;align-items:flex-end">
+        <div>
+          <div class="pozycja-label">Ilość</div>
+          <input class="pozycja-input" type="number" value="${p.ilosc}" min="0.01" step="0.01" oninput="updatePozycja(${i},'ilosc',this.value)">
+        </div>
+        <div>
+          <div class="pozycja-label">Jedn.</div>
+          <button type="button" class="pozycja-input" onclick="otworzModalJednostki(${i})" style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;text-align:left;padding-right:6px;font-family:var(--font-b)">
+            <span>${p.jednostka || 'szt'}</span>
+            <span style="color:var(--text3);font-size:9px">▼</span>
+          </button>
+        </div>
+        <div>
+          <div class="pozycja-label" style="display:flex;align-items:center;justify-content:space-between;gap:4px">
+            <span>Cena</span>
+            <span class="cena-toggle" onclick="togglePozycjaTryb(${i})" style="font-size:9px;font-weight:800;padding:1px 5px;border-radius:4px;cursor:pointer;background:${isBrutto?'rgba(245,166,35,0.15)':'var(--glass)'};color:${isBrutto?'var(--accent)':'var(--text3)'};border:1px solid ${isBrutto?'var(--accent-border)':'var(--border)'};letter-spacing:0.3px">${isBrutto?'BRUTTO':'NETTO'}</span>
+          </div>
+          <input class="pozycja-input" type="number" value="${p.cena}" min="0" step="0.01" oninput="updatePozycja(${i},'cena',this.value)">
+        </div>
+        <div>
+          <div class="pozycja-label">VAT %</div>
+          <select class="pozycja-input" onchange="updatePozycja(${i},'vat',this.value)">
+            ${['23','8','5','0','zw','np'].map(v=>`<option value="${v}" ${p.vat===v?'selected':''}>${v}%</option>`).join('')}
+          </select>
+        </div>
+        <button class="pozycja-del" onclick="delPozycja(${i})">×</button>
+      </div>
+      <div style="text-align:right;margin-top:6px;font-family:var(--font-c);font-size:12px;color:var(--accent)">
+        ${(()=>{const k=kalkuluj(p);return isBrutto
+          ? `Netto: ${formatKwota(k.netto)} zł`
+          : `Brutto: ${formatKwota(k.brutto)} zł`;})()}
+      </div>
+    </div>`;
+  }).join('');
+  obliczSumy();
+}
+
+// ── MODAL JEDNOSTEK ──
+const POPULARNE_JEDNOSTKI = [
+  {kod:'szt', nazwa:'sztuka'},
+  {kod:'kpl', nazwa:'komplet'},
+  {kod:'usł', nazwa:'usługa'},
+  {kod:'kg',  nazwa:'kilogram'},
+  {kod:'g',   nazwa:'gram'},
+  {kod:'t',   nazwa:'tona'},
+  {kod:'m',   nazwa:'metr'},
+  {kod:'mb',  nazwa:'metr bież.'},
+  {kod:'m²',  nazwa:'metr²'},
+  {kod:'m³',  nazwa:'metr³'},
+  {kod:'km',  nazwa:'kilometr'},
+  {kod:'l',   nazwa:'litr'},
+  {kod:'ml',  nazwa:'mililitr'},
+  {kod:'godz',nazwa:'godzina'},
+  {kod:'dzień',nazwa:'dzień'},
+  {kod:'msc', nazwa:'miesiąc'},
+  {kod:'opak',nazwa:'opakowanie'},
+  {kod:'paleta',nazwa:'paleta'},
+];
+
+let _jednostkaPozIdx = null; // indeks pozycji do zmiany jednostki
+
+function otworzModalJednostki(idx) {
+  _jednostkaPozIdx = idx;
+  const aktualna = pozycje[idx]?.jednostka || 'szt';
+  const grid = document.getElementById('jednostkiGrid');
+  grid.innerHTML = POPULARNE_JEDNOSTKI.map(j => {
+    const active = j.kod === aktualna;
+    return `<button type="button" onclick="wybierzJednostke('${j.kod}')" style="padding:14px 8px;background:${active?'rgba(245,166,35,0.15)':'var(--glass)'};border:1px solid ${active?'var(--accent)':'var(--border)'};border-radius:10px;color:${active?'var(--accent)':'var(--text)'};cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all 0.15s">
+      <div style="font-family:var(--font-c);font-weight:800;font-size:16px;letter-spacing:0.5px">${j.kod}</div>
+      <div style="font-size:10px;color:var(--text3);text-transform:lowercase">${j.nazwa}</div>
+    </button>`;
+  }).join('');
+  document.getElementById('jednostkaCustom').value = '';
+  document.getElementById('modalJednostka').classList.add('open');
+}
+
+function wybierzJednostke(kod) {
+  if (_jednostkaPozIdx === null) return;
+  pozycje[_jednostkaPozIdx].jednostka = kod;
+  closeModal('modalJednostka');
+  renderPozycje();
+}
+
+function zatwierdzJednostkeCustom() {
+  const v = document.getElementById('jednostkaCustom').value.trim();
+  if (!v) { showToast('Wpisz nazwę jednostki'); return; }
+  if (v.length > 12) { showToast('Maksymalnie 12 znaków'); return; }
+  if (_jednostkaPozIdx === null) return;
+  pozycje[_jednostkaPozIdx].jednostka = v;
+  closeModal('modalJednostka');
+  renderPozycje();
+}
+
+// Przełączenie trybu wpisywania ceny netto ↔ brutto z konwersją wartości
+function togglePozycjaTryb(i) {
+  const p = pozycje[i];
+  const obecnyTryb = p.cenaTryb || 'netto';
+  const cena = parseFloat(p.cena) || 0;
+  const vatRate = ['zw','np'].includes(p.vat) ? 0 : (parseFloat(p.vat) || 0);
+
+  if (obecnyTryb === 'netto') {
+    // Przeliczam netto → brutto
+    p.cena = +(cena * (1 + vatRate/100)).toFixed(2);
+    p.cenaTryb = 'brutto';
+  } else {
+    // Przeliczam brutto → netto
+    p.cena = +(cena / (1 + vatRate/100)).toFixed(2);
+    p.cenaTryb = 'netto';
+  }
+  renderPozycje();
+}
+
+function updatePozycja(i, key, val) {
+  if (key === 'ilosc' || key === 'cena') val = parseFloat(val) || 0;
+  pozycje[i][key] = val;
+  // Aktualizuj tylko sumy bez re-renderu (żeby nie gubić focus)
+  obliczSumy();
+  // Aktualizuj wyświetlaną kwotę przy danej pozycji
+  const rows = document.querySelectorAll('.pozycja-row');
+  if (rows[i]) {
+    const bruttoEl = rows[i].querySelector('.pozycja-row > div:last-child');
+    if (bruttoEl) {
+      const k = kalkuluj(pozycje[i]);
+      const isBrutto = (pozycje[i].cenaTryb || 'netto') === 'brutto';
+      bruttoEl.textContent = isBrutto
+        ? `Netto: ${formatKwota(k.netto)} zł`
+        : `Brutto: ${formatKwota(k.brutto)} zł`;
+    }
+  }
+}
+
+function delPozycja(i) {
+  pozycje.splice(i, 1);
+  renderPozycje();
+}
+
+function kalkuluj(p) {
+  const ilosc = parseFloat(p.ilosc) || 0;
+  const cena = parseFloat(p.cena) || 0;
+  const vatRate = ['zw','np'].includes(p.vat) ? 0 : (parseFloat(p.vat) || 0);
+  const tryb = p.cenaTryb || 'netto';
+
+  let netto, vat, brutto;
+  if (tryb === 'brutto') {
+    // Cena wpisana brutto — wyliczamy netto wstecz
+    brutto = ilosc * cena;
+    netto = brutto / (1 + vatRate/100);
+    vat = brutto - netto;
+  } else {
+    // Cena wpisana netto (domyślnie)
+    netto = ilosc * cena;
+    vat = netto * vatRate / 100;
+    brutto = netto + vat;
+  }
+  return { netto, vat, brutto, vatRate };
+}
+
+function obliczSumy() {
+  const container = document.getElementById('sumaBox');
+  if (!pozycje.length) { container.innerHTML = ''; return; }
+
+  let sumaNetto = 0, sumaVAT = 0, sumaBrutto = 0;
+  const vatGrupy = {};
+
+  pozycje.forEach(p => {
+    const k = kalkuluj(p);
+    sumaNetto += k.netto;
+    sumaVAT += k.vat;
+    sumaBrutto += k.brutto;
+    const vKey = p.vat;
+    if (!vatGrupy[vKey]) vatGrupy[vKey] = {netto:0, vat:0, brutto:0};
+    vatGrupy[vKey].netto += k.netto;
+    vatGrupy[vKey].vat += k.vat;
+    vatGrupy[vKey].brutto += k.brutto;
+  });
+
+  const vatRows = Object.entries(vatGrupy).map(([v,g]) =>
+    `<div class="suma-row"><span class="lbl">VAT ${v}%</span><span class="val">${formatKwota(g.netto)} + ${formatKwota(g.vat)} = ${formatKwota(g.brutto)} zł</span></div>`
+  ).join('');
+
+  container.innerHTML = `<div class="suma-table">
+    <div class="suma-row"><span class="lbl">Razem netto</span><span class="val">${formatKwota(sumaNetto)} zł</span></div>
+    ${vatRows}
+    <div class="suma-row"><span class="lbl">Do zapłaty</span><span class="val">${formatKwota(sumaBrutto)} zł</span></div>
+  </div>`;
+}
+
+// ── ZAPIS FAKTURY ──
+function saveFaktura(status) {
+  if (!selectedKlient) { showToast('Wybierz nabywcę'); return; }
+  if (!pozycje.length) { showToast('Dodaj co najmniej jedną pozycję'); return; }
+
+  let sumaNetto=0, sumaVAT=0, sumaBrutto=0;
+  pozycje.forEach(p => { const k=kalkuluj(p); sumaNetto+=k.netto; sumaVAT+=k.vat; sumaBrutto+=k.brutto; });
+
+  const fvData = {
+    id: editFvId || Date.now(),
+    numer: document.getElementById('fvNumer').value,
+    typ: document.getElementById('fvTyp').value,
+    status: status || 'draft',
+    dataWyst: document.getElementById('fvDataWyst').value,
+    dataSprzed: document.getElementById('fvDataSprzed').value,
+    dataPlatn: document.getElementById('fvDataPlatn').value,
+    platnosc: document.getElementById('fvPlatnosc').value,
+    waluta: document.getElementById('fvWaluta').value,
+    uwagi: document.getElementById('fvUwagi').value,
+    nabywca: selectedKlient,
+    sprzedawca: {
+      nazwa: ust.firmaNazwa || '—',
+      nip: ust.firmaNIP || '',
+      regon: ust.firmaREGON || '',
+      ulica: ust.firmaUlica || '',
+      kod: ust.firmaKod || '',
+      miasto: ust.firmaMiasto || '',
+      konto: ust.firmaKonto || '',
+      email: ust.firmaEmail || '',
+    },
+    pozycje: [...pozycje],
+    sumaNetto, sumaVAT, sumaBrutto,
+    ksefNr: editFvId ? (faktury.find(f=>f.id===editFvId)?.ksefNr || null) : null,
+  };
+
+  if (editFvId) {
+    const idx = faktury.findIndex(f => f.id === editFvId);
+    faktury[idx] = fvData;
+  } else {
+    faktury.unshift(fvData);
+    // Zwiększ numer kolejny — chyba że to konwersja PF→FV (numer dziedziczony)
+    if (!fvData._konwersja) {
+      const grupa = grupaNumeracji(fvData.typ);
+      numeracja[grupa].nrNext++;
+      localStorage.setItem('rob_numeracja', JSON.stringify(numeracja));
+    } else {
+      // Konwersja — wyczyść flagę, nie zostaje w zapisanych danych
+      delete fvData._konwersja;
+    }
+    // PIERWSZY ZAPIS — sprawdź czy zapytać o zapamiętanie klienta
+    sprawdzCzyZapamietacKlienta(fvData.nabywca);
+  }
+
+  localStorage.setItem('rob_faktury', JSON.stringify(faktury));
+  // Auto-snapshot przez wspólny moduł w robion-app.html (jeśli załadowany)
+  // Tu mamy osobne okno — robimy throttling sami przez localStorage
+  try {
+    const last = parseInt(localStorage.getItem('rob_lastSnapshot') || '0');
+    if (Date.now() - last > 3600000) {
+      const KLUCZE = ['rob_faktury','rob_klienci','rob_produkty','rob_ust','rob_numeracja'];
+      const dane = {};
+      KLUCZE.forEach(k => { const v = localStorage.getItem(k); if (v !== null) dane[k] = v; });
+      const snap = {wersja:1, apka:'Robion', dataUtworzenia:new Date().toISOString(), powod:'auto', dane};
+      const lista = JSON.parse(localStorage.getItem('rob_snapshots') || '[]');
+      lista.unshift(snap);
+      while (lista.length > 5) lista.pop();
+      localStorage.setItem('rob_snapshots', JSON.stringify(lista));
+      localStorage.setItem('rob_lastSnapshot', String(Date.now()));
+    }
+  } catch(e) { console.warn('Snapshot:', e); }
+
+  editFvId = fvData.id;
+  document.getElementById('btnDelFv').style.display = 'block';
+  // Komunikat zależny od statusu
+  if (status === 'issued') {
+    showToast('✓ Faktura wystawiona');
+  } else if (status === 'draft') {
+    showToast('✓ Zapisana jako robocza');
+  } else {
+    showToast('✓ Faktura zapisana');
+  }
+  // Odśwież listę jeśli widoczna
+  if (typeof renderLista === 'function') renderLista();
+  return fvData.id;
+}
+
+// ── ZAPAMIĘTAĆ KLIENTA? ──
+let _zkKandydat = null; // klient do ewentualnego zapisania
+
+function sprawdzCzyZapamietacKlienta(nabywca) {
+  if (!nabywca || !nabywca.nazwa) return;
+
+  // Czy ten klient już istnieje w kartotece?
+  // Identyfikujemy po NIP-ie (jeśli jest), inaczej po nazwie + adresie
+  const istnieje = klienci.some(k => {
+    if (nabywca.nip && k.nip) return k.nip.replace(/\D/g,'') === nabywca.nip.replace(/\D/g,'');
+    // Bez NIP-u — porównaj nazwę + miasto + ulicę (case-insensitive)
+    const eq = (a,b) => (a||'').toString().trim().toLowerCase() === (b||'').toString().trim().toLowerCase();
+    return eq(k.nazwa, nabywca.nazwa) && eq(k.miasto, nabywca.miasto) && eq(k.ulica, nabywca.ulica);
+  });
+
+  if (istnieje) return;
+
+  // Nie istnieje — pokaż modal pytający
+  _zkKandydat = nabywca;
+  document.getElementById('zkNazwa').textContent = nabywca.nazwa;
+  const linie = [
+    nabywca.nip ? `NIP: ${nabywca.nip}` + (nabywca.regon ? ` · REGON: ${nabywca.regon}` : '') : (nabywca.regon ? `REGON: ${nabywca.regon}` : 'Bez NIP-u (osoba prywatna)'),
+    [nabywca.ulica, [nabywca.kod, nabywca.miasto].filter(Boolean).join(' ')].filter(Boolean).join(', ')
+  ].filter(Boolean);
+  document.getElementById('zkPodglad').innerHTML =
+    `<div style="font-family:var(--font-c);font-weight:700;color:var(--text);margin-bottom:4px">${nabywca.nazwa}</div>` +
+    linie.map(l => `<div>${l}</div>`).join('');
+
+  document.getElementById('modalZapamietajKlienta').classList.add('open');
+}
+
+function zapamietajKlientaTak() {
+  if (!_zkKandydat) { closeModal('modalZapamietajKlienta'); return; }
+  // Struktura zgodna z saveKlient w głównej apce
+  const nowyKlient = {
+    id: Date.now(),
+    typ: 'firma',
+    nazwa: _zkKandydat.nazwa || '',
+    nip: _zkKandydat.nip || '',
+    regon: _zkKandydat.regon || '',
+    ulica: _zkKandydat.ulica || '',
+    kod: _zkKandydat.kod || '',
+    miasto: _zkKandydat.miasto || '',
+    tel: _zkKandydat.tel || '',
+    email: _zkKandydat.email || '',
+    adresWysylki: '',
+    notatki: ''
+  };
+  klienci.unshift(nowyKlient);
+  localStorage.setItem('rob_klienci', JSON.stringify(klienci));
+  // Dopisz id do nabywcy w bieżącej fakturze — przy ponownym otwarciu będzie znaleziony w kartotece
+  if (selectedKlient && !selectedKlient.id) {
+    selectedKlient.id = nowyKlient.id;
+    const f = faktury.find(x => x.id === editFvId);
+    if (f) {
+      f.nabywca = {...f.nabywca, id: nowyKlient.id};
+      localStorage.setItem('rob_faktury', JSON.stringify(faktury));
+    }
+  }
+  _zkKandydat = null;
+  closeModal('modalZapamietajKlienta');
+  showToast('✓ Klient dodany do kartoteki');
+}
+
+function zapamietajKlientaNie() {
+  _zkKandydat = null;
+  closeModal('modalZapamietajKlienta');
+}
+
+function deleteFaktura() {
+  if (!confirm('Usunąć fakturę?')) return;
+  faktury = faktury.filter(f => f.id !== editFvId);
+  localStorage.setItem('rob_faktury', JSON.stringify(faktury));
+  renderLista();
+  showView('lista');
+  showToast('Faktura usunięta');
+}
+
+// ── KONWERSJA PRO FORMA → FAKTURA VAT ──
+function konwertujProforme() {
+  const pf = faktury.find(f => f.id === editFvId);
+  if (!pf || pf.typ !== 'PF') { showToast('Tylko pro forma może być konwertowana'); return; }
+
+  // Sprawdź czy nie ma już faktury z tego samego numeru bazowego
+  const numerBazowy = pf.numer.replace(/^PF\//, '');
+  const istniejacaFv = faktury.find(f => f.typ === 'FV' && f.numer.replace(/^FV\//, '') === numerBazowy);
+  if (istniejacaFv) {
+    showToast('Faktura VAT z tym numerem już istnieje');
+    return;
+  }
+
+  if (!confirm(`Utworzyć fakturę VAT z numeru ${pf.numer}?\n\nPro forma zostanie zachowana w historii.`)) return;
+
+  // Skopiuj wszystko z PF, zmień typ i numer (prefix), oznacz jako konwersję
+  const dzis = new Date().toISOString().split('T')[0];
+  const fvNowa = {
+    ...pf,
+    id: Date.now(),
+    typ: 'FV',
+    numer: 'FV/' + numerBazowy,
+    status: 'draft',
+    dataWyst: dzis,
+    _konwersja: true,         // flaga — saveFaktura nie zwiększy licznika
+    _zKonwersjiZ: pf.id,      // ślad którego PF dotyczy
+    ksefNr: null
+  };
+
+  // Oznacz starą PF jako "skonwertowaną" (zostaje w historii ze statusem "sent" / opłacona)
+  const idxPf = faktury.findIndex(f => f.id === pf.id);
+  if (idxPf >= 0) {
+    faktury[idxPf].status = 'sent';
+    faktury[idxPf]._skonwertowanaNa = fvNowa.id;
+  }
+
+  faktury.unshift(fvNowa);
+  // Ważne: NIE zwiększamy numeracja.fv.nrNext — bo to ten sam numer co PF
+  localStorage.setItem('rob_faktury', JSON.stringify(faktury));
+
+  showToast('✓ Pro forma skonwertowana na fakturę VAT');
+  // Otwórz nową fakturę do edycji
+  editFaktura(fvNowa.id);
+}
+
+// ── PODGLĄD FAKTURY ──
+function showPodglad() {
+  // Zachowaj istniejący status (nie nadpisuj draft jeśli już issued/ksef_*)
+  const istniejaca = editFvId ? faktury.find(x => x.id === editFvId) : null;
+  const istniejacyStatus = istniejaca?.status || 'draft';
+  // Jeśli faktura była już wystawiona (issued/ksef_*), nie cofajmy do draft
+  const noweStaty = ['issued','ksef_pending','ksef_ok','ksef_error'];
+  const statusDoZapisu = noweStaty.includes(istniejacyStatus) ? istniejacyStatus : 'draft';
+  const id = saveFaktura(statusDoZapisu);
+  if (!id) return;
+  const saved = faktury.find(x => x.id === id);
+  if (!saved) return;
+  renderPodglad(saved);
+  // Status KSeF - obsługa starych i nowych statusów
+  const ksefBox = document.getElementById('ksefStatusBox');
+  if (!ksefBox) { showView('podglad'); return; }
+  if (saved.status === 'ksef_ok' && saved.ksefNr) {
+    ksefBox.style.display = 'block';
+    ksefBox.className = 'ok';
+    ksefBox.innerHTML = '<div style="color:var(--green);font-weight:700;margin-bottom:4px">✓ W KSeF</div>' +
+      '<div id="ksefNrBox" style="color:var(--text2);font-size:11px;font-family:var(--font-c);letter-spacing:0.5px">Numer: ' + saved.ksefNr + '</div>';
+  } else if (saved.status === 'ksef_pending') {
+    ksefBox.style.display = 'block';
+    ksefBox.className = 'pending';
+    ksefBox.innerHTML = '<span style="color:var(--accent)">⏳ Wysyłanie do KSeF…</span>';
+  } else if (saved.status === 'ksef_error') {
+    ksefBox.style.display = 'block';
+    ksefBox.className = 'err';
+    ksefBox.innerHTML = '<div style="color:var(--danger);font-weight:700;margin-bottom:4px">✗ Błąd wysyłki KSeF</div>' +
+      '<div style="color:var(--text2);font-size:11px">' + (saved.ksefError || '—') + '</div>' +
+      '<button onclick="wyslijFaktureKSeF()" style="margin-top:10px;padding:8px 14px;background:var(--accent);color:#000;border:none;border-radius:8px;font-family:var(--font-c);font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer">Spróbuj ponownie</button>';
+  } else if (saved.ksefNr) {
+    // Stary format — kompatybilność wsteczna
+    ksefBox.style.display = 'block';
+    ksefBox.className = 'ok';
+    ksefBox.innerHTML = '<div id="ksefNrBox" style="color:var(--text2);font-size:11px;font-family:var(--font-c);letter-spacing:0.5px">Nr KSeF: ' + saved.ksefNr + '</div>';
+  } else {
+    ksefBox.style.display = 'none';
+  }
+  showView('podglad');
+}
+
+function renderPodglad(f) {
+  let sumaNetto=0, sumaVAT=0, sumaBrutto=0;
+  const vatGrupy = {};
+  f.pozycje.forEach(p => {
+    const k = kalkuluj(p);
+    sumaNetto+=k.netto; sumaVAT+=k.vat; sumaBrutto+=k.brutto;
+    if (!vatGrupy[p.vat]) vatGrupy[p.vat] = {netto:0,vat:0,brutto:0};
+    vatGrupy[p.vat].netto+=k.netto; vatGrupy[p.vat].vat+=k.vat; vatGrupy[p.vat].brutto+=k.brutto;
+  });
+
+  const logoHtml = ust.firmaLogo
+    ? `<img src="${ust.firmaLogo}" class="fv-logo" alt="Logo">`
+    : '';
+
+  const pozycjeRows = f.pozycje.map((p,i) => {
+    const k = kalkuluj(p);
+    return `<tr>
+      <td>${i+1}</td>
+      <td>${p.nazwa}</td>
+      <td style="text-align:right">${formatKwota(p.ilosc)} ${p.jednostka}</td>
+      <td style="text-align:right">${formatKwota(p.cena)}</td>
+      <td style="text-align:right">${p.vat}%</td>
+      <td style="text-align:right">${formatKwota(k.netto)}</td>
+      <td style="text-align:right">${formatKwota(k.vat)}</td>
+      <td style="text-align:right"><strong>${formatKwota(k.brutto)}</strong></td>
+    </tr>`;
+  }).join('');
+
+  const vatSumaRows = Object.entries(vatGrupy).map(([v,g]) =>
+    `<div class="s-row"><span>VAT ${v}%</span><span>${formatKwota(g.vat)} zł</span></div>`
+  ).join('');
+
+  const sp = f.sprzedawca;
+  const nb = f.nabywca;
+
+  const html = `<div class="fv-preview">
+    <div style="background:#F5A623;height:6px"></div>
+    <div class="fv-preview-inner">
+      ${logoHtml}
+      <h1>${(()=>{const t={FV:'Faktura VAT',PF:'Pro forma',RK:'Rachunek',KS:'Kosztorys',FK:'Faktura korygująca',FZ:'Faktura zaliczkowa'};return t[f.typ]||'Faktura VAT';})()}</h1>
+      <div class="fv-nr-preview">Nr: <strong>${f.numer}</strong></div>
+
+      <div class="fv-dates">
+        <div class="fv-date-item"><label>Data wystawienia</label><span>${f.dataWyst}</span></div>
+        <div class="fv-date-item"><label>Data sprzedaży</label><span>${f.dataSprzed}</span></div>
+        <div class="fv-date-item"><label>Termin płatności</label><span>${f.dataPlatn}</span></div>
+      </div>
+
+      <div class="strony">
+        <div class="strona">
+          <label>Sprzedawca</label>
+          <div class="firma-nazwa">${sp.nazwa}</div>
+          <div class="firma-dane">
+            ${sp.nip ? 'NIP: '+sp.nip+'<br>' : ''}
+            ${sp.ulica ? sp.ulica+'<br>' : ''}
+            ${sp.kod ? sp.kod+' '+sp.miasto : ''}
+          </div>
+        </div>
+        <div class="strona">
+          <label>Nabywca</label>
+          <div class="firma-nazwa">${nb.nazwa}</div>
+          <div class="firma-dane">
+            ${nb.nip ? 'NIP: '+nb.nip+'<br>' : ''}
+            ${nb.ulica ? nb.ulica+'<br>' : ''}
+            ${nb.kod ? (nb.kod+' '+nb.miasto) : nb.miasto || ''}
+          </div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Lp.</th><th>Nazwa</th><th>Ilość</th><th>Cena netto</th><th>VAT</th><th>Wart. netto</th><th>VAT</th><th>Brutto</th>
+          </tr>
+        </thead>
+        <tbody>${pozycjeRows}</tbody>
+      </table>
+
+      <div class="fv-suma-table">
+        <div class="s-row"><span>Netto</span><span>${formatKwota(sumaNetto)} zł</span></div>
+        ${vatSumaRows}
+        <div class="s-row"><span>Do zapłaty</span><span>${formatKwota(sumaBrutto)} ${f.waluta||'PLN'}</span></div>
+      </div>
+
+      ${(()=>{
+        const platMap = {przelew:'Przelew', gotowka:'Gotówka', karta:'Karta', blik:'BLIK', pobranie:'Pobranie', kompensata:'Kompensata'};
+        const platLabel = platMap[f.platnosc] || (f.platnosc || '—');
+        const isPrzelew = f.platnosc === 'przelew';
+        // Pokazuj konto tylko przy przelewie i jeśli jest wpisane
+        if (isPrzelew && sp.konto) {
+          return `<div class="fv-platnosc">
+            <label>Forma płatności: ${platLabel}</label>
+            <div style="font-size:11px;color:#888;margin-bottom:6px;font-weight:600">Dane do przelewu</div>
+            <div class="konto">${sp.konto}</div>
+            <div class="platnosc-info">${sp.nazwa} · Tytuł: ${f.numer}</div>
+          </div>`;
+        }
+        // Inne formy płatności — tylko etykieta, bez konta
+        return `<div class="fv-platnosc">
+          <label>Forma płatności</label>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#111;text-transform:uppercase;letter-spacing:1px">${platLabel}</div>
+        </div>`;
+      })()}
+
+      ${f.uwagi ? `<div style="padding:10px 14px;background:#f8f8f8;border-radius:8px;font-size:12px;color:#555;margin-bottom:14px"><strong>Uwagi:</strong> ${f.uwagi}</div>` : ''}
+
+      ${f.ksefNr ? `<div class="qr-area">
+        <div class="qr-placeholder">QR<br>KSeF</div>
+        <div class="ksef-info">
+          Faktura ustrukturyzowana wysłana do KSeF.<br>
+          Weryfikacja: ksef.podatki.gov.pl
+          <div class="ksef-nr">Nr KSeF: ${f.ksefNr}</div>
+        </div>
+      </div>` : '<div style="font-size:10px;color:#aaa;text-align:center;padding:8px">Kod QR zostanie dodany po wysłaniu do KSeF</div>'}
+    </div>
+  </div>`;
+
+  document.getElementById('podgladFaktury').innerHTML = html;
+  // Po wstawieniu HTML — przeskaluj do szerokości ekranu
+  setTimeout(skalujPodglad, 0);
+}
+
+// ── SKALOWANIE PODGLĄDU FAKTURY (A4 → szerokość ekranu) ──
+function skalujPodglad() {
+  const stage = document.getElementById('podgladStage');
+  const preview = stage?.querySelector('.fv-preview');
+  if (!stage || !preview) return;
+
+  const screenW = stage.clientWidth;
+  if (!screenW) return; // stage nie jest widoczny
+
+  const A4 = 794;
+  const scale = Math.min(1, screenW / A4);
+
+  preview.style.transform = `scale(${scale})`;
+  // Zmniejsz wysokość kontenera proporcjonalnie do skali — żeby nie było pustego miejsca
+  const realH = preview.scrollHeight;
+  stage.style.height = `${realH * scale}px`;
+}
+window.addEventListener('resize', skalujPodglad);
+window.addEventListener('orientationchange', () => setTimeout(skalujPodglad, 100));
+
+// ── AKCJE ──
+function drukuj() {
+  window.print();
+}
+
+function zapiszPDF() {
+  // Otwiera okno drukowania z opcją "Zapisz jako PDF"
+  showToast('Użyj "Drukuj → Zapisz jako PDF"');
+  setTimeout(() => window.print(), 500);
+}
+
+function wyslijMail() {
+  const f = faktury.find(x => x.id === editFvId);
+  if (!f) return;
+  const subject = encodeURIComponent(`Faktura ${f.numer}`);
+  const body = encodeURIComponent(`Dzień dobry,\n\nW załączeniu przesyłam fakturę nr ${f.numer} na kwotę ${formatKwota(f.sumaBrutto)} ${f.waluta||'PLN'}.\n\nPozdrawiam`);
+  const email = f.nabywca?.email || '';
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+}
+
+// ── HELPERS ──
+function formatKwota(v) {
+  return (parseFloat(v)||0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if(e.target===o) o.classList.remove('open'); });
+});
+
+// ═══════════════════════════════════════════════════════════════
+// UPDATE_017: WYSTAWIANIE FAKTURY + KSeF + GENERATOR FA(3) v1-0E
+// ═══════════════════════════════════════════════════════════════
+
+// ── STAŁA WERSJI APLIKACJI ──
+const ROBION_VERSION = '0.2.0';
+
+// ─────────────────────────────────────────────────────────────
+// "WYSTAW FAKTURĘ" — przycisk w widoku formy
+// Zapisuje fakturę jako issued (już nie draft) i otwiera modal "co dalej"
+// ─────────────────────────────────────────────────────────────
+function wystawFakture() {
+  // saveFaktura zwraca id zapisanej faktury — przekażemy 'issued'
+  const id = saveFaktura('issued');
+  if (!id) return; // walidacja nieudana - saveFaktura sam pokazał toast
+  const f = faktury.find(x => x.id === id);
+  if (!f) return;
+  // Pokaż modal "co dalej"
+  document.getElementById('coDalejNumer').textContent = 'Faktura nr ' + (f.numer || '—');
+  // KSeF widoczny tylko jeśli typ FV (proformy/kosztorysów nie wysyłamy)
+  const btnKSeF = document.getElementById('btnCoDalejKSeF');
+  if (btnKSeF) {
+    btnKSeF.style.display = (f.typ || 'FV') === 'FV' ? '' : 'none';
+  }
+  // Zapamiętaj id faktury w atrybucie modalu
+  document.getElementById('modalCoDalej').dataset.fid = id;
+  document.getElementById('modalCoDalej').classList.add('open');
+}
+
+// Po zamknięciu modalu „co dalej" sprawdź czy zaproponować pierwszą kopię zapasową
+// Wywoływane z każdego miejsca gdzie zamyka się modalCoDalej
+function poZamknieciuCoDalej() {
+  closeModal('modalCoDalej');
+  // Pokaż modal pierwszej kopii TYLKO jeśli:
+  //  - to jest pierwsza wystawiona faktura (status != draft)
+  //  - user jeszcze nie zrobił kopii
+  //  - user nie pominął wcześniej propozycji
+  const issuedy = faktury.filter(f => f.status && f.status !== 'draft');
+  const lastBackup = localStorage.getItem('rob_lastBackup');
+  const pominieto = localStorage.getItem('rob_pominPierwszaFV');
+  if (issuedy.length === 1 && !lastBackup && !pominieto) {
+    setTimeout(() => {
+      const m = document.getElementById('modalPierwszaFV');
+      if (m) m.classList.add('open');
+    }, 350); // krótka pauza żeby modalCoDalej zdążył się zamknąć animacją
+  }
+}
+
+function coDalej_KSeF() {
+  const fid = document.getElementById('modalCoDalej').dataset.fid;
+  poZamknieciuCoDalej();
+  // Otwórz podgląd faktury i odpal wysyłkę
+  editFaktura(fid);
+  showPodglad();
+  setTimeout(() => wyslijFaktureKSeF(), 200);
+}
+
+function coDalej_PDF() {
+  const fid = document.getElementById('modalCoDalej').dataset.fid;
+  poZamknieciuCoDalej();
+  editFaktura(fid);
+  showPodglad();
+  setTimeout(() => drukuj(), 250);
+}
+
+function coDalej_Mail() {
+  const fid = document.getElementById('modalCoDalej').dataset.fid;
+  poZamknieciuCoDalej();
+  editFaktura(fid);
+  showPodglad();
+  setTimeout(() => wyslijMail(), 250);
+}
+
+// ─────────────────────────────────────────────────────────────
+// PRAWDZIWA WYSYŁKA FAKTURY DO KSeF (przez Cloudflare Worker)
+// Zastępuje atrapę wyslijKSeF z poprzedniej wersji.
+// Pełen przepływ:
+//   1. Auth: challenge → encrypt → ksef-token → polling → access token
+//   2. Wyślij online InvoiceSend (XML)
+//   3. Polling statusu (status invoice-send)
+//   4. Pobierz UPO (Urzędowe Poświadczenie Odbioru)
+// Wymaga skonfigurowanego tokena w Ustawieniach (testKSeFConnection).
+// ─────────────────────────────────────────────────────────────
+async function wyslijFaktureKSeF() {
+  const f = faktury.find(x => x.id === editFvId);
+  if (!f) return;
+
+  const env = ksefEnv();
+  const tokenKsef = ksefCurrentToken();
+  const nip = (ust.firmaNIP || '').replace(/\D/g, '');
+
+  if (!tokenKsef) {
+    showToast('Skonfiguruj token KSeF w Ustawieniach');
+    return;
+  }
+  if (!nip || nip.length !== 10) {
+    showToast('Brak poprawnego NIP firmy');
+    return;
+  }
+  if ((f.typ || 'FV') !== 'FV') {
+    showToast('Do KSeF wysyłamy tylko faktury VAT');
+    return;
+  }
+
+  // Status pending — od razu zapisz, żeby UI pokazało plakietkę
+  setFakturaStatus(f.id, 'ksef_pending', { ksefError: null });
+  renderPodglad(faktury.find(x => x.id === f.id));
+
+  const box = document.getElementById('ksefStatusBox');
+  if (box) {
+    box.style.display = 'block';
+    box.className = 'pending';
+    box.innerHTML = '<span style="color:var(--accent)">⏳ Wysyłanie do KSeF — krok 1/6: pobieranie challenge...</span>';
+  }
+
+  try {
+    // ═══ KROK 1: AUTH (challenge → encryptedToken → polling) ═══
+    const ch = await ksefFetch('/auth/challenge', { method: 'POST' });
+    if (!ch.challenge || !ch.timestamp) throw new Error('Brak challenge w odpowiedzi');
+
+    if (box) box.innerHTML = '<span style="color:var(--accent)">⏳ Krok 2/6: pobieranie klucza publicznego MF...</span>';
+    const certs = await ksefFetch('/security/public-key-certificates');
+    const tokenCert = pickKsefTokenCert(certs);
+    if (!tokenCert || !tokenCert.pem) throw new Error('Brak certyfikatu tokenu');
+
+    if (box) box.innerHTML = '<span style="color:var(--accent)">⏳ Krok 3/6: szyfrowanie tokenu...</span>';
+    const tsMs = ch.timestampMs || (typeof ch.timestamp === 'string' ? new Date(ch.timestamp).getTime() : ch.timestamp);
+    const encryptedToken = await encryptRSAOAEP(tokenKsef + '|' + tsMs, tokenCert.pem);
+
+    if (box) box.innerHTML = '<span style="color:var(--accent)">⏳ Krok 4/6: uwierzytelnianie...</span>';
+    const authResp = await ksefFetch('/auth/ksef-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        challenge: ch.challenge,
+        contextIdentifier: { type: 'Nip', value: nip },
+        encryptedToken: encryptedToken
+      })
+    });
+    if (!authResp.referenceNumber || !authResp.authenticationToken) {
+      throw new Error('Brak referenceNumber/authenticationToken');
+    }
+
+    const tempJWT = authResp.authenticationToken.token || authResp.authenticationToken;
+
+    // Polling autoryzacji
+    let authOk = false;
+    for (let i = 0; i < 10; i++) {
+      await sleep(1500);
+      const st = await ksefFetch('/auth/' + authResp.referenceNumber, {
+        headers: { 'Authorization': 'Bearer ' + tempJWT }
+      });
+      const code = st.status?.code ?? st.code;
+      if (code === 200 || st.status?.description?.toLowerCase().includes('sukces')) {
+        authOk = true; break;
+      }
+      if (code >= 400) throw new Error('Auth: ' + (st.status?.description || 'kod ' + code));
+    }
+    if (!authOk) throw new Error('Auth timeout — spróbuj ponownie');
+
+    // Wymień na accessToken (krótkotrwały JWT używany do dalszych requestów)
+    const tokens = await ksefFetch('/auth/token/redeem', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + tempJWT }
+    });
+    const accessJWT = tokens.accessToken?.token || tokens.accessToken || tempJWT;
+
+    // ═══ KROK 5: WYŚLIJ FAKTURĘ (online InvoiceSend) ═══
+    if (box) box.innerHTML = '<span style="color:var(--accent)">⏳ Krok 5/6: wysyłanie faktury XML...</span>';
+    const xml = generujXMLFA3(f);
+    const xmlBase64 = btoa(unescape(encodeURIComponent(xml)));
+
+    // Hash SHA-256 dla zabezpieczenia integralności
+    const xmlBytes = new TextEncoder().encode(xml);
+    const hashBuf = await crypto.subtle.digest('SHA-256', xmlBytes);
+    const hashB64 = arrayBufferToBase64(hashBuf);
+
+    const sendReq = {
+      invoiceHash: {
+        hashSHA: { algorithm: 'SHA-256', encoding: 'Base64', value: hashB64 },
+        fileSize: xmlBytes.length
+      },
+      invoicePayload: {
+        type: 'plain',
+        invoiceBody: xmlBase64
+      }
+    };
+
+    const sendResp = await ksefFetch('/invoices/online', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessJWT },
+      body: JSON.stringify(sendReq)
+    });
+
+    const invoiceRef = sendResp.elementReferenceNumber || sendResp.referenceNumber;
+    if (!invoiceRef) throw new Error('Brak referenceNumber faktury w odpowiedzi');
+
+    // ═══ KROK 6: POLLING STATUSU + UPO ═══
+    if (box) box.innerHTML = '<span style="color:var(--accent)">⏳ Krok 6/6: oczekiwanie na nadanie numeru KSeF...</span>';
+
+    let ksefNr = null;
+    let upo = null;
+    for (let i = 0; i < 20; i++) {
+      await sleep(2000);
+      const st = await ksefFetch('/invoices/' + invoiceRef, {
+        headers: { 'Authorization': 'Bearer ' + accessJWT }
+      });
+      const code = st.processingDescription?.code ?? st.status?.code ?? st.code;
+      // 200 = przyjęta z numerem KSeF
+      if (code === 200 || st.ksefReferenceNumber) {
+        ksefNr = st.ksefReferenceNumber || st.invoiceNumber || invoiceRef;
+        upo = st.upoUuid || st.upo || null;
+        break;
+      }
+      // 4xx/5xx = błąd
+      if (code >= 400) {
+        throw new Error('Faktura odrzucona: ' + (st.processingDescription?.description || st.status?.description || 'kod ' + code));
+      }
+    }
+
+    if (!ksefNr) {
+      throw new Error('Timeout — KSeF nie nadał numeru w 40s. Status sprawdź później.');
+    }
+
+    // ═══ Sukces — zapisz w fakturze ═══
+    setFakturaStatus(f.id, 'ksef_ok', {
+      ksefNr: ksefNr,
+      ksefUpo: upo,
+      ksefRef: invoiceRef,
+      ksefData: new Date().toISOString(),
+      ksefEnv: env
+    });
+
+    if (box) {
+      box.className = 'ok';
+      box.innerHTML = '<div style="color:var(--green);font-weight:700;margin-bottom:4px">✓ Wysłano do KSeF</div>' +
+        '<div style="color:var(--text2);font-size:11px;font-family:var(--font-c);letter-spacing:0.5px">Numer: ' + ksefNr + '</div>';
+    }
+    showToast('✓ Faktura w KSeF');
+    renderPodglad(faktury.find(x => x.id === f.id));
+
+  } catch (err) {
+    console.error('KSeF send error:', err);
+    setFakturaStatus(f.id, 'ksef_error', { ksefError: err.message || String(err) });
+    if (box) {
+      box.className = 'err';
+      box.innerHTML = '<div style="color:var(--danger);font-weight:700;margin-bottom:4px">✗ Błąd wysyłki KSeF</div>' +
+        '<div style="color:var(--text2);font-size:11px">' + (err.message || err) + '</div>';
+    }
+    showToast('✗ Błąd KSeF');
+    renderPodglad(faktury.find(x => x.id === f.id));
+  }
+}
+
+// Alias dla kompatybilności wstecznej (przycisk w widoku podglądu)
+async function wyslijKSeF() {
+  return wyslijFaktureKSeF();
+}
+
+// Pomocniczo: zmiana statusu faktury i zapis w localStorage
+function setFakturaStatus(id, status, extra) {
+  const idx = faktury.findIndex(x => x.id === id);
+  if (idx < 0) return;
+  faktury[idx].status = status;
+  if (extra) Object.assign(faktury[idx], extra);
+  localStorage.setItem('rob_faktury', JSON.stringify(faktury));
+}
+
+// ─────────────────────────────────────────────────────────────
+// GENERATOR XML — FA(3) v1-0E (schema krd.gov.pl 2023-06-29/12648)
+// Pełna struktura wymagana przez KSeF dla typu FV.
+// ─────────────────────────────────────────────────────────────
+function generujXMLFA3(f) {
+  const esc = (s) => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+
+  const num = (v) => (parseFloat(v) || 0).toFixed(2);
+
+  const sprz = f.sprzedawca || {};
+  const nab = f.nabywca || {};
+
+  // Daty: ISO YYYY-MM-DD wymagane
+  const dataWyst = f.dataWyst || new Date().toISOString().slice(0,10);
+  const dataSprz = f.dataSprzedazy || dataWyst;
+  const dataWytw = new Date().toISOString();
+
+  // Sumy w grupach VAT (P_13_x = netto wg stawki, P_14_x = VAT wg stawki)
+  const stawki = { '23': {n:0, v:0}, '8': {n:0, v:0}, '5': {n:0, v:0}, '0': {n:0, v:0}, 'zw': {n:0, v:0}, 'np': {n:0, v:0} };
+  (f.pozycje || []).forEach(p => {
+    const k = kalkuluj(p);
+    const stawka = String(p.vat || '23').toLowerCase();
+    if (stawki[stawka]) {
+      stawki[stawka].n += k.netto;
+      stawki[stawka].v += k.vat;
+    } else {
+      stawki['23'].n += k.netto;
+      stawki['23'].v += k.vat;
+    }
+  });
+
+  // Wiersze faktury
+  const wiersze = (f.pozycje || []).map((p, i) => {
+    const k = kalkuluj(p);
+    const stawkaXml = (() => {
+      const s = String(p.vat || '23').toLowerCase();
+      if (s === 'zw') return '<P_12_Zwolnienie>1</P_12_Zwolnienie>';
+      if (s === 'np') return '<P_12_Procedura>np</P_12_Procedura>';
+      if (s === '0')  return '<P_12>0</P_12>';
+      return '<P_12>' + s + '</P_12>';
+    })();
+    return `      <FaWiersz>
+        <NrWierszaFa>${i+1}</NrWierszaFa>
+        <P_7>${esc(p.nazwa)}</P_7>
+        <P_8A>${esc(p.jednostka || 'szt')}</P_8A>
+        <P_8B>${num(p.ilosc)}</P_8B>
+        <P_9A>${num(p.cena)}</P_9A>
+        <P_11>${num(k.netto)}</P_11>
+        ${stawkaXml}
+      </FaWiersz>`;
+  }).join('\n');
+
+  // Sumy stawkami — tylko niezerowe
+  const sumySwawki = [];
+  if (stawki['23'].n > 0) sumySwawki.push(`    <P_13_1>${num(stawki['23'].n)}</P_13_1>\n    <P_14_1>${num(stawki['23'].v)}</P_14_1>`);
+  if (stawki['8'].n > 0)  sumySwawki.push(`    <P_13_2>${num(stawki['8'].n)}</P_13_2>\n    <P_14_2>${num(stawki['8'].v)}</P_14_2>`);
+  if (stawki['5'].n > 0)  sumySwawki.push(`    <P_13_3>${num(stawki['5'].n)}</P_13_3>\n    <P_14_3>${num(stawki['5'].v)}</P_14_3>`);
+  if (stawki['0'].n > 0)  sumySwawki.push(`    <P_13_6>${num(stawki['0'].n)}</P_13_6>`);
+  if (stawki['zw'].n > 0) sumySwawki.push(`    <P_13_7>${num(stawki['zw'].n)}</P_13_7>`);
+  if (stawki['np'].n > 0) sumySwawki.push(`    <P_13_8>${num(stawki['np'].n)}</P_13_8>`);
+
+  const sumaNetto = (f.sumaNetto != null ? f.sumaNetto : (f.pozycje || []).reduce((s,p) => s + kalkuluj(p).netto, 0));
+  const sumaVAT = (f.sumaVAT != null ? f.sumaVAT : (f.pozycje || []).reduce((s,p) => s + kalkuluj(p).vat, 0));
+  const sumaBrutto = (f.sumaBrutto != null ? f.sumaBrutto : sumaNetto + sumaVAT);
+
+  // Adres sprzedawcy/nabywcy
+  const adresXML = (a) => {
+    const linia1 = a.ulica || '';
+    const linia2 = ((a.kod || '') + ' ' + (a.miasto || '')).trim();
+    return `<KodKraju>PL</KodKraju>${linia1 ? '<AdresL1>'+esc(linia1)+'</AdresL1>' : ''}${linia2 ? '<AdresL2>'+esc(linia2)+'</AdresL2>' : ''}`;
+  };
+
+  // Nabywca: osoba prywatna nie ma NIP-u — używamy BrakID
+  const nabIdent = nab.nip
+    ? `<NIP>${esc(String(nab.nip).replace(/\D/g,''))}</NIP><Nazwa>${esc(nab.nazwa)}</Nazwa>`
+    : `<BrakID>1</BrakID><Nazwa>${esc(nab.nazwa)}</Nazwa>`;
+
+  // Forma płatności (P_18A: 1=gotówka, 2=karta, 3=bon, 4=czek, 5=kredyt, 6=przelew, 7=mobilna)
+  const formaPlatMap = { 'gotowka': '1', 'karta': '2', 'przelew': '6', 'blik': '7', 'mobilna': '7' };
+  const p18a = formaPlatMap[(f.formaPlatnosci || '').toLowerCase()] || '6';
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<Faktura xmlns="http://crd.gov.pl/wzor/2023/06/29/12648/" xmlns:etd="http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2022/01/05/eD/DefinicjeTypy/">
+  <Naglowek>
+    <KodFormularza kodSystemowy="FA (3)" wersjaSchemy="1-0E">FA</KodFormularza>
+    <WariantFormularza>3</WariantFormularza>
+    <DataWytworzeniaFa>${dataWytw}</DataWytworzeniaFa>
+    <SystemInfo>Robion ${ROBION_VERSION}</SystemInfo>
+  </Naglowek>
+  <Podmiot1>
+    <DaneIdentyfikacyjne>
+      <NIP>${esc(String(sprz.nip || ust.firmaNIP || '').replace(/\D/g,''))}</NIP>
+      <Nazwa>${esc(sprz.nazwa || ust.firmaNazwa || '')}</Nazwa>
+    </DaneIdentyfikacyjne>
+    <Adres>${adresXML(sprz.ulica ? sprz : { ulica: ust.firmaUlica, kod: ust.firmaKod, miasto: ust.firmaMiasto })}</Adres>
+  </Podmiot1>
+  <Podmiot2>
+    <DaneIdentyfikacyjne>${nabIdent}</DaneIdentyfikacyjne>
+    <Adres>${adresXML(nab)}</Adres>
+  </Podmiot2>
+  <Fa>
+    <KodWaluty>${esc(f.waluta || 'PLN')}</KodWaluty>
+    <P_1>${dataWyst}</P_1>
+    <P_1M>${esc(sprz.miasto || ust.firmaMiasto || '')}</P_1M>
+    <P_2>${esc(f.numer || '')}</P_2>
+    <P_6>${dataSprz}</P_6>
+${sumySwawki.join('\n')}
+    <P_15>${num(sumaBrutto)}</P_15>
+    <Adnotacje>
+      <P_16>2</P_16>
+      <P_17>2</P_17>
+      <P_18>2</P_18>
+      <P_18A>2</P_18A>
+      <Zwolnienie><P_19N>1</P_19N></Zwolnienie>
+      <NoweSrodkiTransportu><P_22N>1</P_22N></NoweSrodkiTransportu>
+      <P_23>2</P_23>
+      <PMarzy><P_PMarzyN>1</P_PMarzyN></PMarzy>
+    </Adnotacje>
+    <RodzajFaktury>VAT</RodzajFaktury>
+${wiersze}
+    <Platnosc>
+      <FormaPlatnosci>${p18a}</FormaPlatnosci>
+${f.terminPlatnosci ? '      <TerminPlatnosci><Termin>'+esc(f.terminPlatnosci)+'</Termin></TerminPlatnosci>' : ''}
+${ust.firmaKonto ? '      <RachunekBankowy><NrRBPL>'+esc(String(ust.firmaKonto).replace(/\\s/g,''))+'</NrRBPL></RachunekBankowy>' : ''}
+    </Platnosc>
+  </Fa>
+</Faktura>`;
+}
+
+// Stary alias dla kompatybilności (jeśli ktoś jeszcze woła generujXMLKSeF)
+function generujXMLKSeF(f) { return generujXMLFA3(f); }
+
+// ─────────────────────────────────────────────────────────────
+// KONIEC update_017
+// ─────────────────────────────────────────────────────────────
+
 </script>
 </body>
 </html>
