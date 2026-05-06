@@ -731,6 +731,10 @@ body {
 
 /* STATUS BADGE — plakietki statusu na liście i podglądzie */
 .status-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-family:var(--font-c);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap}
+
+/* ZRODLO CHIP (Filar 2) — Sprzedaż / Zakup */
+.zrodlo-chip{transition:all 0.2s}
+.zrodlo-chip.active{background:var(--accent-dim)!important;border-color:var(--accent-border)!important;color:var(--accent)!important;box-shadow:0 0 0 1px var(--accent-border)}
 .status-draft{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--text3)}
 .status-issued{background:rgba(123,167,224,0.1);border:1px solid rgba(123,167,224,0.25);color:#7BA7E0}
 .status-ksef_pending{background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent)}
@@ -1083,7 +1087,7 @@ body {
           <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2" stroke="url(#orange-grad)"/><text x="12" y="15.5" font-family="Barlow Condensed,sans-serif" font-size="9" font-weight="800" fill="url(#white-grad)" text-anchor="middle" stroke="none">R</text></svg></div>
           <div><div class="s-title">Wersja Robion</div><div class="s-sub">Beta</div></div>
         </div>
-        <div class="s-value" id="settingsVersionValue">0.2.0</div>
+        <div class="s-value" id="settingsVersionValue">0.4.0</div>
       </div>
       <div class="settings-row" onclick="clearData()">
         <div class="settings-left">
@@ -1100,6 +1104,20 @@ body {
 
   <!-- LISTA FAKTUR -->
   <div class="view active" id="view-lista">
+    <!-- Chipy źródła: Sprzedaż / Zakup / Przedprodukcyjne -->
+    <div style="display:flex;gap:6px;margin-bottom:12px;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px">
+      <button type="button" class="zrodlo-chip active" data-zrodlo="sprzedaz" onclick="setZrodloFiltr('sprzedaz')" style="flex:1;min-width:0;padding:10px 8px;background:var(--glass);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-family:var(--font-c);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.3px;cursor:pointer;transition:all 0.15s;white-space:nowrap;text-overflow:ellipsis;overflow:hidden">📤 Sprzedaż</button>
+      <button type="button" class="zrodlo-chip" data-zrodlo="zakup" onclick="setZrodloFiltr('zakup')" style="flex:1;min-width:0;padding:10px 8px;background:var(--glass);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-family:var(--font-c);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.3px;cursor:pointer;transition:all 0.15s;white-space:nowrap;text-overflow:ellipsis;overflow:hidden">📥 Zakup</button>
+      <button type="button" class="zrodlo-chip" data-zrodlo="przed" onclick="setZrodloFiltr('przed')" style="flex:1;min-width:0;padding:10px 8px;background:var(--glass);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-family:var(--font-c);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.3px;cursor:pointer;transition:all 0.15s;white-space:nowrap;text-overflow:ellipsis;overflow:hidden">🧪 Przedprod.</button>
+    </div>
+
+    <!-- Status pill (KSeF query progress) -->
+    <div style="text-align:center;margin-bottom:8px;min-height:24px">
+      <span id="zakupStatusPill" class="status-badge" style="display:none"></span>
+    </div>
+
+    <!-- Kontrolki SPRZEDAŻOWYCH (domyślnie widoczne) -->
+    <div id="sprzCtrls">
     <!-- Wyszukiwarka -->
     <div style="position:relative;margin-bottom:10px">
       <input class="form-input" id="fvSzukaj" placeholder="🔍 Szukaj po numerze lub kliencie..." oninput="onSzukajChange(this.value)" style="padding-right:36px">
@@ -1123,6 +1141,17 @@ body {
 
     <!-- Pasek wyników (X dokumentów) -->
     <div id="listaPodsumowanie" style="font-size:11px;color:var(--text3);margin-bottom:8px;font-family:var(--font-c);letter-spacing:1px;text-transform:uppercase;padding-left:4px"></div>
+    </div>
+    <!-- /Kontrolki SPRZEDAŻOWYCH -->
+
+    <!-- Kontrolki ZAKUPOWYCH (domyślnie ukryte) -->
+    <div id="zakupCtrls" style="display:none;margin-bottom:14px">
+      <div style="display:flex;gap:8px;align-items:center">
+        <div style="flex:1;font-size:11px;color:var(--text3);font-family:var(--font-c);letter-spacing:1px;text-transform:uppercase">Faktury zakupowe (3 mies., max 30)</div>
+        <button type="button" id="btnOdswiezZakup" onclick="odswiezZakupowe()" style="padding:9px 14px;background:var(--accent);color:#000;border:none;border-radius:8px;font-family:var(--font-c);font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;flex-shrink:0">🔄 Odśwież z KSeF</button>
+      </div>
+    </div>
+    <!-- /Kontrolki ZAKUPOWYCH -->
 
     <div id="listaFaktur"></div>
   </div>
@@ -1250,9 +1279,10 @@ body {
       <textarea class="form-textarea" id="fvUwagi" placeholder="Opcjonalne uwagi na fakturze..." style="height:64px"></textarea>
     </div>
 
-    <!-- Akcje -->
-    <button class="btn-primary" onclick="wystawFakture()" style="background:linear-gradient(135deg,var(--accent),var(--accent2));font-size:18px">✓ Wystaw fakturę</button>
-    <button class="btn-primary" onclick="saveFaktura('draft')" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a);color:var(--text2);box-shadow:none;border:1px solid var(--border)">💾 Zapisz jako roboczą</button>
+    <!-- Akcje (update_021: trzy osobne przyciski wystawiania zamiast jednego) -->
+    <button class="btn-primary btn-prod" onclick="wystawProdukcyjna()" style="background:linear-gradient(135deg,#FF5252,#D32F2F);color:#fff;font-size:16px;font-weight:900;padding:18px 16px;line-height:1.3">🏛️ Faktura produkcyjna<br><span style="font-size:11px;font-weight:700;letter-spacing:0.5px">wysyłka do KSeF</span></button>
+    <button class="btn-primary btn-przed" onclick="wystawPrzedprodukcyjna()" style="background:#FFD66B;color:#3d2900;font-size:14px;font-weight:800;padding:14px 16px">🧪 Faktura przedprodukcyjna<br><span style="font-size:11px;font-weight:600">wysyłka do KSeF demo</span></button>
+    <button class="btn-primary btn-rob" onclick="wystawRobocza()" style="background:#A8C7E8;color:#0a2540;font-size:13px;font-weight:800;padding:13px 16px">📝 Faktura robocza<br><span style="font-size:11px;font-weight:600">do późniejszego wykorzystania — bez wysyłki</span></button>
     <button class="btn-primary" onclick="showPodglad()" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a);color:var(--accent);box-shadow:none;border:1px solid var(--accent-border)">👁 Podgląd faktury</button>
     <button class="btn-primary" id="btnKonwertujPF" style="display:none;background:linear-gradient(135deg,#1a3a1a,#2a4a2a);color:#7BE0A0;box-shadow:none;border:1px solid #7BE0A055" onclick="konwertujProforme()">→ Konwertuj na fakturę VAT</button>
     <button class="btn-danger" id="btnDelFv" style="display:none" onclick="deleteFaktura()">Usuń fakturę</button>
@@ -1315,7 +1345,7 @@ body {
     <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="url(#orange-grad)"/><circle cx="12" cy="12" r="3" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Ustawienia</div>
   </div>
-  <div class="nav-version-info" id="navVersionInfo">Beta · 0.2.0</div>
+  <div class="nav-version-info" id="navVersionInfo">Beta · 0.4.0</div>
 </div>
 
 <button class="fab" id="fabBtn" onclick="fabAction()">+</button>
@@ -1536,6 +1566,34 @@ body {
 </div>
 
 <!-- ════ KONIEC MODALI FAKTUR ════ -->
+
+<!-- (update_021) MODAL: Wysyłka do KSeF z podglądem i potwierdzeniem -->
+<div class="modal-overlay" id="modalWysylkaKSeF">
+  <div class="modal" style="max-width:520px;max-height:88vh;display:flex;flex-direction:column">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title" id="mwTitle">Wysyłka do KSeF</span>
+      <button class="modal-close" onclick="closeModal('modalWysylkaKSeF')">✕</button>
+    </div>
+    <div class="modal-body" style="overflow-y:auto;flex:1">
+      <!-- Banner ostrzeżenia (kolor i treść zmieniane wg env) -->
+      <div id="mwHeader" style="padding:14px;border:1px solid;border-radius:10px;margin-bottom:14px">
+        <div id="mwSub" style="font-size:13px;line-height:1.5"></div>
+      </div>
+
+      <!-- Mini-podgląd faktury -->
+      <div id="mwPodglad"></div>
+
+      <!-- Przyciski akcji -->
+      <div style="margin-top:18px;display:flex;flex-direction:column;gap:8px">
+        <button id="mwBtnSend" class="btn-primary" onclick="modalWysylkaPotwierdz()" style="font-size:14px;font-weight:800;padding:16px"></button>
+        <button class="btn-icon" onclick="closeModal('modalWysylkaKSeF')" style="padding:12px;justify-content:center">
+          Anuluj — wrócę do edycji
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- MODAL: Klient -->
 <div class="modal-overlay" id="modalKlient">
@@ -1784,23 +1842,7 @@ body {
         </div>
       </div>
 
-      <!-- WYBÓR ŚRODOWISKA -->
-      <div class="form-group">
-        <label class="form-label">Aktywne środowisko</label>
-        <div class="vat-grid">
-          <div class="vat-option" id="ksefEnvDemo" onclick="selectKSeFEnv('demo')">
-            <div class="vat-option-title">Przedprodukcyjne</div>
-            <div class="vat-option-sub">Do testów</div>
-          </div>
-          <div class="vat-option" id="ksefEnvProd" onclick="selectKSeFEnv('prod')">
-            <div class="vat-option-title">Produkcyjne</div>
-            <div class="vat-option-sub">Realne faktury</div>
-          </div>
-        </div>
-        <div id="ksefEnvWarn" style="display:none;font-size:12px;color:#F5A623;background:rgba(245,166,35,0.08);padding:10px;border-radius:8px;margin-top:8px;border:1px solid rgba(245,166,35,0.3)">
-          ⚠️ <strong>Środowisko produkcyjne.</strong> Każda wysłana stąd faktura idzie realnie do urzędu skarbowego i nie da się jej cofnąć. Korzystaj tylko gdy jesteś pewny.
-        </div>
-      </div>
+      <!-- (update_021) Sekcja wyboru środowiska usunięta - wybór następuje per akcja w widoku faktury -->
 
       <!-- TOKENY -->
       <div class="form-group">
@@ -1827,10 +1869,17 @@ body {
         </div>
       </div>
 
-      <!-- PRZYCISKI -->
-      <button class="btn-primary" onclick="testKSeFConnection()" id="ksefTestBtn">
-        Test połączenia
-      </button>
+      <!-- PRZYCISKI TESTU - osobno dla każdego środowiska -->
+      <div style="display:grid;grid-template-columns:1fr;gap:8px">
+        <button class="btn-primary" onclick="testKSeFConnection('demo')" id="ksefTestBtnDemo" style="background:#FFD66B;color:#000;font-size:13px;font-weight:800;padding:14px;line-height:1.3">
+          🧪 Test tokenu przedprodukcyjnego<br>
+          <span style="font-size:11px;font-weight:600">sprawdzenie połączenia</span>
+        </button>
+        <button class="btn-primary" onclick="testKSeFConnection('prod')" id="ksefTestBtnProd" style="background:#F8C7C7;color:#5a1a1a;font-size:13px;font-weight:800;padding:14px;line-height:1.3">
+          🏛️ Test tokenu produkcyjnego<br>
+          <span style="font-size:11px;font-weight:600">sprawdzenie połączenia (faktura nie zostaje wysłana)</span>
+        </button>
+      </div>
 
       <button class="btn-primary" onclick="saveKSeFConfig()" style="margin-top:10px;background:transparent;border:1px solid rgba(255,255,255,0.12);color:var(--text)">
         Zapisz tokeny
@@ -2251,7 +2300,12 @@ function navigate(page, el) {
   if (page==='faktury') {
     // Pokaż widok listy (mogliśmy być w forma/podglad)
     if (typeof showView === 'function') showView('lista');
-    if (typeof renderLista === 'function') renderLista();
+    // Renderuj odpowiedni widok zależnie od filtra źródła
+    if (typeof zrodloFakturFilter !== 'undefined' && zrodloFakturFilter === 'zakup') {
+      if (typeof renderListaZakupowych === 'function') renderListaZakupowych();
+    } else {
+      if (typeof renderLista === 'function') renderLista();
+    }
   }
 }
 
@@ -2765,18 +2819,36 @@ function ksefEnvLabel(env) {
   return env === 'prod' ? 'produkcyjne' : 'przedprodukcyjne';
 }
 
-// Zwraca aktualne wybrane środowisko ('demo' lub 'prod')
+// (update_021) Środowisko wybierane PER AKCJA, nie globalnie.
+// Każda funkcja KSeF (wysyłka, query) ustawia ksefSelectedEnv przed wywołaniem
+// helperów (ksefAuth, ksefFetch). Default to 'demo' (przedprodukcyjne, bezpieczne).
+let ksefSelectedEnv = null;
+
 function ksefEnv() {
+  // Jeśli akcja jawnie ustawiła kontekst → użyj go
+  if (ksefSelectedEnv === 'prod' || ksefSelectedEnv === 'demo') {
+    return ksefSelectedEnv;
+  }
+  // Fallback: stara wartość z localStorage (kompatybilność z dawną wersją)
+  // albo 'demo' jako bezpieczny default
   return localStorage.getItem('rob_ksef_env') || 'demo';
 }
 
-// Zwraca aktualny token (z localStorage, dla wybranego środowiska)
-function ksefCurrentToken() {
-  const env = ksefEnv();
-  return localStorage.getItem('rob_ksef_token_' + env) || '';
+// Pomocnicze: ustaw kontekst środowiska dla danej akcji
+function setKsefContext(env) {
+  if (env !== 'prod' && env !== 'demo') {
+    throw new Error('Nieznane środowisko KSeF: ' + env);
+  }
+  ksefSelectedEnv = env;
 }
 
-// Zwraca base URL proxy dla aktualnego środowiska
+// Zwraca token dla aktualnego kontekstu (lub przekazanego env)
+function ksefCurrentToken(env) {
+  const e = env || ksefEnv();
+  return localStorage.getItem('rob_ksef_token_' + e) || '';
+}
+
+// Zwraca base URL proxy dla aktualnego kontekstu
 function ksefApiBase() {
   return KSEF_PROXY + '/' + ksefEnv() + '/api/v2';
 }
@@ -2799,9 +2871,7 @@ function updateKSeFStatusRow() {
 
 // Otwórz modal konfiguracji KSeF
 function showKSeFModal() {
-  // Wczytaj zapisane wartości
-  const env = ksefEnv();
-  selectKSeFEnv(env, true); // bez zapisu
+  // Wczytaj zapisane tokeny (środowisko nie jest już wybierane globalnie)
   document.getElementById('ksefTokenDemo').value = localStorage.getItem('rob_ksef_token_demo') || '';
   document.getElementById('ksefTokenProd').value = localStorage.getItem('rob_ksef_token_prod') || '';
   // Status
@@ -2809,35 +2879,37 @@ function showKSeFModal() {
   document.getElementById('modalKSeF').classList.add('open');
 }
 
+// (update_021) Funkcja zachowana tylko jako stub - środowisko nie jest już wybierane globalnie.
+// Może być wołana ze starego cache, więc nie crashuje.
 function selectKSeFEnv(env, skipSave) {
-  document.getElementById('ksefEnvDemo').classList.toggle('active', env === 'demo');
-  document.getElementById('ksefEnvProd').classList.toggle('active', env === 'prod');
-  document.getElementById('ksefEnvWarn').style.display = env === 'prod' ? 'block' : 'none';
-  if (!skipSave) {
+  if (!skipSave && (env === 'prod' || env === 'demo')) {
     localStorage.setItem('rob_ksef_env', env);
-    renderKSeFStatusBox();
-    updateKSeFStatusRow();
   }
 }
 
 function renderKSeFStatusBox() {
   const box = document.getElementById('ksefStatusBox');
   if (!box) return;
-  const env = ksefEnv();
-  const status = localStorage.getItem('rob_ksef_status_' + env);
-  const lastTest = localStorage.getItem('rob_ksef_lasttest_' + env);
-  const nip = localStorage.getItem('rob_ksef_nip_' + env);
-  if (status === 'ok') {
-    box.innerHTML = '<span style="color:#5DD39E"><strong>✓ Połączono</strong></span><br>' +
-      'NIP: ' + (nip || '—') + '<br>' +
-      '<span style="color:var(--text2);font-size:12px">Ostatni test: ' + (lastTest || '—') + '</span>';
-  } else if (status === 'error') {
-    const msg = localStorage.getItem('rob_ksef_error_' + env) || 'Nieznany błąd';
-    box.innerHTML = '<span style="color:#ff6b6b"><strong>✗ Błąd połączenia</strong></span><br>' +
-      '<span style="font-size:12px">' + escapeHtml(msg) + '</span>';
-  } else {
-    box.innerHTML = '<span style="color:var(--text2)">Niezweryfikowane — kliknij „Test połączenia"</span>';
-  }
+  // (update_021) Pokazuj status obu środowisk obok siebie
+  const renderRow = (env, label) => {
+    const status = localStorage.getItem('rob_ksef_status_' + env);
+    const lastTest = localStorage.getItem('rob_ksef_lasttest_' + env);
+    let inner;
+    if (status === 'ok') {
+      inner = '<span style="color:#5DD39E"><strong>✓ Połączono</strong></span> ' +
+        '<span style="color:var(--text3);font-size:11px">' + (lastTest || '—') + '</span>';
+    } else if (status === 'error') {
+      const msg = localStorage.getItem('rob_ksef_error_' + env) || 'Błąd';
+      inner = '<span style="color:#ff6b6b"><strong>✗ Błąd</strong></span> ' +
+        '<span style="font-size:11px">' + escapeHtml(msg).slice(0, 80) + '</span>';
+    } else {
+      inner = '<span style="color:var(--text3)">Niezweryfikowane</span>';
+    }
+    return '<div style="margin-bottom:6px">' +
+      '<span style="font-family:var(--font-c);font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text2);margin-right:8px">' + label + ':</span>' +
+      inner + '</div>';
+  };
+  box.innerHTML = renderRow('demo', 'Przedprod.') + renderRow('prod', 'Produkcja');
 }
 
 function escapeHtml(str) {
@@ -2858,9 +2930,14 @@ function saveKSeFConfig() {
 
 // ─────────────────────────────────────────────────────────────
 // KSeF — TEST POŁĄCZENIA (5-krokowe uwierzytelnienie)
+// (update_021) Wymagany argument env: 'demo' lub 'prod'
 // ─────────────────────────────────────────────────────────────
-async function testKSeFConnection() {
-  const env = ksefEnv();
+async function testKSeFConnection(env) {
+  if (env !== 'demo' && env !== 'prod') {
+    showToast('Wybierz: przedprodukcyjne lub produkcyjne');
+    return;
+  }
+  setKsefContext(env);
   const token = document.getElementById('ksefToken' + (env === 'demo' ? 'Demo' : 'Prod')).value.trim();
   const nip = (ust.firmaNIP || '').replace(/\D/g, '');
 
@@ -2878,11 +2955,13 @@ async function testKSeFConnection() {
   if (env === 'demo') localStorage.setItem('rob_ksef_token_demo', token);
   else localStorage.setItem('rob_ksef_token_prod', token);
 
-  const btn = document.getElementById('ksefTestBtn');
-  btn.disabled = true;
-  btn.textContent = 'Testuję...';
+  const btn = document.getElementById('ksefTestBtn' + (env === 'demo' ? 'Demo' : 'Prod'));
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Sprawdzam ' + ksefEnvLabel(env) + '...<br><span style="font-size:10px">test bez wysyłania faktury</span>';
+  }
   const box = document.getElementById('ksefStatusBox');
-  box.innerHTML = '<span style="color:var(--text2)">⏳ Łączę z KSeF...</span>';
+  box.innerHTML = '<span style="color:var(--text2)">⏳ Łączę z KSeF (' + ksefEnvLabel(env) + ') — sprawdzam czy token działa...</span>';
 
   try {
     // KROK 1: pobierz challenge
@@ -2963,8 +3042,15 @@ async function testKSeFConnection() {
     console.error('KSeF test error:', err);
     setKSeFError(err.message || String(err));
   } finally {
-    btn.disabled = false;
-    btn.textContent = 'Test połączenia';
+    if (btn) {
+      btn.disabled = false;
+      // Przywróć pełen oryginalny napis (musi pasować do HTML)
+      if (env === 'demo') {
+        btn.innerHTML = '🧪 Test tokenu przedprodukcyjnego<br><span style="font-size:11px;font-weight:600">sprawdzenie połączenia</span>';
+      } else {
+        btn.innerHTML = '🏛️ Test tokenu produkcyjnego<br><span style="font-size:11px;font-weight:600">sprawdzenie połączenia (faktura nie zostaje wysłana)</span>';
+      }
+    }
   }
 }
 
@@ -3652,22 +3738,72 @@ const POMOC_TEMATY = [
     tytul: 'KSeF — czy mnie dotyczy?',
     krotko: 'Krajowy System e-Faktur — co i kiedy',
     tresc: `
-      <p>KSeF to państwowy system do wystawiania faktur. Od pewnego momentu każda firma musi go używać.</p>
-      <h3>Stan na dziś</h3>
-      <p>Od <strong>1 kwietnia 2026</strong> KSeF jest obowiązkowy dla większości firm. Ale jest <strong>okres przejściowy</strong> do końca 2026:</p>
-      <p>→ Jeśli sprzedaż w danym miesiącu nie przekracza <strong>10 000 zł brutto</strong>, możesz wystawiać faktury "po staremu" (papier / PDF / Robion).</p>
+      <p>KSeF to państwowy system do wystawiania faktur. Od 1 kwietnia 2026 obowiązkowy dla większości firm.</p>
+
+      <h3>Co który przycisk robi — żebyś nigdy nie miał wątpliwości</h3>
+      <div style="background:var(--glass);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:12px 0">
+        <table style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead>
+            <tr style="background:rgba(245,166,35,0.1)">
+              <th style="padding:8px;text-align:left;font-family:var(--font-condensed);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--accent);border-bottom:1px solid var(--border)">Akcja</th>
+              <th style="padding:8px;text-align:center;font-family:var(--font-condensed);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--accent);border-bottom:1px solid var(--border)">Idzie do KSeF?</th>
+              <th style="padding:8px;text-align:center;font-family:var(--font-condensed);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--accent);border-bottom:1px solid var(--border)">Skutki podatkowe?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:8px;border-bottom:1px solid var(--border)"><strong>🧪 Test tokenu przedprodukcyjnego</strong><br><span style="color:var(--text3);font-size:11px">w Ustawieniach → KSeF</span></td>
+              <td style="padding:8px;text-align:center;border-bottom:1px solid var(--border);color:#888">tylko sprawdza</td>
+              <td style="padding:8px;text-align:center;border-bottom:1px solid var(--border);color:var(--green)">nie</td>
+            </tr>
+            <tr>
+              <td style="padding:8px;border-bottom:1px solid var(--border)"><strong>🏛️ Test tokenu produkcyjnego</strong><br><span style="color:var(--text3);font-size:11px">w Ustawieniach → KSeF</span></td>
+              <td style="padding:8px;text-align:center;border-bottom:1px solid var(--border);color:#888">tylko sprawdza</td>
+              <td style="padding:8px;text-align:center;border-bottom:1px solid var(--border);color:var(--green)">nie</td>
+            </tr>
+            <tr>
+              <td style="padding:8px;border-bottom:1px solid var(--border)"><strong>📝 Faktura robocza</strong><br><span style="color:var(--text3);font-size:11px">w widoku formy faktury</span></td>
+              <td style="padding:8px;text-align:center;border-bottom:1px solid var(--border);color:var(--green)">nie</td>
+              <td style="padding:8px;text-align:center;border-bottom:1px solid var(--border);color:var(--green)">nie</td>
+            </tr>
+            <tr>
+              <td style="padding:8px;border-bottom:1px solid var(--border)"><strong>🧪 Faktura przedprodukcyjna</strong><br><span style="color:var(--text3);font-size:11px">żółty przycisk w formie</span></td>
+              <td style="padding:8px;text-align:center;border-bottom:1px solid var(--border);color:#FFB84D">tak (demo)</td>
+              <td style="padding:8px;text-align:center;border-bottom:1px solid var(--border);color:var(--green)">nie</td>
+            </tr>
+            <tr style="background:rgba(255,82,82,0.06)">
+              <td style="padding:8px"><strong>🏛️ Faktura produkcyjna</strong><br><span style="color:var(--text3);font-size:11px">czerwony przycisk w formie</span></td>
+              <td style="padding:8px;text-align:center;color:#FF5252;font-weight:700">TAK</td>
+              <td style="padding:8px;text-align:center;color:#FF5252;font-weight:700">TAK</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:11px;color:var(--text3);margin-top:6px;line-height:1.5">
+        <strong>Jasna zasada:</strong> dopiero pełen czerwony kolor + napis „Faktura produkcyjna" = faktura zostanie wystawiona w realnym KSeF. Wszystko inne to bezpieczne ćwiczenia.
+      </p>
+
+      <h3>Stan obowiązku</h3>
+      <p>Od <strong>1 kwietnia 2026</strong> KSeF jest obowiązkowy dla większości firm. <strong>Okres przejściowy do końca 2026:</strong></p>
+      <p>→ Jeśli sprzedaż w danym miesiącu nie przekracza <strong>10 000 zł brutto</strong>, możesz wystawiać faktury „po staremu" (PDF / druk).</p>
       <p>→ Mikrofirmy z obrotem do 10 tys. zł miesięcznie — pełen obowiązek dopiero od <strong>1 stycznia 2027</strong>.</p>
-      <h3>Co Robion robi w sprawie KSeF</h3>
-      <p>Pełna integracja z KSeF jest <strong>w przygotowaniu</strong> — będzie dostępna przed 1 stycznia 2027 (deadline pełnej obowiązkowości).</p>
-      <p>Do tego czasu Robion:</p>
-      <p>→ Działa normalnie dla firm w okresie przejściowym (do 10k/miesiąc)</p>
-      <p>→ Generuje faktury w formacie standardowym (PDF/druk) — legalnym do końca 2026</p>
-      <p>→ Trzyma archiwum lokalnie — łatwo będzie potem zmigrować</p>
-      <h3>Co Ty powinieneś zrobić</h3>
-      <p>1. Sprawdź czy mieścisz się w wyjątku 10k/miesiąc — jeśli tak, możesz dalej spokojnie używać Robion</p>
-      <p>2. Zarejestruj się jako podatnik w KSeF (jeśli jeszcze nie) — w aplikacji Podatnika KSeF na platformie podatki.gov.pl</p>
-      <p>3. <strong>Odbieraj faktury w KSeF</strong> — to obowiązek niezależny od wystawiania, dotyczy wszystkich od 1 lutego 2026</p>
-      <p style="font-size:13px;color:var(--text2);margin-top:14px;background:rgba(245,166,35,0.1);padding:12px;border-radius:10px;border:1px solid var(--accent-border)">⚠️ <strong>Jeśli przekraczasz 10 000 zł brutto miesięcznie</strong> — Robion nie wystarczy do końca 2026. Rozważ tymczasowo apkę z integracją KSeF (np. wfirma, ifirma, fakturownia). Pełna integracja w Robion jest planowana do końca roku.</p>
+      <p>→ <strong>Odbiór faktur zakupowych w KSeF</strong> dotyczy wszystkich od 1 lutego 2026 — niezależnie od skali.</p>
+
+      <h3>Co Robion robi</h3>
+      <p>→ Wystawia faktury produkcyjnie do KSeF (przycisk 🏛️ Faktura produkcyjna)</p>
+      <p>→ Pobiera faktury zakupowe z KSeF (zakładka Faktury → chip Zakup)</p>
+      <p>→ Daje środowisko przedprodukcyjne (demo) do bezpiecznego ćwiczenia (chip Przedprod.)</p>
+      <p>→ Trzyma kopię lokalną wszystkich Twoich faktur</p>
+
+      <h3>Tokeny KSeF</h3>
+      <p>Token to klucz dostępu do KSeF — jeden dla każdego środowiska:</p>
+      <p>→ <strong>Token przedprodukcyjny</strong> wygenerujesz na <a href="https://ap-demo.ksef.mf.gov.pl" target="_blank" style="color:var(--accent)">ap-demo.ksef.mf.gov.pl</a></p>
+      <p>→ <strong>Token produkcyjny</strong> wygenerujesz na <a href="https://ap.ksef.mf.gov.pl" target="_blank" style="color:var(--accent)">ap.ksef.mf.gov.pl</a> (UWAGA: bez „demo"!)</p>
+      <p>Wklej oba w Ustawienia → KSeF. Apka szyfruje je RSA-OAEP w przeglądarce zanim wyśle do MF.</p>
+
+      <h3>Archiwizacja</h3>
+      <p>Faktury wysłane do produkcyjnego KSeF są archiwizowane przez Ministerstwo Finansów przez <strong>10 lat</strong>. Nie musisz drukować ani trzymać kopii — KSeF jest oficjalnym archiwum.</p>
+      <p>Faktury w środowisku przedprodukcyjnym (demo) <strong>nie mają mocy prawnej</strong> i są regularnie czyszczone.</p>
     `
   }
 ];
@@ -4332,8 +4468,20 @@ function renderLista() {
   const container = document.getElementById('listaFaktur');
   const podsum = document.getElementById('listaPodsumowanie');
 
+  // (update_021) Filtr 0: wyklucz faktury przedprodukcyjne z głównej listy "Sprzedaż"
+  // Faktury z env=demo trafiają do osobnego chipa "Przedprodukcyjne"
+  let lista = faktury.filter(f =>
+    f.status !== 'issued_demo' &&
+    f.status !== 'ksef_pending_demo' &&
+    f.status !== 'ksef_ok_demo' &&
+    f.status !== 'ksef_error_demo' &&
+    f.ksefEnv !== 'demo'
+  );
+
   // Filtr 1: stan (wszystkie / robocze)
-  let lista = filterMode === 'draft' ? faktury.filter(f => f.status === 'draft') : [...faktury];
+  if (filterMode === 'draft') {
+    lista = lista.filter(f => f.status === 'draft');
+  }
 
   // Filtr 2: typ dokumentu
   if (filterTyp !== 'all') {
@@ -5356,28 +5504,172 @@ document.querySelectorAll('.modal-overlay').forEach(o => {
 // ═══════════════════════════════════════════════════════════════
 
 // ── STAŁA WERSJI APLIKACJI ──
-const ROBION_VERSION = '0.2.0';
+const ROBION_VERSION = '0.4.0';
 
 // ─────────────────────────────────────────────────────────────
 // "WYSTAW FAKTURĘ" — przycisk w widoku formy
 // Zapisuje fakturę jako issued (już nie draft) i otwiera modal "co dalej"
 // ─────────────────────────────────────────────────────────────
-function wystawFakture() {
-  // saveFaktura zwraca id zapisanej faktury — przekażemy 'issued'
-  const id = saveFaktura('issued');
-  if (!id) return; // walidacja nieudana - saveFaktura sam pokazał toast
+// (update_021) ─────────────────────────────────────────────────
+// TRZY OSOBNE PRZYCISKI WYSTAWIANIA - kontekst środowiska wybierany jawnie
+// ─────────────────────────────────────────────────────────────
+
+// 📝 ROBOCZA - tylko zapis lokalny, nigdzie nie wysyła
+function wystawRobocza() {
+  const id = saveFaktura('draft');
+  if (!id) return;
+  showToast('✓ Zapisana jako robocza');
+  // Wracaj na listę
+  setTimeout(() => { showView('lista'); renderLista(); }, 600);
+}
+
+// 🧪 PRZEDPRODUKCYJNA - oznacz jako issued_demo, otwórz modal potwierdzenia (demo)
+function wystawPrzedprodukcyjna() {
+  const id = saveFaktura('issued_demo');
+  if (!id) return;
   const f = faktury.find(x => x.id === id);
   if (!f) return;
-  // Pokaż modal "co dalej"
-  document.getElementById('coDalejNumer').textContent = 'Faktura nr ' + (f.numer || '—');
-  // KSeF widoczny tylko jeśli typ FV (proformy/kosztorysów nie wysyłamy)
-  const btnKSeF = document.getElementById('btnCoDalejKSeF');
-  if (btnKSeF) {
-    btnKSeF.style.display = (f.typ || 'FV') === 'FV' ? '' : 'none';
+  // Sprawdź czy mamy token przedprodukcyjny
+  if (!localStorage.getItem('rob_ksef_token_demo')) {
+    showToast('Najpierw skonfiguruj token przedprodukcyjny w Ustawieniach');
+    return;
   }
-  // Zapamiętaj id faktury w atrybucie modalu
-  document.getElementById('modalCoDalej').dataset.fid = id;
-  document.getElementById('modalCoDalej').classList.add('open');
+  if ((f.typ || 'FV') !== 'FV') {
+    showToast('Do KSeF wysyłamy tylko faktury VAT');
+    return;
+  }
+  // Otwórz modal potwierdzenia (z osadzonym podglądem) dla DEMO
+  otworzModalWysylki(id, 'demo');
+}
+
+// 🏛️ PRODUKCYJNA - oznacz jako issued, otwórz modal potwierdzenia z czerwonym ostrzeżeniem
+function wystawProdukcyjna() {
+  const id = saveFaktura('issued');
+  if (!id) return;
+  const f = faktury.find(x => x.id === id);
+  if (!f) return;
+  if (!localStorage.getItem('rob_ksef_token_prod')) {
+    showToast('Najpierw skonfiguruj token produkcyjny w Ustawieniach');
+    return;
+  }
+  if ((f.typ || 'FV') !== 'FV') {
+    showToast('Do KSeF wysyłamy tylko faktury VAT');
+    return;
+  }
+  otworzModalWysylki(id, 'prod');
+}
+
+// Otwiera modal potwierdzenia z osadzonym podglądem faktury i przyciskiem wyślij
+function otworzModalWysylki(fid, env) {
+  const f = faktury.find(x => x.id === fid);
+  if (!f) return;
+  const modal = document.getElementById('modalWysylkaKSeF');
+  if (!modal) return;
+
+  modal.dataset.fid = fid;
+  modal.dataset.env = env;
+
+  // Tytuł i kolory zależne od środowiska
+  const titleEl = document.getElementById('mwTitle');
+  const subEl = document.getElementById('mwSub');
+  const btnSend = document.getElementById('mwBtnSend');
+  const headerBox = document.getElementById('mwHeader');
+
+  if (env === 'prod') {
+    titleEl.textContent = '🏛️ Wysyłka do KSeF — PRODUKCJA';
+    subEl.innerHTML = '<strong style="color:#FF5252">UWAGA:</strong> Faktura zostanie wysłana do realnego KSeF i nie da się jej cofnąć. Sprawdź dokładnie dane.';
+    headerBox.style.background = 'linear-gradient(135deg,rgba(255,82,82,0.15),rgba(211,47,47,0.08))';
+    headerBox.style.borderColor = 'rgba(255,82,82,0.4)';
+    btnSend.style.background = 'linear-gradient(135deg,#FF5252,#D32F2F)';
+    btnSend.style.color = '#fff';
+    btnSend.textContent = '✓ Tak, wyślij do KSeF (produkcja)';
+  } else {
+    titleEl.textContent = '🧪 Wysyłka do KSeF — przedprodukcyjne';
+    subEl.innerHTML = 'Środowisko testowe MF — żadnych skutków podatkowych. Możesz spokojnie ćwiczyć.';
+    headerBox.style.background = 'rgba(255,214,107,0.12)';
+    headerBox.style.borderColor = 'rgba(255,214,107,0.4)';
+    btnSend.style.background = '#FFD66B';
+    btnSend.style.color = '#3d2900';
+    btnSend.textContent = '✓ Wyślij (przedprodukcyjne)';
+  }
+
+  // Renderuj podgląd faktury (uproszczone metadane - nie cały A4)
+  const podg = document.getElementById('mwPodglad');
+  if (podg) {
+    podg.innerHTML = renderMiniPodglad(f);
+  }
+
+  modal.classList.add('open');
+}
+
+// Mini-podgląd faktury w modal-u potwierdzenia (zamiast pełnego A4)
+function renderMiniPodglad(f) {
+  const sumaNetto = (f.sumaNetto != null ? f.sumaNetto : (f.pozycje || []).reduce((s, p) => s + kalkuluj(p).netto, 0));
+  const sumaVAT = (f.sumaVAT != null ? f.sumaVAT : (f.pozycje || []).reduce((s, p) => s + kalkuluj(p).vat, 0));
+  const sumaBrutto = (f.sumaBrutto != null ? f.sumaBrutto : sumaNetto + sumaVAT);
+
+  const pozycjeRows = (f.pozycje || []).map(p => {
+    const k = kalkuluj(p);
+    return '<tr>' +
+      '<td style="padding:6px 8px;border-bottom:1px solid var(--border);font-size:12px">' + escapeHtml(p.nazwa) + '</td>' +
+      '<td style="padding:6px 8px;border-bottom:1px solid var(--border);font-size:12px;text-align:right">' + (p.ilosc || 1) + ' ' + (p.jednostka || 'szt') + '</td>' +
+      '<td style="padding:6px 8px;border-bottom:1px solid var(--border);font-size:12px;text-align:right;font-family:var(--font-c);font-weight:700">' + formatKwota(k.brutto) + '</td>' +
+    '</tr>';
+  }).join('');
+
+  return '<div style="font-size:13px">' +
+    '<div style="font-family:var(--font-c);font-size:18px;font-weight:900;color:var(--accent);margin-bottom:4px">' + escapeHtml(f.numer || '—') + '</div>' +
+    '<div style="font-size:11px;color:var(--text3);margin-bottom:12px">Data wystawienia: ' + (f.dataWyst || '—') + '</div>' +
+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">' +
+      '<div style="padding:10px;background:var(--glass);border-radius:8px;border:1px solid var(--border)">' +
+        '<div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;font-family:var(--font-c);font-weight:700">Sprzedawca</div>' +
+        '<div style="font-size:12px;font-weight:700">' + escapeHtml(f.sprzedawca?.nazwa || ust.firmaNazwa || '—') + '</div>' +
+        '<div style="font-size:11px;color:var(--text2)">NIP: ' + (f.sprzedawca?.nip || ust.firmaNIP || '—') + '</div>' +
+      '</div>' +
+      '<div style="padding:10px;background:var(--glass);border-radius:8px;border:1px solid var(--border)">' +
+        '<div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;font-family:var(--font-c);font-weight:700">Nabywca</div>' +
+        '<div style="font-size:12px;font-weight:700">' + escapeHtml(f.nabywca?.nazwa || '—') + '</div>' +
+        '<div style="font-size:11px;color:var(--text2)">' + (f.nabywca?.nip ? 'NIP: ' + f.nabywca.nip : 'osoba prywatna') + '</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div style="margin-bottom:8px;font-family:var(--font-c);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;font-weight:700">Pozycje</div>' +
+    '<table style="width:100%;border-collapse:collapse;background:var(--glass);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px">' +
+      pozycjeRows +
+    '</table>' +
+
+    '<div style="display:flex;justify-content:space-between;padding:12px;background:var(--accent-dim);border-radius:8px;border:1px solid var(--accent-border)">' +
+      '<span style="font-family:var(--font-c);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--accent)">Do zapłaty</span>' +
+      '<span style="font-family:var(--font-c);font-size:18px;font-weight:900;color:var(--accent)">' + formatKwota(sumaBrutto) + ' ' + (f.waluta || 'PLN') + '</span>' +
+    '</div>' +
+  '</div>';
+}
+
+// Akcja "Tak, wyślij" w modal-u
+async function modalWysylkaPotwierdz() {
+  const modal = document.getElementById('modalWysylkaKSeF');
+  const fid = parseInt(modal.dataset.fid);
+  const env = modal.dataset.env;
+  if (!fid || (env !== 'demo' && env !== 'prod')) return;
+
+  // Ustaw kontekst środowiska
+  setKsefContext(env);
+
+  // Załaduj fakturę do edycji + pokaż podgląd (do widoku statusu)
+  editFaktura(fid);
+  showPodglad();
+
+  // Zamknij modal
+  closeModal('modalWysylkaKSeF');
+
+  // Małe opóźnienie żeby user zobaczył przejście do podglądu
+  setTimeout(() => wyslijFaktureKSeF(), 250);
+}
+
+// (update_021) Stary alias dla kompatybilności wstecznej (gdyby gdzieś było wołane)
+function wystawFakture() {
+  return wystawProdukcyjna();
 }
 
 // Po zamknięciu modalu „co dalej" sprawdź czy zaproponować pierwszą kopię zapasową
@@ -5456,7 +5748,7 @@ async function wyslijFaktureKSeF() {
   }
 
   // Status pending — od razu zapisz, żeby UI pokazało plakietkę
-  setFakturaStatus(f.id, 'ksef_pending', { ksefError: null });
+  setFakturaStatus(f.id, 'ksef_pending', { ksefError: null, ksefEnv: env });
   renderPodglad(faktury.find(x => x.id === f.id));
 
   const box = document.getElementById('ksefStatusBox');
@@ -5594,7 +5886,7 @@ async function wyslijFaktureKSeF() {
 
   } catch (err) {
     console.error('KSeF send error:', err);
-    setFakturaStatus(f.id, 'ksef_error', { ksefError: err.message || String(err) });
+    setFakturaStatus(f.id, 'ksef_error', { ksefError: err.message || String(err), ksefEnv: env });
     if (box) {
       box.className = 'err';
       box.innerHTML = '<div style="color:var(--danger);font-weight:700;margin-bottom:4px">✗ Błąd wysyłki KSeF</div>' +
@@ -5758,6 +6050,363 @@ function generujXMLKSeF(f) { return generujXMLFA3(f); }
 
 // ─────────────────────────────────────────────────────────────
 // KONIEC update_017
+// ─────────────────────────────────────────────────────────────
+
+
+// ════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+// FILAR 2 (update_020): ODBIÓR FAKTUR ZAKUPOWYCH Z KSeF
+// Endpoint: POST /invoices/query/metadata
+// Limit: 30 najnowszych z zadanego okresu
+// ═══════════════════════════════════════════════════════════════
+
+// Wspólny helper auth — refaktoryzacja flow z wyslijFaktureKSeF
+// Zwraca obiekt { accessJWT, env, nip } gotowy do użycia przy kolejnych requestach.
+// Rzuca wyjątkiem z czytelnym message przy błędzie.
+async function ksefAuth(progressCallback) {
+  const env = ksefEnv();
+  const tokenKsef = ksefCurrentToken();
+  const nip = (ust.firmaNIP || '').replace(/\D/g, '');
+
+  if (!tokenKsef) throw new Error('Skonfiguruj token KSeF w Ustawieniach');
+  if (!nip || nip.length !== 10) throw new Error('Brak poprawnego NIP firmy');
+
+  const progress = (msg) => { if (typeof progressCallback === 'function') progressCallback(msg); };
+
+  // Krok 1: challenge
+  progress('Pobieranie challenge…');
+  const ch = await ksefFetch('/auth/challenge', { method: 'POST' });
+  if (!ch.challenge || !ch.timestamp) throw new Error('Brak challenge w odpowiedzi KSeF');
+
+  // Krok 2: certyfikat publiczny do szyfrowania tokenu
+  progress('Pobieranie klucza publicznego MF…');
+  const certs = await ksefFetch('/security/public-key-certificates');
+  const tokenCert = pickKsefTokenCert(certs);
+  if (!tokenCert || !tokenCert.pem) throw new Error('Brak certyfikatu tokenu');
+
+  // Krok 3: szyfrowanie tokena
+  progress('Szyfrowanie tokenu…');
+  const tsMs = ch.timestampMs || (typeof ch.timestamp === 'string' ? new Date(ch.timestamp).getTime() : ch.timestamp);
+  const encryptedToken = await encryptRSAOAEP(tokenKsef + '|' + tsMs, tokenCert.pem);
+
+  // Krok 4: ksef-token
+  progress('Uwierzytelnianie…');
+  const authResp = await ksefFetch('/auth/ksef-token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      challenge: ch.challenge,
+      contextIdentifier: { type: 'Nip', value: nip },
+      encryptedToken: encryptedToken
+    })
+  });
+  if (!authResp.referenceNumber || !authResp.authenticationToken) {
+    throw new Error('Brak referenceNumber/authenticationToken');
+  }
+  const tempJWT = authResp.authenticationToken.token || authResp.authenticationToken;
+
+  // Krok 5: polling
+  progress('Oczekiwanie na potwierdzenie…');
+  let authOk = false;
+  for (let i = 0; i < 10; i++) {
+    await sleep(1500);
+    const st = await ksefFetch('/auth/' + authResp.referenceNumber, {
+      headers: { 'Authorization': 'Bearer ' + tempJWT }
+    });
+    const code = st.status?.code ?? st.code;
+    if (code === 200 || st.status?.description?.toLowerCase().includes('sukces')) {
+      authOk = true; break;
+    }
+    if (code >= 400) throw new Error('Auth: ' + (st.status?.description || 'kod ' + code));
+  }
+  if (!authOk) throw new Error('Auth timeout — spróbuj ponownie');
+
+  // Krok 6: redeem na access token
+  progress('Wymiana tokena dostępu…');
+  const tokens = await ksefFetch('/auth/token/redeem', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + tempJWT }
+  });
+  const accessJWT = tokens.accessToken?.token || tokens.accessToken || tempJWT;
+
+  return { accessJWT, env, nip };
+}
+
+// ─────────────────────────────────────────────────────────────
+// POBIERZ FAKTURY ZAKUPOWE Z KSeF
+// role: 'buyer' (zakupowe) | 'seller' (sprzedażowe)
+// dateFrom, dateTo: 'YYYY-MM-DD'
+// ─────────────────────────────────────────────────────────────
+async function pobierzFakturyZKSeF(role, dateFrom, dateTo, pageSize) {
+  const limit = Math.min(pageSize || 30, 30); // hard-cap żeby nie zarzucić apki
+
+  const updatePill = (txt, cls) => {
+    const pill = document.getElementById('zakupStatusPill');
+    if (pill) {
+      pill.textContent = txt;
+      pill.className = 'status-badge ' + (cls || 'status-ksef_pending');
+      pill.style.display = 'inline-flex';
+    }
+  };
+
+  updatePill('Łączenie z KSeF…');
+
+  let auth;
+  try {
+    auth = await ksefAuth((msg) => updatePill(msg));
+  } catch (err) {
+    updatePill('Błąd: ' + err.message, 'status-ksef_error');
+    throw err;
+  }
+
+  // Konwertuj daty na ISO 8601 z UTC (KSeF wymaga "YYYY-MM-DDTHH:MM:SSZ")
+  const dateFromIso = dateFrom + 'T00:00:00Z';
+  const dateToIso = dateTo + 'T23:59:59Z';
+
+  updatePill('Pobieranie listy faktur…');
+
+  const queryBody = {
+    subjectType: role === 'buyer' ? 'subject2' : 'subject1', // subject2 = nabywca (my dla zakupowych)
+    dateRange: {
+      dateType: 'invoicing', // data wystawienia
+      from: dateFromIso,
+      to: dateToIso
+    },
+    pageSize: limit,
+    pageOffset: 0
+  };
+
+  let resp;
+  try {
+    resp = await ksefFetch('/invoices/query/metadata', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + auth.accessJWT
+      },
+      body: JSON.stringify(queryBody)
+    });
+  } catch (err) {
+    updatePill('Błąd zapytania: ' + err.message, 'status-ksef_error');
+    throw err;
+  }
+
+  // Spodziewany format odpowiedzi: { invoices: [...], totalCount: N }
+  // Niektóre wersje API zwracają inną strukturę — sprobujemy kilku
+  const invoices = resp.invoices || resp.invoiceMetadata || resp.items || [];
+
+  // Mapuj na nasz prostszy format
+  const lista = invoices.map(inv => ({
+    ksefRef: inv.ksefReferenceNumber || inv.ksefNumber || inv.referenceNumber,
+    numer: inv.invoiceNumber || inv.number || '—',
+    dataWyst: (inv.invoicingDate || inv.issueDate || '').split('T')[0],
+    dataKsef: inv.acquisitionDate || inv.ksefDate,
+    sprzedawca: {
+      nip: inv.subject1?.nip || inv.sellerNip || inv.subject1Identifier,
+      nazwa: inv.subject1?.name || inv.sellerName || inv.subject1Name || '—'
+    },
+    nabywca: {
+      nip: inv.subject2?.nip || inv.buyerNip || inv.subject2Identifier,
+      nazwa: inv.subject2?.name || inv.buyerName || inv.subject2Name
+    },
+    sumaBrutto: parseFloat(inv.gross || inv.totalGross || inv.grossAmount || 0),
+    waluta: inv.currency || 'PLN',
+    role: role,
+    pobrano: new Date().toISOString()
+  })).slice(0, limit);
+
+  // Zapisz w localStorage (osobny klucz dla buyer / seller)
+  const storageKey = role === 'buyer' ? 'rob_faktury_zakupowe' : 'rob_faktury_zksef_sprzedaz';
+  localStorage.setItem(storageKey, JSON.stringify({
+    pobrano: new Date().toISOString(),
+    okres: { od: dateFrom, do: dateTo },
+    faktury: lista
+  }));
+
+  updatePill('✓ Pobrano ' + lista.length, 'status-ksef_ok');
+  setTimeout(() => {
+    const pill = document.getElementById('zakupStatusPill');
+    if (pill) pill.style.display = 'none';
+  }, 3000);
+
+  return lista;
+}
+
+// ─────────────────────────────────────────────────────────────
+// FILTR W LIŚCIE FAKTUR — chip "Sprzedaż / Zakup"
+// ─────────────────────────────────────────────────────────────
+let zrodloFakturFilter = 'sprzedaz'; // 'sprzedaz' | 'zakup'
+
+function setZrodloFiltr(zrodlo) {
+  zrodloFakturFilter = zrodlo;
+  // Aktualizuj UI chipów
+  document.querySelectorAll('.zrodlo-chip').forEach(c => c.classList.remove('active'));
+  const active = document.querySelector('.zrodlo-chip[data-zrodlo="' + zrodlo + '"]');
+  if (active) active.classList.add('active');
+
+  // Pokaż / ukryj kontrolki właściwe dla widoku
+  const sprzCtrls = document.getElementById('sprzCtrls');
+  const zakupCtrls = document.getElementById('zakupCtrls');
+  if (sprzCtrls) sprzCtrls.style.display = zrodlo === 'sprzedaz' ? '' : 'none';
+  if (zakupCtrls) zakupCtrls.style.display = zrodlo === 'zakup' ? '' : 'none';
+
+  if (zrodlo === 'sprzedaz') {
+    if (typeof renderLista === 'function') renderLista();
+  } else if (zrodlo === 'zakup') {
+    renderListaZakupowych();
+    // Auto-pobranie przy pierwszym wejściu (jeśli nie ma cache)
+    const cache = localStorage.getItem('rob_faktury_zakupowe');
+    if (!cache) odswiezZakupowe();
+  } else if (zrodlo === 'przed') {
+    renderListaPrzedprod();
+  }
+}
+
+// Lista faktur przedprodukcyjnych (status issued_demo lub ksef_ok_demo)
+function renderListaPrzedprod() {
+  const container = document.getElementById('listaFaktur');
+  if (!container) return;
+  const lista = faktury.filter(f =>
+    f.status === 'issued_demo' || f.status === 'ksef_ok_demo' ||
+    f.status === 'ksef_pending_demo' || f.status === 'ksef_error_demo' ||
+    (f.ksefEnv === 'demo' && f.status && f.status.startsWith('ksef'))
+  );
+  if (lista.length === 0) {
+    container.innerHTML = '<div class="empty-state">' +
+      '<div class="empty-icon">🧪</div>' +
+      '<div class="empty-title">Brak faktur przedprodukcyjnych</div>' +
+      '<div class="empty-sub">Wystaw fakturę przyciskiem 🧪 „Faktura przedprodukcyjna" — zobaczysz ją tutaj.</div>' +
+      '</div>';
+    return;
+  }
+  // Renderowanie podobne do renderLista, ale z plakietką PRZEDPROD
+  container.innerHTML = lista.map(f => {
+    const status = f.status || 'issued_demo';
+    const statusKey = status.replace('_demo', ''); // żeby pasowało do CSS plakietek
+    const statusLabels = {
+      issued_demo: 'Próbna',
+      ksef_pending: 'KSeF…',
+      ksef_ok: 'W demo KSeF',
+      ksef_error: 'Błąd demo'
+    };
+    const label = statusLabels[status] || statusLabels[statusKey] || status;
+    return '<div class="fv-item" onclick="editFaktura(' + f.id + ')">' +
+      '<div class="fv-status ' + statusKey + '"></div>' +
+      '<div class="fv-info">' +
+        '<div class="fv-nr">' +
+          '<span style="display:inline-block;background:#FFD66B;color:#000;font-weight:800;font-size:10px;padding:2px 6px;border-radius:4px;letter-spacing:0.5px;margin-right:6px;vertical-align:1px;font-family:var(--font-c)">PRZEDPROD</span>' +
+          escapeHtml(f.numer) +
+          ' <span class="status-badge status-' + statusKey + '" style="margin-left:6px">' + label + '</span>' +
+        '</div>' +
+        '<div class="fv-klient">' + escapeHtml(f.nabywca?.nazwa || '—') + '</div>' +
+      '</div>' +
+      '<div class="fv-kwota">' +
+        '<div class="fv-brutto">' + formatKwota(f.sumaBrutto) + ' ' + (f.waluta || 'PLN') + '</div>' +
+        '<div class="fv-data">' + (f.dataWyst || '') + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// Renderuj listę zakupowych z localStorage
+function renderListaZakupowych() {
+  const container = document.getElementById('listaFaktur');
+  if (!container) return;
+
+  const cacheRaw = localStorage.getItem('rob_faktury_zakupowe');
+  if (!cacheRaw) {
+    container.innerHTML = '<div class="empty-state">' +
+      '<div class="empty-icon">📥</div>' +
+      '<div class="empty-title">Brak pobranych faktur zakupowych</div>' +
+      '<div class="empty-sub">Kliknij „Odśwież z KSeF" żeby pobrać.</div>' +
+      '</div>';
+    return;
+  }
+
+  const cache = JSON.parse(cacheRaw);
+  const lista = cache.faktury || [];
+
+  if (lista.length === 0) {
+    container.innerHTML = '<div class="empty-state">' +
+      '<div class="empty-icon">📭</div>' +
+      '<div class="empty-title">Brak faktur w wybranym okresie</div>' +
+      '<div class="empty-sub">Okres: ' + (cache.okres?.od || '?') + ' do ' + (cache.okres?.do || '?') + '</div>' +
+      '</div>';
+    return;
+  }
+
+  // Info o ostatnim pobraniu
+  const pobrano = cache.pobrano ? new Date(cache.pobrano).toLocaleString('pl-PL') : '?';
+  const info = '<div style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:10px">Pobrano ' + lista.length + ' z KSeF · ostatnio: ' + pobrano + '</div>';
+
+  // Środowisko KSeF (do linku w portal)
+  const env = (typeof ksefEnv === 'function') ? ksefEnv() : 'demo';
+  const portalBase = env === 'prod' ? 'https://ksef.mf.gov.pl' : 'https://ksef-demo.mf.gov.pl';
+
+  container.innerHTML = info + lista.map(f => {
+    const link = portalBase + '/web/podglad/' + (f.ksefRef || '');
+    return '<div class="fv-item" onclick="window.open(\'' + link + '\', \'_blank\')">' +
+      '<div class="fv-status ksef_ok"></div>' +
+      '<div class="fv-info">' +
+        '<div class="fv-nr">' +
+          '<span style="display:inline-block;background:#7BA7E0;color:#000;font-weight:800;font-size:10px;padding:2px 6px;border-radius:4px;letter-spacing:0.5px;margin-right:6px;vertical-align:1px;font-family:var(--font-c)">ZAKUP</span>' +
+          escapeHtml(f.numer) +
+        '</div>' +
+        '<div class="fv-klient">' + escapeHtml(f.sprzedawca.nazwa) + (f.sprzedawca.nip ? ' · NIP: ' + f.sprzedawca.nip : '') + '</div>' +
+      '</div>' +
+      '<div class="fv-kwota">' +
+        '<div class="fv-brutto">' + formatKwota(f.sumaBrutto) + ' ' + f.waluta + '</div>' +
+        '<div class="fv-data">' + (f.dataWyst || '—') + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// (escapeHtml już istnieje w app, używamy tej funkcji bez redeklaracji)
+
+// ─────────────────────────────────────────────────────────────
+// ODŚWIEŻ ZAKUPOWE — ostatnie 3 miesiące, max 30
+// ─────────────────────────────────────────────────────────────
+async function odswiezZakupowe() {
+  const btn = document.getElementById('btnOdswiezZakup');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = '⏳ Pobieranie…';
+  }
+
+  // (update_021) Zakupowe zawsze z produkcji
+  if (!localStorage.getItem('rob_ksef_token_prod')) {
+    showToast('Najpierw skonfiguruj token produkcyjny w Ustawieniach');
+    if (btn) { btn.disabled = false; btn.textContent = '🔄 Odśwież z KSeF'; }
+    return;
+  }
+  setKsefContext('prod');
+
+  // Zakres: ostatnie 3 miesiące do dziś
+  const dzis = new Date();
+  const startDate = new Date();
+  startDate.setMonth(startDate.getMonth() - 3);
+
+  const dateFrom = startDate.toISOString().slice(0, 10);
+  const dateTo = dzis.toISOString().slice(0, 10);
+
+  try {
+    await pobierzFakturyZKSeF('buyer', dateFrom, dateTo, 30);
+    renderListaZakupowych();
+    showToast('✓ Pobrano z KSeF');
+  } catch (err) {
+    console.error('Błąd pobierania zakupowych:', err);
+    showToast('✗ Błąd: ' + err.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = '🔄 Odśwież z KSeF';
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// KONIEC FILAR 2
 // ─────────────────────────────────────────────────────────────
 
 </script>
