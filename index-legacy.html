@@ -1094,7 +1094,7 @@ body {
           <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2" stroke="url(#orange-grad)"/><text x="12" y="15.5" font-family="Barlow Condensed,sans-serif" font-size="9" font-weight="800" fill="url(#white-grad)" text-anchor="middle" stroke="none">R</text></svg></div>
           <div><div class="s-title">Wersja Robion</div><div class="s-sub">Beta</div></div>
         </div>
-        <div class="s-value" id="settingsVersionValue">0.8.0-cloud</div>
+        <div class="s-value" id="settingsVersionValue">0.7.9</div>
       </div>
       <div class="settings-row" onclick="clearData()">
         <div class="settings-left">
@@ -1117,8 +1117,6 @@ body {
       <button type="button" class="zrodlo-chip" data-zrodlo="zakup" onclick="setZrodloFiltr('zakup')" style="flex:1;min-width:0;padding:10px 4px;background:var(--glass);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-family:var(--font-c);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.2px;cursor:pointer;transition:all 0.15s;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:5px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M4 18V8" stroke="url(#orange-grad)"/><path d="M4 4v4h16" stroke="url(#orange-grad)"/><path d="M12 14l3 3 3-3" stroke="url(#white-grad)"/><path d="M15 17V8" stroke="url(#white-grad)"/></svg><span>Zakup</span</button>
       <button type="button" class="zrodlo-chip" data-zrodlo="robocze" onclick="setZrodloFiltr('robocze')" style="flex:1;min-width:0;padding:10px 4px;background:var(--glass);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-family:var(--font-c);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.2px;cursor:pointer;transition:all 0.15s;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:5px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M5 3h11l4 4v14H5z" stroke="url(#orange-grad)"/><path d="M16 3v4h4" stroke="url(#orange-grad)"/><path d="M8 14l3 3 6-6" stroke="url(#white-grad)" stroke-dasharray="2 2"/></svg><span>Robocze</span</button>
       <button type="button" class="zrodlo-chip" data-zrodlo="przed" onclick="setZrodloFiltr('przed')" style="flex:1;min-width:0;padding:10px 4px;background:var(--glass);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-family:var(--font-c);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.2px;cursor:pointer;transition:all 0.15s;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:5px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><path d="M9 3h6v5l3 6a3 3 0 0 1-3 4H9a3 3 0 0 1-3-4l3-6V3z" stroke="url(#orange-grad)"/><path d="M10 3h4" stroke="url(#white-grad)"/><circle cx="11" cy="15" r="0.8" fill="url(#white-grad)"/><circle cx="13" cy="17" r="0.6" fill="url(#white-grad)"/></svg><span>Próbne</span</button>
-      <!-- (Sesja 10 / Sprint 1C) Chip Bezfakturowa — ewidencja sprzedaży B2C bez faktury -->
-      <button type="button" class="zrodlo-chip" data-zrodlo="bezfakturowa" onclick="setZrodloFiltr('bezfakturowa')" style="flex:1;min-width:0;padding:10px 4px;background:var(--glass);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-family:var(--font-c);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.2px;cursor:pointer;transition:all 0.15s;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:5px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="9" stroke="url(#orange-grad)"/><path d="M9 9l6 6M15 9l-6 6" stroke="url(#white-grad)" stroke-dasharray="1.5 1.5"/></svg><span>Bezfakt.</span></button>
     </div>
 
     <!-- Status pill (KSeF query progress) -->
@@ -1145,18 +1143,6 @@ body {
     <!-- /Kontrolki ZAKUPOWYCH -->
 
     <!-- Kontrolki ROBOCZYCH (lokalne faktury z apki - domyślnie ukryte) -->
-    <!-- (Sesja 10 / Sprint 1C) Kontrolki widoku Bezfakturowa -->
-    <div id="bezfakturowaCtrls" style="display:none;margin-bottom:14px">
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:nowrap">
-        <div style="flex:1;font-size:11px;color:var(--text3);font-family:var(--font-c);letter-spacing:1px;text-transform:uppercase">Ewidencja sprzedaży bez faktury</div>
-        <button type="button" onclick="otworzModalNowaSB()" style="padding:9px 14px;background:var(--accent);color:#000;border:none;border-radius:8px;font-family:var(--font-c);font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;flex-shrink:0">+ Dodaj wpis</button>
-        <button type="button" onclick="eksportujSBdoCSV()" style="padding:9px 12px;background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:8px;font-family:var(--font-c);font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;flex-shrink:0">CSV ⬇</button>
-      </div>
-      <div style="margin-top:8px;padding:10px 12px;background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.18);border-radius:8px;font-size:11px;line-height:1.5;color:var(--text2)">
-        💡 Tu wpisujesz sprzedaż dla klientów którzy nie chcą faktury (osoby prywatne, korzystasz ze zwolnienia z kasy fiskalnej). Wpisy <strong>NIE idą do KSeF</strong> — to lokalna ewidencja dla Ciebie i księgowej.
-      </div>
-    </div>
-
     <div id="roboczeCtrls" style="display:none">
       <!-- Wyszukiwarka -->
       <div style="position:relative;margin-bottom:10px">
@@ -1189,7 +1175,7 @@ body {
   <div class="view" id="view-forma">
     <div class="section-header" style="margin-top:0">
       <span class="section-title" id="formaTitle">Nowa faktura</span>
-      <span class="section-action" style="color:var(--text3)" id="formaAnulujBtn" onclick="anulujFakture()">✕ Anuluj</span>
+      <span class="section-action" style="color:var(--text3)" onclick="anulujFakture()">✕ Anuluj</span>
     </div>
 
     <!-- Numer faktury -->
@@ -1208,43 +1194,8 @@ body {
             <option value="KS">Kosztorys</option>
             <option value="FK">Faktura korygująca</option>
             <option value="FZ">Faktura zaliczkowa</option>
-            <option value="FR">Faktura końcowa (rozliczeniowa)</option>
           </select>
         </div>
-      </div>
-    </div>
-
-    <!-- (Sesja 12 / Sprint 1C) Sekcja FR — faktura końcowa rozliczeniowa -->
-    <div class="glass-card" id="fvFRSekcja" style="padding:14px 16px;margin-bottom:14px;display:none;border:1px solid rgba(224,160,123,0.3);background:rgba(224,160,123,0.04)">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-        <span style="display:inline-block;background:#E0A07B;color:#000;font-weight:800;font-size:10px;padding:3px 7px;border-radius:4px;letter-spacing:0.5px;font-family:var(--font-c)">FR</span>
-        <span style="font-family:var(--font-c);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#E0A07B">Zaliczki do rozliczenia</span>
-      </div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Zaznacz <strong>wszystkie faktury zaliczkowe</strong> wystawione wcześniej dla tego klienta na to zamówienie.</div>
-      <div id="fvFRZaliczkiLista" style="margin-bottom:10px">
-        <!-- Wypełniane dynamicznie przez wypelnijListeZaliczek() -->
-      </div>
-      <div id="fvFRSumaInfo" style="padding:10px 12px;background:rgba(224,160,123,0.08);border:1px solid rgba(224,160,123,0.2);border-radius:8px;font-size:12px;display:none">
-        <!-- Wypełniane przez aktualizujSumeFR() -->
-      </div>
-    </div>
-
-    <!-- (Sesja 11 / Sprint 1C) Sekcja FK — widoczna tylko gdy typ = FK -->
-    <div class="glass-card" id="fvFKSekcja" style="padding:14px 16px;margin-bottom:14px;display:none;border:1px solid rgba(224,123,123,0.3);background:rgba(224,123,123,0.04)">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-        <span style="display:inline-block;background:#E07B7B;color:#000;font-weight:800;font-size:10px;padding:3px 7px;border-radius:4px;letter-spacing:0.5px;font-family:var(--font-c)">FK</span>
-        <span style="font-family:var(--font-c);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#E07B7B">Dane korekty</span>
-      </div>
-      <div class="form-group" style="margin-bottom:10px">
-        <label class="form-label">Korygowana faktura</label>
-        <select class="form-select" id="fvFKOryginal" onchange="onFKOryginalChange()">
-          <option value="">— wybierz fakturę do skorygowania —</option>
-        </select>
-        <div style="font-size:11px;color:var(--text3);margin-top:4px">Pokazujemy tylko faktury które są <strong>w KSeF PROD</strong> (mają nadany numer państwowy)</div>
-      </div>
-      <div class="form-group" style="margin-bottom:0">
-        <label class="form-label">Przyczyna korekty</label>
-        <input type="text" class="form-input" id="fvFKPrzyczyna" placeholder="np. Korekta ceny — pomyłka w wystawieniu" maxlength="300">
       </div>
     </div>
 
@@ -1337,36 +1288,6 @@ body {
     <!-- Sumy -->
     <div id="sumaBox"></div>
 
-    <!-- (Sesja 12 / Sprint 1C) Sekcja FZ — DOLNA pozycja: po pozycjach i sumach -->
-    <div class="glass-card" id="fvFZSekcja" style="padding:14px 16px;margin:14px 0;display:none;border:1px solid rgba(123,224,160,0.3);background:rgba(123,224,160,0.04)">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-        <span style="display:inline-block;background:#7BE0A0;color:#000;font-weight:800;font-size:10px;padding:3px 7px;border-radius:4px;letter-spacing:0.5px;font-family:var(--font-c)">FZ</span>
-        <span style="font-family:var(--font-c);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#7BE0A0">Z tego zaliczka</span>
-      </div>
-      <div class="form-row" style="margin-bottom:10px">
-        <label class="form-label">Ile klient wpłaca jako zaliczkę?</label>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-          <div>
-            <input type="number" inputmode="decimal" step="0.01" min="0" class="form-input" id="fvFZKwota" placeholder="kwota w zł" oninput="onFZKwotaInput()">
-            <div style="font-size:10px;color:var(--text3);margin-top:3px;text-align:center">zł brutto</div>
-          </div>
-          <div>
-            <input type="number" inputmode="decimal" step="0.1" min="0" max="100" class="form-input" id="fvFZProc" placeholder="procent" oninput="onFZProcInput()">
-            <div style="font-size:10px;color:var(--text3);margin-top:3px;text-align:center">% z zamówienia</div>
-          </div>
-        </div>
-        <div style="display:flex;gap:6px">
-          <button type="button" onclick="ustawProcZaliczki(30)" style="flex:1;padding:8px 6px;background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:6px;font-family:var(--font-c);font-size:11px;cursor:pointer">30%</button>
-          <button type="button" onclick="ustawProcZaliczki(50)" style="flex:1;padding:8px 6px;background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:6px;font-family:var(--font-c);font-size:11px;cursor:pointer">50%</button>
-          <button type="button" onclick="ustawProcZaliczki(70)" style="flex:1;padding:8px 6px;background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:6px;font-family:var(--font-c);font-size:11px;cursor:pointer">70%</button>
-          <button type="button" onclick="ustawProcZaliczki(100)" style="flex:1;padding:8px 6px;background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:6px;font-family:var(--font-c);font-size:11px;cursor:pointer">100%</button>
-        </div>
-      </div>
-      <div id="fvFZInfo" style="padding:12px;background:rgba(123,224,160,0.08);border:1px solid rgba(123,224,160,0.2);border-radius:8px;font-size:12px;display:none">
-        <!-- wypełnia onFZChange() -->
-      </div>
-    </div>
-
     <!-- Uwagi -->
     <div class="form-group" style="margin-top:16px">
       <label class="form-label">Uwagi / adnotacje</label>
@@ -1397,7 +1318,7 @@ body {
   <div class="view" id="view-podglad">
     <div class="section-header" style="margin-top:0">
       <span class="section-title">Podgląd</span>
-      <span class="section-action" style="color:var(--text3)" onclick="wrocZPodgladu()">← Wróć</span>
+      <span class="section-action" style="color:var(--text3)" onclick="showView('forma')">← Wróć</span>
     </div>
 
     <!-- Akcje podglądu -->
@@ -1428,12 +1349,6 @@ body {
     <div class="fv-preview-stage" id="podgladStage">
       <div id="podgladFaktury"></div>
     </div>
-
-    <!-- (Sesja 13 / Sprint 1C) Usuwanie pod fakturą — jak w roboczych. -->
-    <!-- Ukryte dla faktur w produkcyjnym KSeF (nie wolno ich usuwać). -->
-    <button class="btn-danger" id="btnDelPodglad" style="display:none;width:100%;margin-top:14px" onclick="deleteFaktura()">
-      Usuń fakturę
-    </button>
   </div>
   </div>
 </div>
@@ -1461,7 +1376,7 @@ body {
     <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="url(#orange-grad)"/><circle cx="12" cy="12" r="3" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Ustawienia</div>
   </div>
-  <div class="nav-version-info" id="navVersionInfo">Beta · 0.8.0-cloud</div>
+  <div class="nav-version-info" id="navVersionInfo">Beta · 0.7.9</div>
 </div>
 
 <button class="fab" id="fabBtn" onclick="fabAction()">+</button>
@@ -1662,96 +1577,6 @@ body {
           Anuluj — wrócę do edycji
         </button>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- (Sesja 13 / Sprint 1C) MODAL: Szczegóły wpisu sprzedaży bezfakturowej -->
-<div class="modal-overlay" id="modalSzczegolySB">
-  <div class="modal" style="max-width:460px">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <span class="modal-title" id="szczegolySBTytul">Wpis bezfakturowy</span>
-      <button class="modal-close" onclick="closeModal('modalSzczegolySB')">✕</button>
-    </div>
-    <div class="modal-body" id="szczegolySBBody">
-      <!-- Wypełniane przez pokazSzczegolySB() -->
-    </div>
-  </div>
-</div>
-
-<!-- (Sesja 10 / Sprint 1C) MODAL: Nowy wpis sprzedaży bezfakturowej -->
-<div class="modal-overlay" id="modalNowaSB">
-  <div class="modal" style="max-width:480px">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <span class="modal-title" id="modalSBTitle">Sprzedaż bezfakturowa</span>
-      <button class="modal-close" onclick="closeModal('modalNowaSB')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div style="padding:10px 12px;background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.18);border-radius:8px;font-size:11px;line-height:1.5;color:var(--text2);margin-bottom:14px">
-        Wpis trafi tylko do <strong>Twojej lokalnej ewidencji</strong>. KSeF nie wchodzi w grę — to nie faktura.
-      </div>
-      <div class="form-row" style="margin-bottom:10px">
-        <label class="form-label">Data sprzedaży</label>
-        <input type="date" class="form-input" id="sbData" value="">
-      </div>
-      <div class="form-row" style="margin-bottom:10px">
-        <label class="form-label">Kwota brutto (zł)</label>
-        <input type="number" inputmode="decimal" step="0.01" class="form-input" id="sbKwota" placeholder="np. 5000.00">
-      </div>
-      <div class="form-row" style="margin-bottom:10px">
-        <label class="form-label">Opis (krótki, dla księgowej)</label>
-        <input type="text" class="form-input" id="sbOpis" placeholder="np. Montaż pompy ciepła — klient indywidualny" maxlength="200">
-      </div>
-      <div class="form-row" style="margin-bottom:14px">
-        <label class="form-label">Forma płatności</label>
-        <select class="form-input" id="sbFormaPlat">
-          <option value="gotowka">Gotówka</option>
-          <option value="przelew">Przelew</option>
-          <option value="blik">BLIK</option>
-          <option value="karta">Karta</option>
-          <option value="inna">Inna</option>
-        </select>
-      </div>
-      <button class="btn-primary" onclick="zapiszSprzedazBezfakturowa()" style="width:100%;padding:14px;font-weight:800">
-        Zapisz wpis
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- (Sesja 9 / Sprint 1C) MODAL: Walidacja przed wysyłką do KSeF -->
-<div class="modal-overlay" id="modalWalidacjaKSeF">
-  <div class="modal" style="max-width:480px">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <span class="modal-title">⚠️ Faktura niegotowa do KSeF</span>
-      <button class="modal-close" onclick="closeModal('modalWalidacjaKSeF')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div style="padding:14px;background:rgba(255,82,82,0.08);border:1px solid rgba(255,82,82,0.25);border-radius:10px;margin-bottom:14px;font-size:13px;line-height:1.5;color:var(--text)">
-        KSeF wymaga kompletnych danych — w przeciwnym razie odrzuci fakturę z błędem semantyki.
-        Uzupełnij poniższe i spróbuj ponownie.
-      </div>
-      <div id="walidacjaLista" style="margin-bottom:16px"></div>
-      <button class="btn-primary" onclick="closeModal('modalWalidacjaKSeF')" style="width:100%;padding:14px;font-weight:800">
-        OK, wracam do edycji faktury
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- (Sesja 8 / Sprint 1C) MODAL: Szczegóły faktury zakupowej z KSeF -->
-<div class="modal-overlay" id="modalSzczegolyZakup">
-  <div class="modal" style="max-width:600px;max-height:90vh;display:flex;flex-direction:column">
-    <div class="modal-handle"></div>
-    <div class="modal-header">
-      <span class="modal-title" id="szczegolyTytul">Szczegóły faktury zakupowej</span>
-      <button class="modal-close" onclick="closeModal('modalSzczegolyZakup')">✕</button>
-    </div>
-    <div class="modal-body" id="szczegolyBody" style="overflow-y:auto;flex:1">
-      <!-- Wypełniane przez pokazSzczegolyFakturyZakupowej() -->
     </div>
   </div>
 </div>
@@ -3121,8 +2946,7 @@ function saveVAT() {
 // ─────────────────────────────────────────────────────────────
 // KSeF — INTEGRACJA Z KRAJOWYM SYSTEMEM E-FAKTUR
 // ─────────────────────────────────────────────────────────────
-const KSEF_PROXY = 'https://robion-ksef-proxy.n5dpkv5dp7.workers.dev'; // stary proxy — pobieranie list, test połączenia
-const KSEF_CLOUD = 'https://robion-ksef-cloud.n5dpkv5dp7.workers.dev'; // (Sprint 1A) nowy Worker — pełna logika wysyłki KSeF
+const KSEF_PROXY = 'https://robion-ksef-proxy.n5dpkv5dp7.workers.dev';
 
 // Rozwijanie/zwijanie przewodnika w modalu
 function toggleKSeFGuide() {
@@ -3713,8 +3537,7 @@ function base64ToArrayBuffer(b64) {
 // pojawią się kolejne moduły (zlecenia, marketplace itd.)
 const KLUCZE_BACKUP = [
   'rob_faktury', 'rob_klienci', 'rob_produkty',
-  'rob_ust', 'rob_numeracja',
-  'rob_sprzedaz_bezfakturowa' // (Sesja 10 / Sprint 1C) — ewidencja B2C
+  'rob_ust', 'rob_numeracja'
 ];
 const SNAPSHOT_LIMIT = 5;
 
@@ -4821,366 +4644,10 @@ function generujNumer(typ) {
 
 // Reakcja na zmianę typu dokumentu w formularzu
 function onTypChange() {
-  const typ = document.getElementById('fvTyp').value;
-
-  // (Sesja 11 / Sprint 1C) Pokaż/ukryj sekcję FK
-  const fkSekcja = document.getElementById('fvFKSekcja');
-  if (fkSekcja) {
-    fkSekcja.style.display = (typ === 'FK') ? '' : 'none';
-    if (typ === 'FK') wypelnijListeKorygowanych();
-  }
-
-  // (Sesja 12 / Sprint 1C) Pokaż/ukryj sekcję FR (zaliczki do rozliczenia)
-  const frSekcja = document.getElementById('fvFRSekcja');
-  if (frSekcja) {
-    frSekcja.style.display = (typ === 'FR') ? '' : 'none';
-    if (typ === 'FR') wypelnijListeZaliczek();
-  }
-
-  // (Sesja 12 / Sprint 1C) Pokaż/ukryj sekcję FZ (dane zaliczki)
-  const fzSekcja = document.getElementById('fvFZSekcja');
-  if (fzSekcja) {
-    fzSekcja.style.display = (typ === 'FZ') ? '' : 'none';
-    if (typ === 'FZ') {
-      onFZChange();
-      // (Sesja 13) Zaliczka = zapłata już wpłacona → termin w dniu wystawienia.
-      // Tylko dla NOWej faktury (przy edycji nie nadpisujemy zapisanego terminu).
-      if (!editFvId) setTerminDni(0);
-    }
-  }
-
   // Tylko dla nowej faktury — przy edycji nie zmieniamy numeru
   if (editFvId) return;
+  const typ = document.getElementById('fvTyp').value;
   document.getElementById('fvNumer').value = generujNumer(typ);
-}
-
-// (Sesja 12) Wypełnia listę faktur zaliczkowych do rozliczenia
-function wypelnijListeZaliczek() {
-  const lista = document.getElementById('fvFRZaliczkiLista');
-  if (!lista) return;
-
-  const zaliczki = (faktury || [])
-    .filter(f =>
-      f.typ === 'FZ' &&
-      f.status === 'ksef_ok' &&
-      f.ksefNr &&
-      String(f.id) !== String(editFvId || '')
-    )
-    .sort((a, b) => (b.dataWyst || '').localeCompare(a.dataWyst || ''));
-
-  if (zaliczki.length === 0) {
-    lista.innerHTML = '<div style="padding:10px;color:var(--text3);font-size:12px;text-align:center">Brak faktur zaliczkowych z numerem KSeF do rozliczenia</div>';
-    return;
-  }
-
-  // Odczytaj poprzednio zaznaczone (jeśli edytujemy FR)
-  let zaznaczone = [];
-  if (editFvId) {
-    const f = faktury.find(x => String(x.id) === String(editFvId));
-    if (f && Array.isArray(f.frZaliczkiIds)) zaznaczone = f.frZaliczkiIds.map(String);
-  }
-
-  lista.innerHTML = zaliczki.map(f => {
-    const checked = zaznaczone.includes(String(f.id)) ? 'checked' : '';
-    return `
-      <label style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--glass);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer">
-        <input type="checkbox" class="fr-zaliczka-cb" data-id="${escapeHtml(f.id)}" data-kwota="${f.sumaBrutto || 0}" data-ksefnr="${escapeHtml(f.ksefNr)}" data-numer="${escapeHtml(f.numer)}" data-data="${escapeHtml(f.dataWyst || '')}" onchange="aktualizujSumeFR()" ${checked}>
-        <div style="flex:1">
-          <div style="font-weight:700;font-size:13px">${escapeHtml(f.numer)}</div>
-          <div style="font-size:11px;color:var(--text3)">${escapeHtml(f.dataWyst || '')} · klient: ${escapeHtml(f.nabywca?.nazwa || '—')}</div>
-        </div>
-        <div style="font-family:var(--font-c);font-weight:800;color:var(--accent)">${formatKwota(f.sumaBrutto || 0)} zł</div>
-      </label>
-    `;
-  }).join('');
-
-  aktualizujSumeFR();
-}
-
-// ─────────────────────────────────────────────────────────────
-// (Sesja 12 / Sprint 1C) FZ — faktura zaliczkowa
-// Pozycje = pełne zamówienie. Klient płaci procent LUB konkretną kwotę.
-// Oba pola (kwota/procent) synchronizują się dwukierunkowo.
-// ─────────────────────────────────────────────────────────────
-
-// Pobierz wartość zamówienia z pozycji (suma brutto)
-function fzWartoscZam() {
-  return (pozycje || []).reduce((s, p) =>
-    s + (typeof kalkuluj === 'function' ? kalkuluj(p).brutto : 0), 0
-  );
-}
-
-// User zmienił KWOTĘ → przelicz procent
-function onFZKwotaInput() {
-  const kwota = parseFloat(document.getElementById('fvFZKwota').value) || 0;
-  const wartoscZam = fzWartoscZam();
-  if (wartoscZam > 0 && kwota > 0) {
-    const proc = (kwota / wartoscZam * 100);
-    // Pokazujemy do 1 miejsca po przecinku jeśli nie okrągłe
-    document.getElementById('fvFZProc').value = proc % 1 === 0 ? proc : proc.toFixed(1);
-  } else {
-    document.getElementById('fvFZProc').value = '';
-  }
-  onFZChange();
-}
-
-// User zmienił PROCENT → przelicz kwotę
-function onFZProcInput() {
-  const proc = parseFloat(document.getElementById('fvFZProc').value) || 0;
-  const wartoscZam = fzWartoscZam();
-  if (wartoscZam > 0 && proc > 0) {
-    document.getElementById('fvFZKwota').value = (wartoscZam * proc / 100).toFixed(2);
-  } else {
-    document.getElementById('fvFZKwota').value = '';
-  }
-  onFZChange();
-}
-
-// Główne odświeżanie podsumowania — wywoływane przez oba pola i przez obliczSumy
-function onFZChange() {
-  const kwotaZal = parseFloat(document.getElementById('fvFZKwota')?.value) || 0;
-  const proc = parseFloat(document.getElementById('fvFZProc')?.value) || 0;
-  const box = document.getElementById('fvFZInfo');
-  if (!box) return;
-
-  const wartoscZam = fzWartoscZam();
-
-  if (wartoscZam <= 0) {
-    box.style.display = '';
-    box.innerHTML = '<div style="color:var(--text3);font-size:11px">Najpierw dodaj pozycje poniżej — wartość zamówienia liczy się z nich automatycznie.</div>';
-    return;
-  }
-
-  if (kwotaZal <= 0) {
-    box.style.display = '';
-    box.innerHTML = `<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text2)">Wartość zamówienia (z pozycji):</span><strong>${formatKwota(wartoscZam)} zł</strong></div>
-      <div style="color:var(--text3);font-size:11px;margin-top:6px">Wpisz kwotę zaliczki lub procent</div>`;
-    return;
-  }
-
-  const pozostalo = wartoscZam - kwotaZal;
-  let warning = '';
-  if (kwotaZal > wartoscZam) {
-    warning = '<div style="color:#FF5252;font-weight:700;margin-top:6px;font-size:11px">⚠️ Zaliczka większa niż wartość zamówienia — sprawdź dane</div>';
-  }
-  // Wyświetl procent zaokrąglony do 1 miejsca po przecinku tylko jeśli nie okrągłe
-  const procFmt = proc % 1 === 0 ? proc : proc.toFixed(1);
-
-  box.style.display = '';
-  box.innerHTML = `
-    <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text2)">Wartość zamówienia (z pozycji):</span><strong>${formatKwota(wartoscZam)} zł</strong></div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text2)">Zaliczka (${procFmt}%):</span><strong style="color:#7BE0A0">${formatKwota(kwotaZal)} zł</strong></div>
-    <div style="display:flex;justify-content:space-between;padding-top:6px;border-top:1px solid var(--border);margin-top:4px"><span style="color:var(--text);font-weight:700">FZ wystawimy na:</span><strong style="color:var(--accent);font-family:var(--font-c)">${formatKwota(kwotaZal)} zł</strong></div>
-    <div style="display:flex;justify-content:space-between;margin-top:2px;font-size:11px;color:var(--text3)"><span>Pozostanie do zapłaty:</span><span>${formatKwota(pozostalo)} zł</span></div>
-    ${warning}
-  `;
-}
-
-function ustawProcZaliczki(proc) {
-  document.getElementById('fvFZProc').value = proc;
-  onFZProcInput();  // zaktualizuje też kwotę i podsumowanie
-}
-
-// (Sesja 13, fix) Wywoływane gdy zmieniają się POZYCJE (przez obliczSumy).
-// Procent ma priorytet — jeśli ustawiony, kwota zaliczki podąża za nową
-// wartością zamówienia. Jeśli tylko kwota — przeliczamy procent.
-function fzSyncPoZmianiePozycji() {
-  const procEl = document.getElementById('fvFZProc');
-  const kwotaEl = document.getElementById('fvFZKwota');
-  if (!procEl || !kwotaEl) return;
-  const proc = parseFloat(procEl.value) || 0;
-  const kwota = parseFloat(kwotaEl.value) || 0;
-  const wartoscZam = fzWartoscZam();
-
-  if (proc > 0) {
-    // Procent ustawiony → kwota = wartość × procent
-    kwotaEl.value = wartoscZam > 0 ? (wartoscZam * proc / 100).toFixed(2) : '';
-  } else if (kwota > 0 && wartoscZam > 0) {
-    // Tylko kwota → przelicz procent
-    const p = kwota / wartoscZam * 100;
-    procEl.value = p % 1 === 0 ? p : p.toFixed(1);
-  }
-  onFZChange();
-}
-
-// (Sesja 13) Przeliczenie pozycji FR na kwotę POZOSTAŁĄ (pełna − zaliczki).
-// Każda pozycja skalowana współczynnikiem pozostalo/całość — proporcje VAT zachowane.
-function przelicZPozycjeNaKoncowa(pozycjeArr, sumaZaliczek, wartoscCalkowita) {
-  if (!Array.isArray(pozycjeArr) || pozycjeArr.length === 0) return pozycjeArr;
-  if (!wartoscCalkowita || wartoscCalkowita <= 0) return pozycjeArr;
-  const pozostalo = wartoscCalkowita - (sumaZaliczek || 0);
-  if (pozostalo <= 0) return pozycjeArr; // nic nie zostało / nadpłata — zostaw bez zmian
-  const wsp = pozostalo / wartoscCalkowita;
-  return pozycjeArr.map(p => ({
-    nazwa: 'Rozliczenie końcowe: ' + (p.nazwa || ''),
-    jednostka: p.jednostka || 'szt',
-    ilosc: parseFloat(p.ilosc) || 1,
-    cena: ((parseFloat(p.cena) || 0) * wsp),
-    cenaTryb: p.cenaTryb || 'netto',
-    vat: p.vat || '23'
-  }));
-}
-
-// (Sesja 12) Przeliczenie pozycji na zaliczkowe — wywoływane przy wysyłce FZ do Workera.
-// Bierze WSPÓŁCZYNNIK (kwotaZaliczki / wartoscZam) i mnoży każdą pozycję.
-// To pozwala obsłużyć przypadek "klient ma 48 zł a powinno 50" — % wyjdzie 48,00%.
-// Zwraca NOWĄ tablicę pozycji, nie modyfikuje oryginalnych.
-function przelicZPozycjeNaZaliczke(pozycjeArr, kwotaZaliczki, wartoscZamowienia) {
-  if (!Array.isArray(pozycjeArr) || pozycjeArr.length === 0) return pozycjeArr;
-  if (!kwotaZaliczki || kwotaZaliczki <= 0) return pozycjeArr;
-  if (!wartoscZamowienia || wartoscZamowienia <= 0) return pozycjeArr;
-
-  const wspolczynnik = kwotaZaliczki / wartoscZamowienia;
-  const proc = (wspolczynnik * 100);
-  const procPrint = proc % 1 === 0 ? proc : proc.toFixed(1);
-
-  return pozycjeArr.map(p => ({
-    nazwa: 'Zaliczka ' + procPrint + '% na: ' + (p.nazwa || ''),
-    jednostka: p.jednostka || 'szt',
-    ilosc: parseFloat(p.ilosc) || 1,
-    cena: ((parseFloat(p.cena) || 0) * wspolczynnik),
-    cenaTryb: p.cenaTryb || 'netto',
-    vat: p.vat || '23'
-  }));
-}
-
-// (Sesja 12) Aktualizuje sumę zaznaczonych zaliczek + pozostałe do zapłaty.
-// PRZY OKAZJI: auto-kopiuje klienta i wstawia pozycję na pełną wartość zamówienia.
-function aktualizujSumeFR() {
-  const cbs = document.querySelectorAll('.fr-zaliczka-cb:checked');
-  const sumaZaliczek = Array.from(cbs).reduce((s, cb) => s + parseFloat(cb.dataset.kwota || 0), 0);
-  const sumaFR = (pozycje || []).reduce((s, p) => s + (typeof kalkuluj === 'function' ? kalkuluj(p).brutto : 0), 0);
-  const pozostalo = sumaFR - sumaZaliczek;
-
-  const box = document.getElementById('fvFRSumaInfo');
-  if (!box) return;
-
-  // (fix Sesja 12) Auto-kopiowanie z pierwszej zaznaczonej FZ
-  // Pobieramy pełną wartość zamówienia z fzWartoscZamowienia tej FZ
-  if (cbs.length > 0) {
-    const pierwszaCb = cbs[0];
-    const fzId = pierwszaCb.dataset.id;
-    const fz = faktury.find(x => String(x.id) === String(fzId));
-
-    // 1. Klient — kopiujemy automatycznie jeśli nie wybrany
-    if (fz && fz.nabywca && (!selectedKlient || !selectedKlient.nazwa)) {
-      selectedKlient = JSON.parse(JSON.stringify(fz.nabywca));
-      if (typeof setNabywca === 'function') setNabywca(selectedKlient);
-    }
-
-    // 2. Pozycja — jeśli FR nie ma jeszcze pozycji a FZ zna pełną wartość zamówienia
-    if (fz && fz.fzWartoscZamowienia > 0 && pozycje.length === 0) {
-      const domyslnaVat = (fz.pozycje && fz.pozycje[0]) ? fz.pozycje[0].vat : '23';
-      pozycje = [{
-        nazwa: fz.fzOpisZamowienia || 'Pełna wartość zamówienia',
-        jednostka: 'szt',
-        ilosc: 1,
-        cena: fz.fzWartoscZamowienia,
-        cenaTryb: 'brutto',
-        vat: domyslnaVat
-      }];
-      renderPozycje();
-      if (typeof obliczSumy === 'function') obliczSumy();
-      // Rekursywnie odśwież podsumowanie (z nowymi pozycjami)
-      setTimeout(aktualizujSumeFR, 50);
-      return;
-    }
-  }
-
-  if (cbs.length === 0) {
-    box.style.display = 'none';
-    return;
-  }
-
-  box.style.display = '';
-  const pozostaloKolor = pozostalo < 0 ? '#FF5252' : 'var(--accent)';
-  const pozostaloPrefix = pozostalo < 0 ? '⚠️ ' : '';
-  box.innerHTML = `
-    <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text2)">Wartość zamówienia (pozycje):</span><strong>${formatKwota(sumaFR)} zł</strong></div>
-    <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--text2)">Suma zaznaczonych zaliczek (${cbs.length}):</span><strong style="color:#7BE0A0">- ${formatKwota(sumaZaliczek)} zł</strong></div>
-    <div style="display:flex;justify-content:space-between;padding-top:6px;border-top:1px solid var(--border);margin-top:4px"><span style="color:var(--text);font-weight:700">Pozostało do zapłaty:</span><strong style="color:${pozostaloKolor};font-family:var(--font-c)">${pozostaloPrefix}${formatKwota(pozostalo)} zł</strong></div>
-    ${pozostalo < 0 ? '<div style="font-size:11px;color:#FF5252;margin-top:6px">Zaliczki większe niż pozycje — wpisz pełną wartość zamówienia w pozycjach</div>' : ''}
-  `;
-}
-
-// (Sesja 11 / Sprint 1C) Wypełnij listę faktur które można korygować.
-// Pokazujemy tylko te z ksef_ok PROD (mają nadany numer państwowy).
-// DEMO też dopuszczamy — żeby Tom mógł testować korekty na DEMO.
-function wypelnijListeKorygowanych() {
-  const sel = document.getElementById('fvFKOryginal');
-  if (!sel) return;
-  const obecna = sel.value;
-
-  const opcje = (faktury || [])
-    .filter(f =>
-      f.id !== editFvId &&         // nie sama korekta
-      f.typ === 'FV' &&            // korygujemy tylko VAT
-      f.status === 'ksef_ok' &&    // tylko te z numerem KSeF
-      f.ksefNr                     // ksefNumber musi być
-    )
-    .sort((a, b) => (b.dataWyst || '').localeCompare(a.dataWyst || ''));
-
-  let html = '<option value="">— wybierz fakturę do skorygowania —</option>';
-  opcje.forEach(f => {
-    const env = f.ksefEnv === 'prod' ? '' : ' [DEMO]';
-    html += `<option value="${escapeHtml(f.id)}">${escapeHtml(f.numer)} · ${escapeHtml(f.dataWyst || '')} · ${formatKwota(f.sumaBrutto || 0)} zł${env}</option>`;
-  });
-  sel.innerHTML = html;
-  if (obecna) sel.value = obecna;
-}
-
-// (Sesja 11) Po wyborze oryginału — kopiujemy nabywcę i pozycje
-// Tak żeby Tom mógł edytować to co się zmienia, a nie zaczynać od zera.
-function onFKOryginalChange() {
-  const id = document.getElementById('fvFKOryginal').value;
-  if (!id) return;
-  // (fix) ID może być liczbą lub stringiem — porównujemy po String()
-  const oryg = faktury.find(f => String(f.id) === String(id));
-  if (!oryg) { console.warn('FK: nie znaleziono faktury o id', id); return; }
-
-  // Sugerowana przyczyna jeśli puste
-  const przyczyna = document.getElementById('fvFKPrzyczyna');
-  if (przyczyna && !przyczyna.value) {
-    przyczyna.value = 'Korekta faktury ' + (oryg.numer || '?');
-  }
-
-  // Skopiuj nabywcę
-  if (oryg.nabywca && (!selectedKlient || !selectedKlient.nazwa)) {
-    selectedKlient = JSON.parse(JSON.stringify(oryg.nabywca));
-    if (typeof setNabywca === 'function') setNabywca(selectedKlient);
-  } else if (oryg.nabywca && selectedKlient && selectedKlient.nazwa !== oryg.nabywca.nazwa) {
-    // Konflikt: Tom już wybrał innego klienta. Zapytaj.
-    if (confirm('Podmienić obecnego klienta na "' + oryg.nabywca.nazwa + '" (z oryginału)?')) {
-      selectedKlient = JSON.parse(JSON.stringify(oryg.nabywca));
-      if (typeof setNabywca === 'function') setNabywca(selectedKlient);
-    }
-  }
-
-  // Skopiuj pozycje (głęboka kopia, żeby edycja nie modyfikowała oryginału)
-  if (Array.isArray(oryg.pozycje) && oryg.pozycje.length > 0) {
-    if (pozycje.length === 0) {
-      // Puste – kopiuj bez pytania
-      pozycje = JSON.parse(JSON.stringify(oryg.pozycje));
-      renderPozycje();
-      if (typeof obliczSumy === 'function') obliczSumy();
-      showToast('✓ Skopiowano dane z ' + (oryg.numer || 'oryginału') + ' — popraw to co się zmienia');
-    } else {
-      // Mamy już jakieś pozycje – pytamy
-      if (confirm('Zastąpić obecne pozycje (' + pozycje.length + ') pozycjami z oryginału (' + oryg.pozycje.length + ')?')) {
-        pozycje = JSON.parse(JSON.stringify(oryg.pozycje));
-        renderPozycje();
-        if (typeof obliczSumy === 'function') obliczSumy();
-      }
-    }
-  }
-
-  // Skopiuj walutę i datę sprzedaży z oryginału (data wystawienia FK zostaje dzisiejsza)
-  if (oryg.waluta) {
-    document.getElementById('fvWaluta').value = oryg.waluta;
-  }
-  if (oryg.dataSprzed && !document.getElementById('fvDataSprzed').value.match(/^\d{4}-\d{2}-\d{2}$/)) {
-    document.getElementById('fvDataSprzed').value = oryg.dataSprzed;
-  }
 }
 
 // ── TERMIN PŁATNOŚCI — synchronizacja chipy ↔ dni ↔ data ──
@@ -5367,8 +4834,8 @@ function renderLista() {
       ksef_ok:'W KSeF',
       ksef_error:'Błąd KSeF'
     };
-    const typLabels = {FV:'FV',PF:'PF',RK:'RK',KS:'KS',FK:'FK',FZ:'FZ',FR:'FR'};
-    const typColors = {FV:'#F5A623',PF:'#888',RK:'#7BA7E0',KS:'#A07BE0',FK:'#E07B7B',FZ:'#7BE0A0',FR:'#E0A07B'};
+    const typLabels = {FV:'FV',PF:'PF',RK:'RK',KS:'KS',FK:'FK',FZ:'FZ'};
+    const typColors = {FV:'#F5A623',PF:'#888',RK:'#7BA7E0',KS:'#A07BE0',FK:'#E07B7B',FZ:'#7BE0A0'};
     const t = f.typ || 'FV';
     const badge = `<span style="display:inline-block;background:${typColors[t]||'#888'};color:#000;font-weight:800;font-size:10px;padding:2px 6px;border-radius:4px;letter-spacing:0.5px;margin-right:6px;vertical-align:1px;font-family:var(--font-c)">${typLabels[t]||t}</span>`;
     const statusBadge = statusLabels[statusKey]
@@ -5632,32 +5099,6 @@ function otworzFakture(id) {
 }
 
 // Otwiera widok podglądu bez wchodzenia w edycję i bez zapisu.
-// (Sesja 13) Skąd przyszliśmy do podglądu — żeby Wróć trafiało we właściwe miejsce
-let podgladPowrotDo = 'lista';
-
-function wrocZPodgladu() {
-  if (podgladPowrotDo === 'forma') {
-    showView('forma');
-  } else {
-    showView('lista');
-    if (typeof setZrodloFiltr === 'function') {
-      // Odśwież aktualnie wybraną zakładkę listy
-      setZrodloFiltr(typeof zrodloFakturFilter !== 'undefined' ? zrodloFakturFilter : 'sprzedaz');
-    } else if (typeof renderLista === 'function') {
-      renderLista();
-    }
-  }
-}
-
-// (Sesja 13) Pokazuje/chowa przycisk "Usuń" w podglądzie.
-// Faktura w produkcyjnym KSeF NIE może być usunięta (tylko korekta).
-function aktualizujBtnDelPodglad(f) {
-  const btn = document.getElementById('btnDelPodglad');
-  if (!btn || !f) return;
-  const wProdukcyjnymKSeF = (f.status === 'ksef_ok' && f.ksefEnv === 'prod' && f.ksefNr);
-  btn.style.display = wProdukcyjnymKSeF ? 'none' : 'block';
-}
-
 // W odróżnieniu od showPodglad(), który najpierw zapisuje formularz.
 function pokazPodgladTylkoDoOdczytu(id) {
   const f = faktury.find(x => x.id === id);
@@ -5665,8 +5106,6 @@ function pokazPodgladTylkoDoOdczytu(id) {
   editFvId = id;
   selectedKlient = f.nabywca || null;
   pozycje = f.pozycje || [];
-  podgladPowrotDo = 'lista';          // (Sesja 13) przyszliśmy z listy
-  aktualizujBtnDelPodglad(f);         // (Sesja 13) pokaż/ukryj przycisk usuń
   renderPodglad(f);
   // Status KSeF box - taki sam jak w showPodglad(), tylko bez zapisywania
   const ksefBox = document.getElementById('ksefStatusBox');
@@ -5729,8 +5168,6 @@ function nowaFaktura() {
   document.getElementById('btnDelFv').style.display = 'none';
   document.getElementById('btnKonwertujPF').style.display = 'none';
   document.getElementById('formaTitle').textContent = 'Nowa faktura';
-  // (Sesja 13) Nowa faktura → "Anuluj" (bo nie ma do czego wracać)
-  document.getElementById('formaAnulujBtn').textContent = '✕ Anuluj';
 
   // Ustaw domyślne wartości
   const dzis = new Date().toISOString().split('T')[0];
@@ -5772,8 +5209,6 @@ function editFaktura(id) {
   pozycje = f.pozycje || [];
 
   document.getElementById('formaTitle').textContent = 'Edytuj fakturę';
-  // (Sesja 13) Edycja istniejącej → "Wróć" (Anuluj mylił — sugerował kasowanie)
-  document.getElementById('formaAnulujBtn').textContent = '← Wróć';
   document.getElementById('btnDelFv').style.display = 'block';
   // Przycisk konwersji — tylko dla pro formy
   document.getElementById('btnKonwertujPF').style.display = (f.typ === 'PF') ? 'block' : 'none';
@@ -5789,34 +5224,6 @@ function editFaktura(id) {
   document.getElementById('fvPlatnosc').value = f.platnosc;
   document.getElementById('fvWaluta').value = f.waluta || 'PLN';
   document.getElementById('fvUwagi').value = f.uwagi || '';
-
-  // (Sesja 11 / Sprint 1C) Pola FK
-  if ((f.typ || 'FV') === 'FK') {
-    document.getElementById('fvFKSekcja').style.display = '';
-    wypelnijListeKorygowanych();
-    if (f.fkOryginalId) document.getElementById('fvFKOryginal').value = f.fkOryginalId;
-    document.getElementById('fvFKPrzyczyna').value = f.fkPrzyczyna || '';
-  } else {
-    document.getElementById('fvFKSekcja').style.display = 'none';
-  }
-
-  // (Sesja 12 / Sprint 1C) Pola FR (lista zaliczek)
-  if ((f.typ || 'FV') === 'FR') {
-    document.getElementById('fvFRSekcja').style.display = '';
-    wypelnijListeZaliczek();  // sama odczyta f.frZaliczkiIds (przez editFvId)
-  } else {
-    document.getElementById('fvFRSekcja').style.display = 'none';
-  }
-
-  // (Sesja 12 / Sprint 1C) Pola FZ (zaliczka) — kwota + procent
-  if ((f.typ || 'FV') === 'FZ') {
-    document.getElementById('fvFZSekcja').style.display = '';
-    document.getElementById('fvFZKwota').value = f.fzKwotaZaliczki || '';
-    document.getElementById('fvFZProc').value = f.fzProcent ? (f.fzProcent % 1 === 0 ? f.fzProcent : f.fzProcent.toFixed(1)) : '';
-    onFZChange();
-  } else {
-    document.getElementById('fvFZSekcja').style.display = 'none';
-  }
 
   if (selectedKlient) setNabywca(selectedKlient);
   else resetNabywca();
@@ -6142,11 +5549,7 @@ function renderPozycje() {
       <div style="display:grid;grid-template-columns:80px 70px 80px 80px 28px;gap:6px;align-items:flex-end">
         <div>
           <div class="pozycja-label">Ilość</div>
-          <input class="pozycja-input" type="number"
-            value="${p.ilosc}"
-            min="${jednostkaBezUlamkow(p.jednostka) ? '1' : '0.01'}"
-            step="${jednostkaBezUlamkow(p.jednostka) ? '1' : '0.01'}"
-            oninput="updatePozycja(${i},'ilosc',this.value)">
+          <input class="pozycja-input" type="number" value="${p.ilosc}" min="0.01" step="0.01" oninput="updatePozycja(${i},'ilosc',this.value)">
         </div>
         <div>
           <div class="pozycja-label">Jedn.</div>
@@ -6222,14 +5625,8 @@ function otworzModalJednostki(idx) {
 function wybierzJednostke(kod) {
   if (_jednostkaPozIdx === null) return;
   pozycje[_jednostkaPozIdx].jednostka = kod;
-  // (Sesja 13) Przełączenie na "szt"/"usługa" → zaokrąglij ilość do całkowitej
-  if (jednostkaBezUlamkow(kod)) {
-    const il = parseFloat(pozycje[_jednostkaPozIdx].ilosc) || 0;
-    pozycje[_jednostkaPozIdx].ilosc = Math.max(1, Math.round(il));
-  }
   closeModal('modalJednostka');
   renderPozycje();
-  if (typeof obliczSumy === 'function') obliczSumy();
 }
 
 function zatwierdzJednostkeCustom() {
@@ -6261,26 +5658,8 @@ function togglePozycjaTryb(i) {
   renderPozycje();
 }
 
-// (Sesja 13) Jednostki które nie mają sensu w ułamkach — ilość tylko całkowita
-function jednostkaBezUlamkow(j) {
-  return (j || 'szt') === 'szt' || (j || '') === 'usługa';
-}
-
 function updatePozycja(i, key, val) {
   if (key === 'ilosc' || key === 'cena') val = parseFloat(val) || 0;
-  // (Sesja 13) Ilość dla "szt" i "usługa" — tylko liczby całkowite (bez ułamków)
-  if (key === 'ilosc' && jednostkaBezUlamkow(pozycje[i].jednostka)) {
-    const calk = Math.round(val);
-    if (calk !== val) {
-      val = calk;
-      // Skoryguj widoczne pole (input mógł mieć ułamek)
-      const rows = document.querySelectorAll('.pozycja-row');
-      if (rows[i]) {
-        const iloscInput = rows[i].querySelector('input[type="number"]');
-        if (iloscInput) iloscInput.value = calk;
-      }
-    }
-  }
   pozycje[i][key] = val;
   // Aktualizuj tylko sumy bez re-renderu (żeby nie gubić focus)
   obliczSumy();
@@ -6352,16 +5731,6 @@ function obliczSumy() {
     ${vatRows}
     <div class="suma-row"><span class="lbl">Do zapłaty</span><span class="val">${formatKwota(sumaBrutto)} zł</span></div>
   </div>`;
-
-  // (Sesja 12/13) Odśwież podsumowanie zaliczki gdy pozycje się zmieniają.
-  // fzSyncPoZmianiePozycji przelicza kwotę zaliczki wg aktualnej wartości.
-  if (typeof fzSyncPoZmianiePozycji === 'function' && document.getElementById('fvTyp')?.value === 'FZ') {
-    fzSyncPoZmianiePozycji();
-  }
-  // Także podsumowanie FR (pozostało do zapłaty)
-  if (typeof aktualizujSumeFR === 'function' && document.getElementById('fvTyp')?.value === 'FR') {
-    aktualizujSumeFR();
-  }
 }
 
 // ── ZAPIS FAKTURY ──
@@ -6383,35 +5752,6 @@ function saveFaktura(status) {
     platnosc: document.getElementById('fvPlatnosc').value,
     waluta: document.getElementById('fvWaluta').value,
     uwagi: document.getElementById('fvUwagi').value,
-    // (Sesja 11 / Sprint 1C) Pola FK (puste gdy typ != FK)
-    fkOryginalId: (document.getElementById('fvTyp').value === 'FK') ? (document.getElementById('fvFKOryginal').value || null) : null,
-    fkPrzyczyna: (document.getElementById('fvTyp').value === 'FK') ? (document.getElementById('fvFKPrzyczyna').value || '').trim() : '',
-    // (Sesja 12 / Sprint 1C) Pola FR (lista ID-ków zaznaczonych zaliczek)
-    frZaliczkiIds: (document.getElementById('fvTyp').value === 'FR')
-      ? Array.from(document.querySelectorAll('.fr-zaliczka-cb:checked')).map(cb => cb.dataset.id)
-      : [],
-    // (Sesja 12 / Sprint 1C) Pola FZ: kwota lub procent (synchronizowane w UI)
-    // Zapisujemy oba pola — Worker użyje fzKwotaZaliczki do przeliczenia pozycji.
-    ...(function() {
-      const t = document.getElementById('fvTyp').value;
-      if (t !== 'FZ') return { fzProcent: 0, fzWartoscZamowienia: 0, fzKwotaZaliczki: 0, fzOpisZamowienia: '' };
-      const wartoscZam = (pozycje || []).reduce((s, p) =>
-        s + (typeof kalkuluj === 'function' ? kalkuluj(p).brutto : 0), 0
-      );
-      // Bierz kwotę z pola (jeśli wpisana) - to jest priorytet bo Tom może mieć "48 z 100"
-      let kwota = parseFloat(document.getElementById('fvFZKwota').value) || 0;
-      let proc = parseFloat(document.getElementById('fvFZProc').value) || 0;
-      // Auto-uzupełnij to czego brakuje
-      if (kwota > 0 && proc === 0 && wartoscZam > 0) proc = kwota / wartoscZam * 100;
-      if (proc > 0 && kwota === 0 && wartoscZam > 0) kwota = wartoscZam * proc / 100;
-      const opis = (pozycje || []).map(p => p.nazwa).filter(Boolean).join(' + ').slice(0, 200);
-      return {
-        fzProcent: proc,
-        fzWartoscZamowienia: wartoscZam,
-        fzKwotaZaliczki: kwota,
-        fzOpisZamowienia: opis
-      };
-    })(),
     nabywca: selectedKlient,
     sprzedawca: {
       nazwa: ust.firmaNazwa || '—',
@@ -6556,14 +5896,8 @@ function deleteFaktura() {
   if (!confirm('Usunąć fakturę?')) return;
   faktury = faktury.filter(f => f.id !== editFvId);
   localStorage.setItem('rob_faktury', JSON.stringify(faktury));
-  editFvId = null;
+  renderLista();
   showView('lista');
-  // (Sesja 13) Odśwież aktualnie wybraną zakładkę listy (np. Próbne)
-  if (typeof setZrodloFiltr === 'function') {
-    setZrodloFiltr(typeof zrodloFakturFilter !== 'undefined' ? zrodloFakturFilter : 'sprzedaz');
-  } else {
-    renderLista();
-  }
   showToast('Faktura usunięta');
 }
 
@@ -6651,30 +5985,13 @@ function showPodglad() {
   } else {
     ksefBox.style.display = 'none';
   }
-  podgladPowrotDo = 'forma';          // (Sesja 13) podgląd otwarty z formularza
-  aktualizujBtnDelPodglad(saved);     // (Sesja 13) przycisk usuń
   showView('podglad');
 }
 
 function renderPodglad(f) {
-  // (Sesja 13) FZ/FR — podgląd pokazuje pozycje przeliczone tak jak idzie do KSeF.
-  let pozycjePodglad = f.pozycje || [];
-  let frPozostalo = null, frSumaZaliczek = null, frWartoscCalk = null;
-  if ((f.typ || 'FV') === 'FZ' && f.fzKwotaZaliczki > 0 && f.fzWartoscZamowienia > 0
-      && typeof przelicZPozycjeNaZaliczke === 'function') {
-    pozycjePodglad = przelicZPozycjeNaZaliczke(f.pozycje, f.fzKwotaZaliczki, f.fzWartoscZamowienia);
-  } else if ((f.typ || 'FV') === 'FR' && Array.isArray(f.frZaliczkiIds) && f.frZaliczkiIds.length > 0
-      && typeof przelicZPozycjeNaKoncowa === 'function') {
-    const zob = f.frZaliczkiIds.map(id => faktury.find(x => String(x.id) === String(id))).filter(Boolean);
-    frSumaZaliczek = zob.reduce((s, z) => s + (parseFloat(z.fzKwotaZaliczki) || parseFloat(z.sumaBrutto) || 0), 0);
-    frWartoscCalk = (f.pozycje || []).reduce((s, p) => s + kalkuluj(p).brutto, 0);
-    frPozostalo = frWartoscCalk - frSumaZaliczek;
-    pozycjePodglad = przelicZPozycjeNaKoncowa(f.pozycje, frSumaZaliczek, frWartoscCalk);
-  }
-
   let sumaNetto=0, sumaVAT=0, sumaBrutto=0;
   const vatGrupy = {};
-  pozycjePodglad.forEach(p => {
+  f.pozycje.forEach(p => {
     const k = kalkuluj(p);
     sumaNetto+=k.netto; sumaVAT+=k.vat; sumaBrutto+=k.brutto;
     if (!vatGrupy[p.vat]) vatGrupy[p.vat] = {netto:0,vat:0,brutto:0};
@@ -6685,23 +6002,7 @@ function renderPodglad(f) {
     ? `<img src="${ust.firmaLogo}" class="fv-logo" alt="Logo">`
     : '';
 
-  // (Sesja 13) Banner FZ / FR na podglądzie
-  let fzBanner = '';
-  if ((f.typ || 'FV') === 'FZ' && f.fzWartoscZamowienia > 0) {
-    fzBanner = `<div style="background:#eaf7ef;border:1px solid #b9e3c9;border-radius:6px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:#2a6b45">
-         Faktura zaliczkowa — wartość zamówienia: <strong>${formatKwota(f.fzWartoscZamowienia)} zł</strong>,
-         zaliczka: <strong>${formatKwota(f.fzKwotaZaliczki)} zł</strong>,
-         pozostaje: <strong>${formatKwota(f.fzWartoscZamowienia - f.fzKwotaZaliczki)} zł</strong>
-       </div>`;
-  } else if ((f.typ || 'FV') === 'FR' && frPozostalo != null) {
-    fzBanner = `<div style="background:#fdf0e8;border:1px solid #f0cdb4;border-radius:6px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:#9a5a2a">
-         Faktura końcowa — wartość zamówienia: <strong>${formatKwota(frWartoscCalk)} zł</strong>,
-         wpłacone zaliczki: <strong>${formatKwota(frSumaZaliczek)} zł</strong>,
-         do zapłaty: <strong>${formatKwota(frPozostalo)} zł</strong>
-       </div>`;
-  }
-
-  const pozycjeRows = pozycjePodglad.map((p,i) => {
+  const pozycjeRows = f.pozycje.map((p,i) => {
     const k = kalkuluj(p);
     return `<tr>
       <td>${i+1}</td>
@@ -6726,9 +6027,8 @@ function renderPodglad(f) {
     <div style="background:#F5A623;height:6px"></div>
     <div class="fv-preview-inner">
       ${logoHtml}
-      <h1>${(()=>{const t={FV:'Faktura VAT',PF:'Pro forma',RK:'Rachunek',KS:'Kosztorys',FK:'Faktura korygująca',FZ:'Faktura zaliczkowa',FR:'Faktura końcowa (rozliczeniowa)'};return t[f.typ]||'Faktura VAT';})()}</h1>
+      <h1>${(()=>{const t={FV:'Faktura VAT',PF:'Pro forma',RK:'Rachunek',KS:'Kosztorys',FK:'Faktura korygująca',FZ:'Faktura zaliczkowa'};return t[f.typ]||'Faktura VAT';})()}</h1>
       <div class="fv-nr-preview">Nr: <strong>${f.numer}</strong></div>
-      ${fzBanner}
 
       <div class="fv-dates">
         <div class="fv-date-item"><label>Data wystawienia</label><span>${f.dataWyst}</span></div>
@@ -7123,7 +6423,7 @@ document.querySelectorAll('.modal-overlay').forEach(o => {
 // ═══════════════════════════════════════════════════════════════
 
 // ── STAŁA WERSJI APLIKACJI ──
-const ROBION_VERSION = '0.8.0-cloud'; // (Sprint 1A) wysyłka KSeF przeniesiona na Worker
+const ROBION_VERSION = '0.7.9';
 
 // ─────────────────────────────────────────────────────────────
 // "WYSTAW FAKTURĘ" — przycisk w widoku formy
@@ -7164,10 +6464,8 @@ function _wystawPrzedprodukcyjnaOryg() {
     showToast('Najpierw skonfiguruj token przedprodukcyjny w Ustawieniach');
     return;
   }
-  // (Sesja 11/12) Do KSeF wysyłamy: FV, FK (korekta), FZ (zaliczkowa), FR (rozliczeniowa)
-  const _typAllowed = ['FV', 'FK', 'FZ', 'FR'];
-  if (!_typAllowed.includes(f.typ || 'FV')) {
-    showToast('Do KSeF wysyłamy tylko FV, FK, FZ i FR');
+  if ((f.typ || 'FV') !== 'FV') {
+    showToast('Do KSeF wysyłamy tylko faktury VAT');
     return;
   }
   // Otwórz modal potwierdzenia (z osadzonym podglądem) dla DEMO
@@ -7184,136 +6482,17 @@ function _wystawProdukcyjnaOryg() {
     showToast('Najpierw skonfiguruj token produkcyjny w Ustawieniach');
     return;
   }
-  // (Sesja 11/12) Do KSeF wysyłamy: FV, FK (korekta), FZ (zaliczkowa), FR (rozliczeniowa)
-  const _typAllowed = ['FV', 'FK', 'FZ', 'FR'];
-  if (!_typAllowed.includes(f.typ || 'FV')) {
-    showToast('Do KSeF wysyłamy tylko FV, FK, FZ i FR');
+  if ((f.typ || 'FV') !== 'FV') {
+    showToast('Do KSeF wysyłamy tylko faktury VAT');
     return;
   }
   otworzModalWysylki(id, 'prod');
 }
 
 // Otwiera modal potwierdzenia z osadzonym podglądem faktury i przyciskiem wyślij
-// (Sesja 9 / Sprint 1C) Walidacja faktury przed wysyłką do KSeF.
-// KSeF FA(3) wymaga: sprzedawca pełen (NIP+nazwa+miasto), nabywca z nazwą+miastem,
-// numer faktury, co najmniej 1 pozycja z niezerową ceną i nazwą.
-// Zwraca tablicę {pole, opis, gdzie} — pusta = wszystko OK.
-function walidujFaktureKSeF(f) {
-  const errors = [];
-
-  // ─── SPRZEDAWCA (z ustawień firmy) ─────────────────────────
-  const sprz = f.sprzedawca || {};
-  const sprzNip = (sprz.nip || ust.firmaNIP || '').replace(/\D/g, '');
-  const sprzNazwa = sprz.nazwa || ust.firmaNazwa || '';
-  const sprzMiasto = sprz.miasto || ust.firmaMiasto || '';
-  if (!sprzNip || sprzNip.length !== 10) {
-    errors.push({ pole: 'NIP firmy', opis: 'Brak lub niepoprawny NIP w Ustawieniach (10 cyfr)', gdzie: 'Ustawienia → Dane firmy' });
-  }
-  if (!sprzNazwa.trim()) {
-    errors.push({ pole: 'Nazwa firmy', opis: 'Brak nazwy firmy w Ustawieniach', gdzie: 'Ustawienia → Dane firmy' });
-  }
-  if (!sprzMiasto.trim()) {
-    errors.push({ pole: 'Miasto firmy', opis: 'KSeF wymaga miejscowości sprzedawcy', gdzie: 'Ustawienia → Dane firmy' });
-  }
-
-  // ─── NABYWCA ─────────────────────────────────────────────
-  const nab = f.nabywca || {};
-  if (!nab.nazwa || !nab.nazwa.trim()) {
-    errors.push({ pole: 'Nabywca: nazwa', opis: 'Brak imienia i nazwiska lub nazwy firmy nabywcy', gdzie: 'Edycja faktury → Klient' });
-  }
-  // KSeF wymaga miejscowości (linia AdresL2 = kod+miasto)
-  if (!nab.miasto || !nab.miasto.trim()) {
-    errors.push({
-      pole: 'Nabywca: miasto',
-      opis: 'KSeF wymaga miejscowości nabywcy. Bez tego faktura jest odrzucana.',
-      gdzie: 'Edycja faktury → Klient → uzupełnij miasto'
-    });
-  }
-  // NIP nabywcy nieobowiązkowy (osoba prywatna → BrakID), ale jeśli jest — powinien być 10-cyfrowy
-  if (nab.nip) {
-    const nabNipCyfry = String(nab.nip).replace(/\D/g, '');
-    if (nabNipCyfry.length !== 10) {
-      errors.push({ pole: 'NIP nabywcy', opis: 'NIP nabywcy ma ' + nabNipCyfry.length + ' cyfr, wymagane 10 (lub usuń jeśli osoba prywatna)', gdzie: 'Edycja faktury → Klient' });
-    }
-  }
-
-  // ─── DANE FAKTURY ────────────────────────────────────────
-  if (!f.numer || !f.numer.trim()) {
-    errors.push({ pole: 'Numer faktury', opis: 'Brak numeru', gdzie: 'Edycja faktury' });
-  }
-  if (!f.dataWyst) {
-    errors.push({ pole: 'Data wystawienia', opis: 'Brak daty wystawienia', gdzie: 'Edycja faktury' });
-  }
-
-  // ─── POZYCJE ─────────────────────────────────────────────
-  if (!Array.isArray(f.pozycje) || f.pozycje.length === 0) {
-    errors.push({ pole: 'Pozycje', opis: 'Faktura musi mieć co najmniej 1 pozycję', gdzie: 'Edycja faktury → dodaj pozycję' });
-  } else {
-    f.pozycje.forEach((p, i) => {
-      if (!p.nazwa || !p.nazwa.trim()) {
-        errors.push({ pole: 'Pozycja ' + (i + 1), opis: 'Brak nazwy towaru/usługi', gdzie: 'Edycja faktury → pozycja ' + (i + 1) });
-      }
-      const k = kalkuluj(p);
-      if (k.netto <= 0) {
-        errors.push({ pole: 'Pozycja ' + (i + 1), opis: '"' + (p.nazwa || '?') + '" ma wartość 0 — uzupełnij cenę i ilość', gdzie: 'Edycja faktury → pozycja ' + (i + 1) });
-      }
-    });
-  }
-
-  // ─── TYP FAKTURY (KSeF — FV, FK, FZ, FR) ─────────────────
-  const typ = f.typ || 'FV';
-  if (!['FV', 'FK', 'FZ', 'FR'].includes(typ)) {
-    errors.push({ pole: 'Typ dokumentu', opis: 'Do KSeF wysyłamy tylko FV, FK, FZ, FR. Ten dokument to: ' + typ, gdzie: 'Zmień typ albo nie wysyłaj' });
-  }
-
-  // ─── FK — pola korekty ───────────────────────────────────
-  if (typ === 'FK') {
-    if (!f.fkOryginalId) {
-      errors.push({
-        pole: 'FK: korygowana faktura',
-        opis: 'Faktura korygująca musi wskazywać oryginał (z numerem KSeF)',
-        gdzie: 'Edycja faktury → Dane korekty → wybierz fakturę'
-      });
-    } else {
-      const oryg = faktury.find(x => String(x.id) === String(f.fkOryginalId));
-      if (!oryg) {
-        errors.push({ pole: 'FK: korygowana faktura', opis: 'Wybrana faktura już nie istnieje', gdzie: 'Wybierz inną fakturę' });
-      } else if (!oryg.ksefNr) {
-        errors.push({ pole: 'FK: korygowana faktura', opis: '"' + (oryg.numer || '?') + '" nie ma numeru KSeF', gdzie: 'Najpierw wyślij oryginał do KSeF' });
-      }
-    }
-    if (!f.fkPrzyczyna || !f.fkPrzyczyna.trim()) {
-      errors.push({ pole: 'FK: przyczyna', opis: 'Wpisz krótką przyczynę korekty', gdzie: 'Edycja faktury → Dane korekty' });
-    }
-  }
-
-  return errors;
-}
-
-function pokazBledyWalidacji(errors) {
-  const lista = document.getElementById('walidacjaLista');
-  if (!lista) return;
-  lista.innerHTML = errors.map(e => `
-    <div style="padding:12px;background:var(--glass);border:1px solid var(--border);border-radius:8px;margin-bottom:8px">
-      <div style="font-weight:700;font-size:13px;color:var(--danger);margin-bottom:4px">${escapeHtml(e.pole)}</div>
-      <div style="font-size:12px;color:var(--text);margin-bottom:6px">${escapeHtml(e.opis)}</div>
-      <div style="font-size:11px;color:var(--text3);font-family:var(--font-c)">📍 ${escapeHtml(e.gdzie)}</div>
-    </div>
-  `).join('');
-  document.getElementById('modalWalidacjaKSeF').classList.add('open');
-}
-
 function otworzModalWysylki(fid, env) {
   const f = faktury.find(x => x.id === fid);
   if (!f) return;
-
-  // (Sesja 9) Walidacja PRZED otwarciem modala wysyłki — łapiemy braki zanim KSeF odrzuci
-  const errors = walidujFaktureKSeF(f);
-  if (errors.length > 0) {
-    pokazBledyWalidacji(errors);
-    return;
-  }
-
   const modal = document.getElementById('modalWysylkaKSeF');
   if (!modal) return;
 
@@ -7355,34 +6534,11 @@ function otworzModalWysylki(fid, env) {
 
 // Mini-podgląd faktury w modal-u potwierdzenia (zamiast pełnego A4)
 function renderMiniPodglad(f) {
-  // (Sesja 13) Dla FZ/FR pokazujemy DOKŁADNIE to co poleci do KSeF.
-  let pozycjeDoPodgladu = f.pozycje || [];
-  let bannerFZ = '';
-  if ((f.typ || 'FV') === 'FZ' && f.fzKwotaZaliczki > 0 && f.fzWartoscZamowienia > 0
-      && typeof przelicZPozycjeNaZaliczke === 'function') {
-    pozycjeDoPodgladu = przelicZPozycjeNaZaliczke(f.pozycje, f.fzKwotaZaliczki, f.fzWartoscZamowienia);
-    bannerFZ = '<div style="padding:10px 12px;background:rgba(123,224,160,0.1);border:1px solid rgba(123,224,160,0.3);border-radius:8px;font-size:11px;line-height:1.5;color:var(--text);margin-bottom:12px">'
-      + '📋 To <strong>faktura zaliczkowa</strong>. Wartość całego zamówienia: <strong>' + formatKwota(f.fzWartoscZamowienia) + ' zł</strong>. '
-      + 'Do KSeF idzie tylko zaliczka: <strong style="color:#2a8a52">' + formatKwota(f.fzKwotaZaliczki) + ' zł</strong>.'
-      + '</div>';
-  } else if ((f.typ || 'FV') === 'FR' && Array.isArray(f.frZaliczkiIds) && f.frZaliczkiIds.length > 0
-      && typeof przelicZPozycjeNaKoncowa === 'function') {
-    const zob = f.frZaliczkiIds.map(id => faktury.find(x => String(x.id) === String(id))).filter(Boolean);
-    const sumaZal = zob.reduce((s, z) => s + (parseFloat(z.fzKwotaZaliczki) || parseFloat(z.sumaBrutto) || 0), 0);
-    const wartCalk = (f.pozycje || []).reduce((s, p) => s + kalkuluj(p).brutto, 0);
-    pozycjeDoPodgladu = przelicZPozycjeNaKoncowa(f.pozycje, sumaZal, wartCalk);
-    bannerFZ = '<div style="padding:10px 12px;background:rgba(224,160,123,0.12);border:1px solid rgba(224,160,123,0.35);border-radius:8px;font-size:11px;line-height:1.5;color:var(--text);margin-bottom:12px">'
-      + '📋 To <strong>faktura końcowa</strong>. Wartość zamówienia: <strong>' + formatKwota(wartCalk) + ' zł</strong>, '
-      + 'wpłacone zaliczki: <strong>' + formatKwota(sumaZal) + ' zł</strong>. '
-      + 'Do KSeF idzie kwota pozostała: <strong style="color:#b8742e">' + formatKwota(wartCalk - sumaZal) + ' zł</strong>.'
-      + '</div>';
-  }
+  const sumaNetto = (f.sumaNetto != null ? f.sumaNetto : (f.pozycje || []).reduce((s, p) => s + kalkuluj(p).netto, 0));
+  const sumaVAT = (f.sumaVAT != null ? f.sumaVAT : (f.pozycje || []).reduce((s, p) => s + kalkuluj(p).vat, 0));
+  const sumaBrutto = (f.sumaBrutto != null ? f.sumaBrutto : sumaNetto + sumaVAT);
 
-  const sumaNetto = pozycjeDoPodgladu.reduce((s, p) => s + kalkuluj(p).netto, 0);
-  const sumaVAT = pozycjeDoPodgladu.reduce((s, p) => s + kalkuluj(p).vat, 0);
-  const sumaBrutto = pozycjeDoPodgladu.reduce((s, p) => s + kalkuluj(p).brutto, 0);
-
-  const pozycjeRows = pozycjeDoPodgladu.map(p => {
+  const pozycjeRows = (f.pozycje || []).map(p => {
     const k = kalkuluj(p);
     return '<tr>' +
       '<td style="padding:6px 8px;border-bottom:1px solid var(--border);font-size:12px">' + escapeHtml(p.nazwa) + '</td>' +
@@ -7408,7 +6564,6 @@ function renderMiniPodglad(f) {
       '</div>' +
     '</div>' +
 
-    bannerFZ +
     '<div style="margin-bottom:8px;font-family:var(--font-c);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;font-weight:700">Pozycje</div>' +
     '<table style="width:100%;border-collapse:collapse;background:var(--glass);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px">' +
       pozycjeRows +
@@ -7488,10 +6643,6 @@ function moznePokazacPierwszaKopia() {
 //        → polling statusu → pobierz UPO
 // ═══════════════════════════════════════════════════════════════
 async function wyslijFaktureKSeF() {
-  // (Sprint 1A) Cała logika wysyłki przeniesiona na Cloudflare Worker.
-  // Apka tylko wysyła JSON {faktura, ust, nip, token, env} do /send-invoice.
-  // Worker generuje XML, szyfruje (AES+RSA), autoryzuje się w KSeF,
-  // otwiera sesję, wysyła, polluje, zwraca {ksefNumber, upoReferenceNumber, invoiceHash, ...}.
   const f = faktury.find(x => x.id === editFvId);
   if (!f) return;
 
@@ -7499,13 +6650,20 @@ async function wyslijFaktureKSeF() {
   const tokenKsef = ksefCurrentToken();
   const nip = (ust.firmaNIP || '').replace(/\D/g, '');
 
-  if (!tokenKsef) { showToast('Skonfiguruj token KSeF w Ustawieniach'); return; }
-  if (!nip || nip.length !== 10) { showToast('Brak poprawnego NIP firmy'); return; }
-  // (Sesja 11/12) KSeF: FV + FK (korekta) + FZ (zaliczka) + FR (rozliczeniowa)
-  const typFv = f.typ || 'FV';
-  if (!['FV', 'FK', 'FZ', 'FR'].includes(typFv)) { showToast('Do KSeF wysyłamy tylko FV, FK, FZ i FR'); return; }
+  if (!tokenKsef) {
+    showToast('Skonfiguruj token KSeF w Ustawieniach');
+    return;
+  }
+  if (!nip || nip.length !== 10) {
+    showToast('Brak poprawnego NIP firmy');
+    return;
+  }
+  if ((f.typ || 'FV') !== 'FV') {
+    showToast('Do KSeF wysyłamy tylko faktury VAT');
+    return;
+  }
 
-  // Status pending od razu, żeby UI pokazało plakietkę
+  // Status pending - od razu zapisz, żeby UI pokazało plakietkę
   setFakturaStatus(f.id, 'ksef_pending', { ksefError: null, ksefEnv: env });
   renderPodglad(faktury.find(x => x.id === f.id));
 
@@ -7517,104 +6675,218 @@ async function wyslijFaktureKSeF() {
     box.innerHTML = html;
   };
 
-  setBox('pending', '<span style="color:var(--accent)">⏳ Wysyłka do KSeF (przez chmurę)...</span>');
+  setBox('pending', '<span style="color:var(--accent)">⏳ Wysyłanie do KSeF — krok 1/8: autoryzacja...</span>');
 
   try {
-    const resp = await fetch(KSEF_CLOUD + '/send-invoice', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        env: env,
-        nip: nip,
-        token: tokenKsef,
-        version: ROBION_VERSION,
-        ust: {
-          firmaNIP: ust.firmaNIP,
-          firmaNazwa: ust.firmaNazwa,
-          firmaUlica: ust.firmaUlica,
-          firmaKod: ust.firmaKod,
-          firmaMiasto: ust.firmaMiasto,
-          firmaKonto: ust.firmaKonto
-        },
-        faktura: (function() {
-          const typFv = f.typ || 'FV';
-          // (Sesja 11) FK — dane oryginału
-          if (typFv === 'FK' && f.fkOryginalId) {
-            const oryg = faktury.find(x => String(x.id) === String(f.fkOryginalId));
-            if (oryg) {
-              return Object.assign({}, f, {
-                fkOryginal: { ksefNr: oryg.ksefNr, numer: oryg.numer, dataWyst: oryg.dataWyst }
-              });
-            }
-          }
-          // (Sesja 12/13) FR — dane zaliczek + przeliczenie pozycji na kwotę pozostałą
-          if (typFv === 'FR' && Array.isArray(f.frZaliczkiIds) && f.frZaliczkiIds.length > 0) {
-            const zaliczkiObj = f.frZaliczkiIds
-              .map(id => faktury.find(x => String(x.id) === String(id)))
-              .filter(Boolean);
-            const zaliczki = zaliczkiObj.map(z => ({
-              ksefNr: z.ksefNr, numer: z.numer, dataWyst: z.dataWyst, sumaBrutto: z.sumaBrutto
-            }));
-            // Suma zaliczek (kwoty zaliczek, nie pełne zamówienia)
-            const sumaZaliczek = zaliczkiObj.reduce((s, z) =>
-              s + (parseFloat(z.fzKwotaZaliczki) || parseFloat(z.sumaBrutto) || 0), 0);
-            // Wartość całkowita = suma pozycji FR (pełne zamówienie)
-            const wartoscCalk = (f.pozycje || []).reduce((s, p) => s + kalkuluj(p).brutto, 0);
-            const pozycjeKoncowe = przelicZPozycjeNaKoncowa(f.pozycje, sumaZaliczek, wartoscCalk);
-            return Object.assign({}, f, { frZaliczki: zaliczki, pozycje: pozycjeKoncowe });
-          }
-          // (Sesja 12) FZ — przelicz pozycje na zaliczkowe (proporcjonalnie do kwoty zaliczki)
-          if (typFv === 'FZ' && f.fzKwotaZaliczki > 0 && f.fzWartoscZamowienia > 0) {
-            const pozycjeZal = przelicZPozycjeNaZaliczke(f.pozycje, f.fzKwotaZaliczki, f.fzWartoscZamowienia);
-            return Object.assign({}, f, { pozycje: pozycjeZal });
-          }
-          return f;
-        })()
-      })
+    // ═══ KROK 1-6: AUTORYZACJA (ksefAuth helper - zwraca accessJWT) ═══
+    const auth = await ksefAuth((msg) => {
+      setBox('pending', '<span style="color:var(--accent)">⏳ Autoryzacja: ' + msg + '</span>');
     });
 
-    const data = await resp.json();
+    // ═══ KROK 7: PRZYGOTOWANIE FAKTURY I SZYFROWANIE ═══
+    setBox('pending', '<span style="color:var(--accent)">⏳ Krok 7/8: szyfrowanie faktury...</span>');
 
-    // Worker zwraca ok:true gdy KSeF nadał numer, ok:false z error gdy coś poszło źle
-    if (!data.ok) {
-      // (update_022 hotfix) Zapisz pełną odpowiedź dla diagnostyki w localStorage
+    const xml = generujXMLFA3(f);
+    const xmlBytes = new TextEncoder().encode(xml);
+
+    // Hash faktury (wymagany przez API)
+    const hashBuf = await crypto.subtle.digest('SHA-256', xmlBytes);
+    const invoiceHashB64 = arrayBufferToBase64(hashBuf);
+
+    // Pobierz klucz publiczny do szyfrowania symetrycznego
+    const certs = await ksefFetch('/security/public-key-certificates');
+    const symCert = pickKsefSymmetricCert(certs);
+    if (!symCert || !symCert.pem) {
+      throw new Error('Brak certyfikatu do szyfrowania symetrycznego klucza');
+    }
+
+    // Wygeneruj losowy klucz AES-256 i IV
+    const aesKey = crypto.getRandomValues(new Uint8Array(32)); // 256 bitów
+    const iv = crypto.getRandomValues(new Uint8Array(16));     // 128 bitów IV dla CBC
+
+    // Zaszyfruj XML faktury AES-256-CBC z PKCS7 padding
+    const encryptedInvoice = await encryptAES256CBC(xmlBytes, aesKey, iv);
+
+    // (update_026) Zaszyfruj SAM KLUCZ AES (32 bajty) RSA-OAEP kluczem publicznym MF
+    // IV jest wysyłany OSOBNO w polu initializationVector (jawnie, nie szyfrowany)
+    // Wcześniej szyfrowałem 48 bajtów (klucz+iv razem) co było niezgodne ze schematem.
+    const encryptedKey = await encryptRSAOAEPRaw(aesKey, symCert.pem);
+    const encryptedSymmetricKeyB64 = arrayBufferToBase64(encryptedKey);
+    const ivB64 = arrayBufferToBase64(iv.buffer);
+
+    // ═══ KROK 8a: OTWARCIE SESJI ONLINE ═══
+    setBox('pending', '<span style="color:var(--accent)">⏳ Krok 8/8: otwieranie sesji KSeF...</span>');
+
+    // (update_025) Wracamy value:'FA' bo wcześniejsze MF mówi "must not be empty"
+    // Ale poprzednio MF mówił "kod formularza nie jest wspierany" więc spróbujemy
+    // też alternatywnych wartości jako fallback. Działa pierwszy który da 200/201.
+    const formCodeVarianty = [
+      { systemCode: 'FA (3)', schemaVersion: '1-0E', value: 'FA' },        // domyślny z dokumentacji
+      { systemCode: 'FA (3)', schemaVersion: '1-0E', value: 'FA(3)' },     // wariant 1
+      { systemCode: 'FA (3)', schemaVersion: '1-0E', value: 'FA_3' },      // wariant 2
+      { systemCode: 'FA(3)',  schemaVersion: '1-0E', value: 'FA' },        // bez spacji
+      { systemCode: 'FA',     schemaVersion: '1-0E', value: 'FA' },        // skrócone
+    ];
+
+    let sessionResp = null;
+    let lastErr = null;
+    let usedFormCode = null;
+
+    for (const fc of formCodeVarianty) {
+      const encryptionPayload = {
+        encryptedSymmetricKey: encryptedSymmetricKeyB64,
+        initializationVector: ivB64
+      };
+      // (update_026) keyId — wymagany jeśli istnieje certyfikat z tym polem
+      // KSeF wymaga zidentyfikowania którego klucza publicznego użyliśmy
+      if (symCert.keyId) {
+        encryptionPayload.encryptionKeyId = symCert.keyId;
+      }
+      const openSessionReq = {
+        formCode: fc,
+        encryption: encryptionPayload
+      };
       try {
-        const log = JSON.parse(localStorage.getItem('rob_ksef_errlog') || '[]');
-        log.unshift({
-          ts: new Date().toISOString(),
-          source: 'worker',
-          response: data
+        sessionResp = await ksefFetch('/sessions/online', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + auth.accessJWT
+          },
+          body: JSON.stringify(openSessionReq)
         });
-        localStorage.setItem('rob_ksef_errlog', JSON.stringify(log.slice(0, 5)));
-      } catch (e) { /* ignoruj */ }
-      throw new Error(data.error || 'Nieznany błąd Workera');
+        usedFormCode = fc;
+        break; // sukces!
+      } catch (err) {
+        lastErr = err;
+        // próbujmy dalej
+      }
+    }
+
+    if (!sessionResp) {
+      throw lastErr || new Error('Nie udało się otworzyć sesji żadną wartością formCode');
+    }
+
+    // (update_023) Zapisz pełną odpowiedź dla diagnostyki - kluczowe do debugowania
+    try {
+      const log = JSON.parse(localStorage.getItem('rob_ksef_session_log') || '[]');
+      log.unshift({
+        ts: new Date().toISOString(),
+        request: { formCode: usedFormCode, encryption: '[...]' },
+        response: sessionResp,
+        formCodeWorked: usedFormCode
+      });
+      localStorage.setItem('rob_ksef_session_log', JSON.stringify(log.slice(0, 3)));
+    } catch (e) { /* ignoruj */ }
+    console.log('[KSeF Open Session]', { usedFormCode, response: sessionResp });
+
+    const sessionRef = sessionResp.referenceNumber || sessionResp.sessionReferenceNumber;
+    if (!sessionRef) {
+      throw new Error('Brak referenceNumber sesji w odpowiedzi: ' + JSON.stringify(sessionResp).slice(0, 200));
+    }
+
+    // ═══ KROK 8b: WYSYŁKA ZASZYFROWANEJ FAKTURY ═══
+    setBox('pending', '<span style="color:var(--accent)">⏳ Wysyłanie faktury w sesji ' + sessionRef.slice(0, 8) + '...</span>');
+
+    // Hash zaszyfrowanej faktury
+    const encInvoiceHashBuf = await crypto.subtle.digest('SHA-256', encryptedInvoice);
+    const encInvoiceHashB64 = arrayBufferToBase64(encInvoiceHashBuf);
+
+    const invoiceReq = {
+      invoiceHash: invoiceHashB64,
+      invoiceSize: xmlBytes.length,
+      encryptedInvoiceHash: encInvoiceHashB64,
+      encryptedInvoiceSize: encryptedInvoice.byteLength,
+      encryptedInvoiceContent: arrayBufferToBase64(encryptedInvoice),
+      // (update_026) Wymagane pole zgodne z OpenAPI MF — brak tego pola był prawdopodobnie
+      // przyczyną błędu 415 "Status sesji uniemożliwia wysyłkę"
+      offlineMode: false
+    };
+
+    const sendResp = await ksefFetch('/sessions/online/' + sessionRef + '/invoices', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + auth.accessJWT
+      },
+      body: JSON.stringify(invoiceReq)
+    });
+
+    const invoiceRef = sendResp.referenceNumber || sendResp.invoiceReferenceNumber;
+    if (!invoiceRef) {
+      throw new Error('Brak referenceNumber faktury: ' + JSON.stringify(sendResp).slice(0, 200));
+    }
+
+    // ═══ POLLING STATUSU FAKTURY ═══
+    setBox('pending', '<span style="color:var(--accent)">⏳ Oczekiwanie na nadanie numeru KSeF...</span>');
+
+    let ksefNr = null;
+    let upoUuid = null;
+    let lastPollResp = null;
+    for (let i = 0; i < 30; i++) {
+      await sleep(2000);
+      const st = await ksefFetch('/sessions/' + sessionRef + '/invoices/' + invoiceRef, {
+        headers: { 'Authorization': 'Bearer ' + auth.accessJWT }
+      });
+      lastPollResp = st;
+      const code = st.status?.code ?? st.code;
+      if (code === 200 || st.ksefNumber) {
+        ksefNr = st.ksefNumber || st.invoiceNumber;
+        upoUuid = st.upoReferenceNumber || st.upoUuid;
+        break;
+      }
+      if (code >= 400) {
+        // (update_027) Zapisz pełną odpowiedź pollingu dla diagnostyki błędów semantyki
+        try {
+          const log = JSON.parse(localStorage.getItem('rob_ksef_poll_log') || '[]');
+          log.unshift({ ts: new Date().toISOString(), pollResponse: st });
+          localStorage.setItem('rob_ksef_poll_log', JSON.stringify(log.slice(0, 5)));
+        } catch (e) { /* ignoruj */ }
+        console.error('[KSeF Poll Error]', st);
+
+        // Wyciągnij konkretne szczegóły błędu
+        let detail = st.status?.description || 'kod ' + code;
+        if (Array.isArray(st.status?.details) && st.status.details.length) {
+          detail += ' [' + st.status.details.map(d => (d.code || d.exceptionCode || '') + ': ' + (d.description || d.exceptionDescription || '')).join(' | ') + ']';
+        } else if (st.validationErrors && Array.isArray(st.validationErrors)) {
+          detail += ' [' + st.validationErrors.map(e => JSON.stringify(e)).join(' | ') + ']';
+        } else if (st.invoiceErrors && Array.isArray(st.invoiceErrors)) {
+          detail += ' [' + st.invoiceErrors.map(e => (e.code || '') + ': ' + (e.description || JSON.stringify(e))).join(' | ') + ']';
+        }
+        throw new Error('Faktura odrzucona: ' + detail);
+      }
+    }
+
+    if (!ksefNr) {
+      throw new Error('Timeout — KSeF nie nadał numeru w 60s');
     }
 
     // ═══ SUKCES ═══
     setFakturaStatus(f.id, 'ksef_ok', {
-      ksefNr: data.ksefNumber,
-      ksefUpo: data.upoReferenceNumber,
-      ksefRef: data.invoiceReferenceNumber,
-      ksefSessionRef: data.sessionReferenceNumber,
+      ksefNr: ksefNr,
+      ksefUpo: upoUuid,
+      ksefRef: invoiceRef,
+      ksefSessionRef: sessionRef,
       ksefData: new Date().toISOString(),
       ksefEnv: env,
-      // (update_034) Hash XML i data wystawienia - do generowania URL weryfikacji KSeF (QR)
-      ksefInvoiceHash: data.invoiceHash,
-      ksefDataWystawienia: f.dataWyst
+      // (update_034) Hash XML i data wystawienia - potrzebne do generowania URL weryfikacji KSeF (QR kod)
+      ksefInvoiceHash: invoiceHashB64,
+      ksefDataWystawienia: f.dataWystawienia
     });
 
     setBox('ok', '<div style="color:var(--green);font-weight:700;margin-bottom:4px">✓ Wysłano do KSeF</div>' +
-      '<div style="color:var(--text2);font-size:11px;font-family:var(--font-c);letter-spacing:0.5px">Numer: ' + data.ksefNumber + '</div>');
+      '<div style="color:var(--text2);font-size:11px;font-family:var(--font-c);letter-spacing:0.5px">Numer: ' + ksefNr + '</div>');
     showToast('✓ Faktura w KSeF');
     renderPodglad(faktury.find(x => x.id === f.id));
 
-    // (update_039) Po pierwszej udanej wysyłce produkcyjnej zaproponuj kopię zapasową
+    // (update_039) Po pierwszej udanej wysyłce produkcyjnej zaproponuj kopię zapasową danych.
+    // Wcześniej był to martwy mechanizm wpięty w nieotwierany modal "Co dalej".
     if (env === 'prod') {
       moznePokazacPierwszaKopia();
     }
 
   } catch (err) {
-    console.error('KSeF send error (cloud):', err);
+    console.error('KSeF send error:', err);
     setFakturaStatus(f.id, 'ksef_error', { ksefError: err.message || String(err), ksefEnv: env });
     setBox('err', '<div style="color:var(--danger);font-weight:700;margin-bottom:4px">✗ Błąd wysyłki KSeF</div>' +
       '<div style="color:var(--text2);font-size:11px">' + escapeHtml(err.message || String(err)) + '</div>');
@@ -7622,16 +6894,6 @@ async function wyslijFaktureKSeF() {
     renderPodglad(faktury.find(x => x.id === f.id));
   }
 }
-
-// ═══════════════════════════════════════════════════════════════
-// STARA WERSJA wyslijFaktureKSeF — pozostawiona jako komentarz historyczny
-// dla referencji. Cała logika przeniesiona na Worker w Sprincie 1A.
-// Funkcje pomocnicze (encryptAES256CBC, encryptRSAOAEP, generujXMLFA3,
-// ksefAuth, pickKsefSymmetricCert, pickKsefTokenCert, importRsaPublicKeyFromCert,
-// extractSpkiFromX509, asn1LenSkip, skipAsn1Field) ZOSTAJĄ w kodzie —
-// nie są wywoływane przez nowy wyslijFaktureKSeF, ale mogą się przydać
-// w przyszłości (np. do pobierania pełnego XML faktur zakupowych).
-// ═══════════════════════════════════════════════════════════════
 
 // Helper: szyfrowanie AES-256-CBC z PKCS7 padding (Web Crypto)
 async function encryptAES256CBC(plainBytes, keyBytes, ivBytes) {
@@ -7703,10 +6965,8 @@ async function _wyslijFaktureKSeF_oldV1() {
     showToast('Brak poprawnego NIP firmy');
     return;
   }
-  // (Sesja 11/12) Do KSeF wysyłamy: FV, FK (korekta), FZ (zaliczkowa), FR (rozliczeniowa)
-  const _typAllowed = ['FV', 'FK', 'FZ', 'FR'];
-  if (!_typAllowed.includes(f.typ || 'FV')) {
-    showToast('Do KSeF wysyłamy tylko FV, FK, FZ i FR');
+  if ((f.typ || 'FV') !== 'FV') {
+    showToast('Do KSeF wysyłamy tylko faktury VAT');
     return;
   }
 
@@ -8240,11 +7500,9 @@ function setZrodloFiltr(zrodlo) {
   const sprzCtrls = document.getElementById('sprzCtrls');
   const zakupCtrls = document.getElementById('zakupCtrls');
   const roboczeCtrls = document.getElementById('roboczeCtrls');
-  const bezfaktCtrls = document.getElementById('bezfakturowaCtrls');
   if (sprzCtrls) sprzCtrls.style.display = zrodlo === 'sprzedaz' ? '' : 'none';
   if (zakupCtrls) zakupCtrls.style.display = zrodlo === 'zakup' ? '' : 'none';
   if (roboczeCtrls) roboczeCtrls.style.display = zrodlo === 'robocze' ? '' : 'none';
-  if (bezfaktCtrls) bezfaktCtrls.style.display = zrodlo === 'bezfakturowa' ? '' : 'none';
 
   if (zrodlo === 'sprzedaz') {
     // (update_022 hotfix) Sprzedaż = faktury z KSeF (analogicznie do zakupowych)
@@ -8260,221 +7518,7 @@ function setZrodloFiltr(zrodlo) {
     if (typeof renderLista === 'function') renderLista();
   } else if (zrodlo === 'przed') {
     renderListaPrzedprod();
-  } else if (zrodlo === 'bezfakturowa') {
-    renderListaBezfakturowa();
   }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// (Sesja 10 / Sprint 1C) SPRZEDAŻ BEZFAKTUROWA
-// Ewidencja sprzedaży dla osób fizycznych (B2C) bez wystawiania
-// faktury. NIE idzie do KSeF — wpisy są lokalne.
-// Storage key: 'rob_sprzedaz_bezfakturowa'
-// ═══════════════════════════════════════════════════════════════
-
-function pobierzSprzedazBezfakturowa() {
-  try {
-    const raw = localStorage.getItem('rob_sprzedaz_bezfakturowa');
-    return raw ? JSON.parse(raw) : [];
-  } catch { return []; }
-}
-
-function zapiszSprzedazBezfakturowaArr(arr) {
-  localStorage.setItem('rob_sprzedaz_bezfakturowa', JSON.stringify(arr));
-}
-
-// Numeracja: SB/{NR}/{MM}/{YYYY} — analogiczna do faktur
-function generujNumerSB(data) {
-  const d = new Date(data || new Date());
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const yyyy = d.getFullYear();
-  const lista = pobierzSprzedazBezfakturowa();
-  // Znajdź najwyższy numer w tym miesiącu+roku
-  const tegoMies = lista.filter(x => {
-    const xd = new Date(x.data);
-    return xd.getMonth() === d.getMonth() && xd.getFullYear() === d.getFullYear();
-  });
-  const nrInt = tegoMies.length + 1;
-  return 'SB/' + String(nrInt).padStart(3, '0') + '/' + mm + '/' + yyyy;
-}
-
-function otworzModalNowaSB() {
-  // Wypełnij dzisiejszą datą
-  const dzis = new Date().toISOString().slice(0, 10);
-  document.getElementById('sbData').value = dzis;
-  document.getElementById('sbKwota').value = '';
-  document.getElementById('sbOpis').value = '';
-  document.getElementById('sbFormaPlat').value = 'gotowka';
-  document.getElementById('modalSBTitle').textContent = 'Nowa sprzedaż bezfakturowa';
-  document.getElementById('modalNowaSB').classList.add('open');
-}
-
-function zapiszSprzedazBezfakturowa() {
-  const data = document.getElementById('sbData').value;
-  const kwota = parseFloat(document.getElementById('sbKwota').value);
-  const opis = (document.getElementById('sbOpis').value || '').trim();
-  const formaPlat = document.getElementById('sbFormaPlat').value;
-
-  if (!data) { showToast('Wpisz datę sprzedaży'); return; }
-  if (!kwota || kwota <= 0) { showToast('Wpisz dodatnią kwotę'); return; }
-  if (!opis) { showToast('Wpisz krótki opis'); return; }
-
-  const wpis = {
-    id: 'sb_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
-    numer: generujNumerSB(data),
-    data,
-    kwotaBrutto: kwota,
-    opis,
-    formaPlat,
-    dataDodania: new Date().toISOString()
-  };
-
-  const arr = pobierzSprzedazBezfakturowa();
-  arr.unshift(wpis);
-  zapiszSprzedazBezfakturowaArr(arr);
-
-  showToast('✓ Dodano: ' + wpis.numer);
-  closeModal('modalNowaSB');
-  if (zrodloFakturFilter === 'bezfakturowa') renderListaBezfakturowa();
-}
-
-function usunSprzedazBezfakturowa(id) {
-  if (!confirm('Usunąć ten wpis? Tej operacji nie da się cofnąć.')) return;
-  const arr = pobierzSprzedazBezfakturowa().filter(x => x.id !== id);
-  zapiszSprzedazBezfakturowaArr(arr);
-  showToast('Wpis usunięty');
-  closeModal('modalSzczegolySB');
-  renderListaBezfakturowa();
-}
-
-// (Sesja 13) Szczegóły wpisu sprzedaży bezfakturowej
-function pokazSzczegolySB(id) {
-  const w = pobierzSprzedazBezfakturowa().find(x => x.id === id);
-  if (!w) { showToast('Nie znaleziono wpisu'); return; }
-
-  const formyMap = { gotowka: 'Gotówka', przelew: 'Przelew', blik: 'BLIK', karta: 'Karta', inna: 'Inna' };
-  const dodano = w.dataDodania ? new Date(w.dataDodania).toLocaleString('pl-PL') : '—';
-
-  document.getElementById('szczegolySBTytul').textContent = w.numer || 'Wpis bezfakturowy';
-  document.getElementById('szczegolySBBody').innerHTML = `
-    <div style="padding:14px;background:linear-gradient(135deg,rgba(245,166,35,0.1),rgba(245,166,35,0.04));border:1px solid var(--accent-border);border-radius:10px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
-      <span style="font-size:11px;color:var(--text2);font-family:var(--font-c);letter-spacing:1px;text-transform:uppercase">Kwota brutto</span>
-      <span style="font-size:20px;font-weight:800;color:var(--accent);font-family:var(--font-c)">${formatKwota(w.kwotaBrutto)} PLN</span>
-    </div>
-
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
-      <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text3)">Numer wpisu:</span><strong>${escapeHtml(w.numer || '—')}</strong></div>
-      <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text3)">Data sprzedaży:</span><strong>${escapeHtml(w.data || '—')}</strong></div>
-      <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--text3)">Forma płatności:</span><strong>${escapeHtml(formyMap[w.formaPlat] || w.formaPlat || '—')}</strong></div>
-      <div style="font-size:13px"><div style="color:var(--text3);margin-bottom:4px">Opis:</div><div style="background:var(--glass);border:1px solid var(--border);border-radius:8px;padding:10px;line-height:1.5">${escapeHtml(w.opis || '—')}</div></div>
-      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3)"><span>Dodano do ewidencji:</span><span>${dodano}</span></div>
-    </div>
-
-    <div style="padding:10px 12px;background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.18);border-radius:8px;font-size:11px;line-height:1.5;color:var(--text2);margin-bottom:14px">
-      Ten wpis jest częścią <strong>lokalnej ewidencji sprzedaży bezfakturowej</strong> — nie był i nie będzie wysyłany do KSeF.
-    </div>
-
-    <button class="btn-danger" onclick="usunSprzedazBezfakturowa('${w.id}')" style="width:100%;padding:13px;font-weight:800">
-      Usuń wpis
-    </button>
-  `;
-  document.getElementById('modalSzczegolySB').classList.add('open');
-}
-
-function renderListaBezfakturowa() {
-  const container = document.getElementById('listaFaktur');
-  if (!container) return;
-
-  const arr = pobierzSprzedazBezfakturowa();
-  if (arr.length === 0) {
-    container.innerHTML = '<div class="empty-state">' +
-      '<div class="empty-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" stroke="url(#orange-grad)"/><path d="M9 9l6 6M15 9l-6 6" stroke="url(#white-grad)" stroke-dasharray="2 2"/></svg></div>' +
-      '<div class="empty-title">Brak wpisów w ewidencji</div>' +
-      '<div class="empty-sub">Dodaj pierwszy wpis przyciskiem „+ Dodaj wpis"</div>' +
-      '</div>';
-    return;
-  }
-
-  // Sortuj od najnowszych
-  arr.sort((a, b) => (b.data || '').localeCompare(a.data || ''));
-
-  // Grupuj po miesiącu+roku i licz sumy
-  const grupy = {};
-  arr.forEach(w => {
-    const d = new Date(w.data);
-    const klucz = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
-    if (!grupy[klucz]) grupy[klucz] = { wpisy: [], suma: 0 };
-    grupy[klucz].wpisy.push(w);
-    grupy[klucz].suma += parseFloat(w.kwotaBrutto) || 0;
-  });
-
-  const miesiaceNazwy = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
-
-  const formyMap = { gotowka: 'gotówka', przelew: 'przelew', blik: 'BLIK', karta: 'karta', inna: 'inna' };
-
-  const sumaWszystko = arr.reduce((s, w) => s + (parseFloat(w.kwotaBrutto) || 0), 0);
-
-  let html = '<div style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:10px">' + arr.length + ' wpisów · razem ' + formatKwota(sumaWszystko) + ' PLN</div>';
-
-  Object.keys(grupy).sort().reverse().forEach(klucz => {
-    const [yr, mo] = klucz.split('-');
-    const nazwa = miesiaceNazwy[parseInt(mo, 10) - 1] + ' ' + yr;
-    html += `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;margin:14px 0 6px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:8px">
-      <span style="font-family:var(--font-c);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--accent)">${nazwa}</span>
-      <span style="font-family:var(--font-c);font-size:13px;font-weight:800;color:var(--accent)">${formatKwota(grupy[klucz].suma)} PLN</span>
-    </div>`;
-    html += grupy[klucz].wpisy.map(w => `
-      <div class="fv-item" style="cursor:pointer" onclick="pokazSzczegolySB('${w.id}')">
-        <div class="fv-status" style="background:#888"></div>
-        <div class="fv-info">
-          <div class="fv-nr">
-            <span style="display:inline-block;background:#888;color:#000;font-weight:800;font-size:10px;padding:2px 6px;border-radius:4px;letter-spacing:0.5px;margin-right:6px;vertical-align:1px;font-family:var(--font-c)">SB</span>
-            ${escapeHtml(w.numer)}
-          </div>
-          <div class="fv-klient">${escapeHtml(w.opis)}</div>
-          <div style="font-size:10px;color:var(--text3);margin-top:3px">${w.data} · ${formyMap[w.formaPlat] || w.formaPlat}</div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
-          <div class="fv-kwota">${formatKwota(w.kwotaBrutto)} PLN</div>
-        </div>
-      </div>
-    `).join('');
-  });
-
-  container.innerHTML = html;
-}
-
-// Eksport CSV: ewidencja sprzedaży bezfakturowej za miesiąc lub całość
-function eksportujSBdoCSV() {
-  const arr = pobierzSprzedazBezfakturowa();
-  if (arr.length === 0) {
-    showToast('Brak wpisów do eksportu');
-    return;
-  }
-
-  // CSV nagłówek + wpisy
-  const linie = ['Numer;Data;Kwota brutto;Opis;Forma płatności'];
-  arr.sort((a, b) => (a.data || '').localeCompare(b.data || ''));
-  arr.forEach(w => {
-    const opis = (w.opis || '').replace(/[";\n\r]/g, ' ');
-    linie.push([w.numer, w.data, (parseFloat(w.kwotaBrutto) || 0).toFixed(2).replace('.', ','), '"' + opis + '"', w.formaPlat].join(';'));
-  });
-  // Suma na końcu
-  const suma = arr.reduce((s, w) => s + (parseFloat(w.kwotaBrutto) || 0), 0);
-  linie.push(';;' + suma.toFixed(2).replace('.', ',') + ';RAZEM;');
-
-  // BOM dla Excela żeby polskie znaki działały
-  const csv = '﻿' + linie.join('\n');
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'sprzedaz-bezfakturowa-' + new Date().toISOString().slice(0, 10) + '.csv';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast('✓ Wyeksportowano CSV (' + arr.length + ' wpisów)');
 }
 
 // Lista faktur przedprodukcyjnych (status issued_demo lub ksef_ok_demo)
@@ -8541,149 +7585,6 @@ function otworzPortalKSeF(ksefRef, portalBase) {
   window.open(portalBase, '_blank');
 }
 
-// ─────────────────────────────────────────────────────────────
-// (Sesja 8 / Sprint 1C) SZCZEGÓŁY FAKTURY ZAKUPOWEJ
-// Pobiera pełny XML z KSeF przez Worker /fetch-invoice-content,
-// parsuje pozycje, cachuje w localStorage, wyświetla w modalu.
-// ─────────────────────────────────────────────────────────────
-async function pokazSzczegolyFakturyZakupowej(ksefRef) {
-  const body = document.getElementById('szczegolyBody');
-  const title = document.getElementById('szczegolyTytul');
-  if (!body || !title) return;
-
-  document.getElementById('modalSzczegolyZakup').classList.add('open');
-  title.textContent = 'Szczegóły faktury';
-  body.innerHTML = '<div style="text-align:center;padding:40px"><div style="font-size:13px;color:var(--text2)">⏳ Pobieranie szczegółów...</div></div>';
-
-  const cacheKey = 'rob_faktura_szczegoly_' + ksefRef;
-  let parsed = null;
-  let fromCache = false;
-
-  // 1. Spróbuj z cache
-  try {
-    const cached = localStorage.getItem(cacheKey);
-    if (cached) {
-      const obj = JSON.parse(cached);
-      parsed = obj.parsed;
-      fromCache = true;
-    }
-  } catch {}
-
-  // 2. Jeśli brak — fetch z Workera
-  if (!parsed) {
-    const env = (typeof ksefEnv === 'function') ? ksefEnv() : 'demo';
-    const tokenKsef = (typeof ksefCurrentToken === 'function') ? ksefCurrentToken() : '';
-    const nip = (ust.firmaNIP || '').replace(/\D/g, '');
-
-    if (!tokenKsef || !nip) {
-      body.innerHTML = '<div style="padding:20px;color:var(--danger)">Brak skonfigurowanego tokena KSeF lub NIP-u firmy. Wejdź w Ustawienia → Konfiguracja KSeF.</div>';
-      return;
-    }
-
-    try {
-      const resp = await fetch(KSEF_CLOUD + '/fetch-invoice-content', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ env, nip, token: tokenKsef, ksefReferenceNumber: ksefRef })
-      });
-      const data = await resp.json();
-      if (!data.ok) throw new Error(data.error || 'Nieznany błąd');
-      parsed = data.parsed;
-
-      // Zapisz w cache
-      try {
-        localStorage.setItem(cacheKey, JSON.stringify({
-          parsed,
-          pobrano: new Date().toISOString(),
-          ksefRef
-        }));
-      } catch (e) { /* localStorage full lub niedostępny */ }
-    } catch (err) {
-      body.innerHTML = '<div style="padding:20px;color:var(--danger)">❌ Błąd pobierania: ' + escapeHtml(err.message || String(err)) + '</div>';
-      return;
-    }
-  }
-
-  // 3. Renderuj
-  renderSzczegolyFaktury(parsed, ksefRef, fromCache);
-}
-
-function renderSzczegolyFaktury(p, ksefRef, fromCache) {
-  const body = document.getElementById('szczegolyBody');
-  const title = document.getElementById('szczegolyTytul');
-  if (!body || !p) return;
-
-  const num = (v) => (parseFloat(v) || 0).toFixed(2);
-  const sprz = p.sprzedawca || {};
-  const dane = p.dane || {};
-  title.textContent = dane.numer || 'Faktura zakupowa';
-
-  // Lista pozycji
-  const wiersze = (p.pozycje || []).map(w => `
-    <div style="padding:12px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:var(--glass)">
-      <div style="display:flex;justify-content:space-between;align-items:start;gap:10px;margin-bottom:6px">
-        <div style="font-weight:700;font-size:13px;flex:1">${escapeHtml(w.nazwa)}</div>
-        <div style="font-family:var(--font-c);font-size:11px;color:var(--text3);white-space:nowrap">VAT ${w.vat === 'zw' ? 'zw' : (w.vat === 'np' ? 'np' : w.vat + '%')}</div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-size:11px;color:var(--text2)">
-        <div>${num(w.ilosc)} ${escapeHtml(w.jednostka)} × ${num(w.cena)} zł</div>
-        <div style="text-align:center">netto: <strong>${num(w.netto)} zł</strong></div>
-        <div style="text-align:right">brutto: <strong style="color:var(--accent)">${num(w.brutto)} zł</strong></div>
-      </div>
-    </div>
-  `).join('');
-
-  // Sumy stawkami
-  const sumy = Object.entries(p.sumyStawki || {})
-    .filter(([k,v]) => (v.netto || 0) > 0)
-    .map(([stawka,v]) => `
-      <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px">
-        <span style="color:var(--text2)">${stawka === 'zw' ? 'Zwolnione' : stawka === 'np' ? 'Nie podlega' : stawka + '%'}:</span>
-        <span style="font-family:var(--font-c)">${num(v.netto)} netto + ${num(v.vat)} VAT</span>
-      </div>
-    `).join('');
-
-  const env = (typeof ksefEnv === 'function') ? ksefEnv() : 'demo';
-  const portalBase = env === 'prod' ? 'https://ap.ksef.mf.gov.pl' : 'https://ap-demo.ksef.mf.gov.pl';
-
-  body.innerHTML = `
-    <!-- Sprzedawca -->
-    <div style="padding:12px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:10px;margin-bottom:14px">
-      <div style="font-size:10px;color:var(--accent);font-family:var(--font-c);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Sprzedawca</div>
-      <div style="font-weight:700;font-size:14px;margin-bottom:2px">${escapeHtml(sprz.nazwa || '—')}</div>
-      ${sprz.nip ? '<div style="font-size:11px;color:var(--text2);font-family:var(--font-c)">NIP: ' + escapeHtml(sprz.nip) + '</div>' : ''}
-      ${sprz.adres?.adresL1 ? '<div style="font-size:11px;color:var(--text2);margin-top:2px">' + escapeHtml(sprz.adres.adresL1) + (sprz.adres.adresL2 ? ', ' + escapeHtml(sprz.adres.adresL2) : '') + '</div>' : ''}
-    </div>
-
-    <!-- Dane podstawowe -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;font-size:12px">
-      <div><span style="color:var(--text3)">Data wystawienia:</span> <strong>${escapeHtml(dane.dataWystawienia || '—')}</strong></div>
-      <div><span style="color:var(--text3)">Data sprzedaży:</span> <strong>${escapeHtml(dane.dataSprzedazy || '—')}</strong></div>
-      <div><span style="color:var(--text3)">Waluta:</span> <strong>${escapeHtml(dane.waluta || 'PLN')}</strong></div>
-      <div><span style="color:var(--text3)">Rodzaj:</span> <strong>${escapeHtml(dane.rodzaj || 'VAT')}</strong></div>
-    </div>
-
-    <!-- Pozycje -->
-    <div style="margin-bottom:6px;font-size:10px;color:var(--text3);font-family:var(--font-c);letter-spacing:1px;text-transform:uppercase">Pozycje (${(p.pozycje || []).length})</div>
-    ${wiersze || '<div style="padding:14px;color:var(--text3);text-align:center;font-size:13px">Brak pozycji w fakturze</div>'}
-
-    <!-- Sumy stawkami -->
-    ${sumy ? '<div style="margin-top:14px;padding:12px;background:var(--glass);border:1px solid var(--border);border-radius:8px"><div style="font-size:10px;color:var(--text3);font-family:var(--font-c);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Sumy wg stawek</div>' + sumy + '</div>' : ''}
-
-    <!-- Razem -->
-    <div style="margin-top:14px;padding:14px;background:linear-gradient(135deg, rgba(245,166,35,0.1), rgba(245,166,35,0.04));border:1px solid var(--accent-border);border-radius:10px;display:flex;justify-content:space-between;align-items:center">
-      <div style="font-size:11px;color:var(--text2);font-family:var(--font-c);letter-spacing:1px;text-transform:uppercase">Razem brutto</div>
-      <div style="font-size:18px;font-weight:800;color:var(--accent);font-family:var(--font-c)">${num(p.sumaBrutto)} ${escapeHtml(dane.waluta || 'PLN')}</div>
-    </div>
-
-    <!-- Stopka: cache info + link do portalu -->
-    <div style="margin-top:14px;display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:10px;color:var(--text3)">
-      <div>${fromCache ? '🗄️ z pamięci podręcznej' : '🌐 świeżo z KSeF'} · ${escapeHtml(ksefRef)}</div>
-      <button onclick="otworzPortalKSeF('${escapeHtml(ksefRef)}', '${portalBase}'); closeModal('modalSzczegolyZakup');" style="padding:6px 10px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text2);font-size:10px;cursor:pointer;white-space:nowrap">Otwórz w KSeF →</button>
-    </div>
-  `;
-}
-
 function renderListaZakupowych() {
   const container = document.getElementById('listaFaktur');
   if (!container) return;
@@ -8729,7 +7630,7 @@ function renderListaZakupowych() {
 
   container.innerHTML = info + lista.map(f => {
     const ksefRef = (f.ksefRef || '').replace(/'/g, '');
-    return '<div class="fv-item" onclick="pokazSzczegolyFakturyZakupowej(\'' + escapeHtml(ksefRef) + '\')">' +
+    return '<div class="fv-item" onclick="otworzPortalKSeF(\'' + escapeHtml(ksefRef) + '\', \'' + portalBase + '\')">' +
       '<div class="fv-status ksef_ok"></div>' +
       '<div class="fv-info">' +
         '<div class="fv-nr">' +
