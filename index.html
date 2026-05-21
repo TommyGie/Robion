@@ -2405,6 +2405,8 @@ document.addEventListener('DOMContentLoaded', () => {
     t.style.cursor = 'pointer';
     t.addEventListener('click', ukryjToast);
   }
+  // (Sesja 16) Anonimowy ping startowy — licznik użytkowników
+  if (typeof wyslijPing === 'function') wyslijPing('open');
 });
 
 // Sprawdź czy toast nie wisi za długo - gdy karta wraca z tła
@@ -3123,6 +3125,34 @@ function saveVAT() {
 // ─────────────────────────────────────────────────────────────
 const KSEF_PROXY = 'https://robion-ksef-proxy.n5dpkv5dp7.workers.dev'; // stary proxy — pobieranie list, test połączenia
 const KSEF_CLOUD = 'https://robion-ksef-cloud.n5dpkv5dp7.workers.dev'; // (Sprint 1A) nowy Worker — pełna logika wysyłki KSeF
+
+// ─────────────────────────────────────────────────────────────
+// (Sesja 16) ANONIMOWY LICZNIK UŻYTKOWNIKÓW
+// Losowy ID urządzenia (zero danych osobowych) → ping do Workera.
+// Pozwala policzyć ilu ludzi realnie używa apki.
+// ─────────────────────────────────────────────────────────────
+function robAnonId() {
+  let id = localStorage.getItem('rob_anon_id');
+  if (!id || !/^[A-Za-z0-9_-]{8,64}$/.test(id)) {
+    // Losowy 20-znakowy identyfikator
+    const arr = new Uint8Array(15);
+    crypto.getRandomValues(arr);
+    id = btoa(String.fromCharCode(...arr)).replace(/[+/=]/g, '').slice(0, 20);
+    localStorage.setItem('rob_anon_id', id);
+  }
+  return id;
+}
+
+function wyslijPing(action) {
+  // Nie blokujemy apki — ping leci w tle, błędy ignorujemy
+  try {
+    fetch(KSEF_CLOUD + '/ping', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ anonId: robAnonId(), action: action || 'open' })
+    }).catch(() => {});
+  } catch (e) { /* ignoruj — statystyki nie mogą psuć apki */ }
+}
 
 // Rozwijanie/zwijanie przewodnika w modalu
 function toggleKSeFGuide() {
@@ -7606,6 +7636,8 @@ async function wyslijFaktureKSeF() {
     setBox('ok', '<div style="color:var(--green);font-weight:700;margin-bottom:4px">✓ Wysłano do KSeF</div>' +
       '<div style="color:var(--text2);font-size:11px;font-family:var(--font-c);letter-spacing:0.5px">Numer: ' + data.ksefNumber + '</div>');
     showToast('✓ Faktura w KSeF');
+    // (Sesja 16) Ping — ktoś realnie wystawił fakturę
+    if (typeof wyslijPing === 'function') wyslijPing('invoice');
     renderPodglad(faktury.find(x => x.id === f.id));
 
     // (update_039) Po pierwszej udanej wysyłce produkcyjnej zaproponuj kopię zapasową
