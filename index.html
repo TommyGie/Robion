@@ -741,6 +741,9 @@ body {
 
 /* ZRODLO CHIP (Filar 2) — Sprzedaż / Zakup */
 .zrodlo-chip{transition:all 0.2s}
+/* (Sesja 17) Ikona NAD napisem — żeby chipy mieściły się na telefonie */
+.zrodlo-chip{flex-direction:column!important;gap:4px!important;padding:8px 2px!important;font-size:9px!important;line-height:1.1}
+.zrodlo-chip svg{margin:0!important}
 .zrodlo-chip.active{background:var(--accent-dim)!important;border-color:var(--accent-border)!important;color:var(--accent)!important;box-shadow:0 0 0 1px var(--accent-border)}
 .status-draft{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--text3)}
 .status-issued{background:rgba(123,167,224,0.1);border:1px solid rgba(123,167,224,0.25);color:#7BA7E0}
