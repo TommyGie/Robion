@@ -1683,7 +1683,7 @@ body {
     </div>
     <div class="modal-body" style="overflow-y:auto;flex:1">
       <div style="padding:10px 12px;background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.18);border-radius:8px;font-size:11px;line-height:1.5;color:var(--text2);margin-bottom:14px">
-        Pobierasz faktury z KSeF za wybrany miesiąc, zaznaczasz które mają iść do księgowej i pobierasz paczkę ZIP z plikami XML (FA(3)) + spisem. Wysyłasz ją mailem księgowej.
+        Pobierasz faktury z KSeF za wybrany miesiąc, zaznaczasz które mają iść do księgowej i tworzysz paczkę ZIP (pliki XML FA(3) + spis). Na telefonie od razu „Udostępnij" → Mail/WhatsApp do księgowej; na komputerze plik się pobiera.
       </div>
       <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:14px">
         <div style="flex:1">
@@ -9090,16 +9090,38 @@ async function eksportujZaznaczone() {
 
     const blob = zrobZip(pliki);
     const mies = document.getElementById('eksportMiesiac').value;
+    const fileName = 'faktury-ksiegowa-' + mies + '.zip';
+    const liczba = pliki.filter(p => p.nazwa.endsWith('.xml')).length;
+
+    // (Sesja 17) Web Share — na telefonie natywny arkusz "Udostępnij" (Mail, WhatsApp...)
+    if (navigator.canShare) {
+      const file = new File([blob], fileName, { type: 'application/zip' });
+      if (navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: 'Faktury dla księgowej — ' + mies,
+            text: 'Faktury z KSeF za ' + mies + ' (' + liczba + ' szt.)'
+          });
+          showToast('✓ Udostępniono ' + liczba + ' faktur');
+          return;
+        } catch (e) {
+          if (e.name === 'AbortError') return; // user anulował
+          // inny błąd → fallback do pobrania
+        }
+      }
+    }
+
+    // Fallback: zwykłe pobranie (komputer / brak Web Share)
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'faktury-ksiegowa-' + mies + '.zip';
+    a.download = fileName;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-    showToast('✓ Wyeksportowano ' + (pliki.length - 1) + ' faktur');
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    showToast('✓ Wyeksportowano ' + liczba + ' faktur');
   } catch (err) {
     showToast('✗ Błąd: ' + err.message);
   } finally {
