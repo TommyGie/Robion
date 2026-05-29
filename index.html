@@ -1096,7 +1096,7 @@ body {
           <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2" stroke="url(#orange-grad)"/><text x="12" y="15.5" font-family="Barlow Condensed,sans-serif" font-size="9" font-weight="800" fill="url(#white-grad)" text-anchor="middle" stroke="none">R</text></svg></div>
           <div><div class="s-title">Wersja Robion</div><div class="s-sub">Wersja stabilna</div></div>
         </div>
-        <div class="s-value" id="settingsVersionValue">1.1.0</div>
+        <div class="s-value" id="settingsVersionValue">1.1.1</div>
       </div>
       <div class="settings-row" onclick="clearData()">
         <div class="settings-left">
@@ -1468,7 +1468,7 @@ body {
     <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="url(#orange-grad)"/><circle cx="12" cy="12" r="3" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Ustawienia</div>
   </div>
-  <div class="nav-version-info" id="navVersionInfo">v1.1.0</div>
+  <div class="nav-version-info" id="navVersionInfo">v1.1.1</div>
 </div>
 
 <button class="fab" id="fabBtn" onclick="fabAction()">+</button>
@@ -7185,7 +7185,7 @@ document.querySelectorAll('.modal-overlay').forEach(o => {
 // ═══════════════════════════════════════════════════════════════
 
 // ── STAŁA WERSJI APLIKACJI ──
-const ROBION_VERSION = '1.1.0'; // + eksport faktur dla księgowej (ZIP z XML)
+const ROBION_VERSION = '1.1.1'; // eksport: podgląd faktur + pomijanie (szare nie idą)
 
 // ─────────────────────────────────────────────────────────────
 // "WYSTAW FAKTURĘ" — przycisk w widoku formy
@@ -8610,7 +8610,7 @@ function otworzPortalKSeF(ksefRef, portalBase) {
 // Pobiera pełny XML z KSeF przez Worker /fetch-invoice-content,
 // parsuje pozycje, cachuje w localStorage, wyświetla w modalu.
 // ─────────────────────────────────────────────────────────────
-async function pokazSzczegolyFakturyZakupowej(ksefRef) {
+async function pokazSzczegolyFakturyZakupowej(ksefRef, eksportIdx) {
   const body = document.getElementById('szczegolyBody');
   const title = document.getElementById('szczegolyTytul');
   if (!body || !title) return;
@@ -8669,10 +8669,10 @@ async function pokazSzczegolyFakturyZakupowej(ksefRef) {
   }
 
   // 3. Renderuj
-  renderSzczegolyFaktury(parsed, ksefRef, fromCache);
+  renderSzczegolyFaktury(parsed, ksefRef, fromCache, eksportIdx);
 }
 
-function renderSzczegolyFaktury(p, ksefRef, fromCache) {
+function renderSzczegolyFaktury(p, ksefRef, fromCache, eksportIdx) {
   const body = document.getElementById('szczegolyBody');
   const title = document.getElementById('szczegolyTytul');
   if (!body || !p) return;
@@ -8710,7 +8710,16 @@ function renderSzczegolyFaktury(p, ksefRef, fromCache) {
   const env = (typeof ksefEnv === 'function') ? ksefEnv() : 'demo';
   const portalBase = env === 'prod' ? 'https://ap.ksef.mf.gov.pl' : 'https://ap-demo.ksef.mf.gov.pl';
 
-  body.innerHTML = `
+  // (Sesja 17) Gdy podgląd otwarty z eksportu — przycisk Pomiń/Przywróć na górze
+  let pasekEksport = '';
+  if (eksportIdx != null && typeof _eksportPominiete !== 'undefined') {
+    const pom = _eksportPominiete.has(ksefRef);
+    pasekEksport = pom
+      ? `<button onclick="pominZPodgladu(${eksportIdx})" style="width:100%;margin-bottom:14px;padding:13px;background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent);border-radius:10px;font-weight:800;cursor:pointer">↩ Przywróć — wyślij do księgowej</button>`
+      : `<button onclick="pominZPodgladu(${eksportIdx})" style="width:100%;margin-bottom:14px;padding:13px;background:rgba(255,82,82,0.08);border:1px solid rgba(255,82,82,0.3);color:#FF8888;border-radius:10px;font-weight:800;cursor:pointer">Pomiń — NIE wysyłaj do księgowej</button>`;
+  }
+
+  body.innerHTML = pasekEksport + `
     <!-- Sprzedawca -->
     <div style="padding:12px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:10px;margin-bottom:14px">
       <div style="font-size:10px;color:var(--accent);font-family:var(--font-c);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Sprzedawca</div>
@@ -8950,6 +8959,7 @@ function zrobZip(pliki) {
 
 // Stan eksportu — faktury pobrane do wyboru
 let _eksportFaktury = [];
+let _eksportPominiete = new Set(); // ksefRef faktur do POMINIĘCIA (szare, nie wysyłane)
 
 function otworzModalEksport() {
   // Domyślnie poprzedni miesiąc (bo eksport robi się po jego zakończeniu)
@@ -8958,6 +8968,7 @@ function otworzModalEksport() {
   const mm = String(d.getMonth() + 1).padStart(2, '0');
   document.getElementById('eksportMiesiac').value = d.getFullYear() + '-' + mm;
   _eksportFaktury = [];
+  _eksportPominiete = new Set();
   document.getElementById('eksportLista').innerHTML = '<div style="color:var(--text3);font-size:13px;text-align:center;padding:20px">Wybierz miesiąc i kliknij „Pobierz z KSeF"</div>';
   document.getElementById('eksportBtnZip').style.display = 'none';
   document.getElementById('modalEksport').classList.add('open');
@@ -8986,6 +8997,7 @@ async function eksportPobierzMiesiac() {
       ...(sprzed || []).map(f => ({ ...f, kierunek: 'sprzedaz' })),
       ...(zakup || []).map(f => ({ ...f, kierunek: 'zakup' }))
     ].filter(f => f.ksefRef);
+    _eksportPominiete = new Set(); // reset pominiętych przy nowym pobraniu
 
     if (_eksportFaktury.length === 0) {
       lista.innerHTML = '<div style="color:var(--text3);text-align:center;padding:20px">Brak faktur w tym miesiącu</div>';
@@ -9001,48 +9013,88 @@ async function eksportPobierzMiesiac() {
 function renderEksportLista() {
   const lista = document.getElementById('eksportLista');
   const wiersze = _eksportFaktury.map((f, i) => {
+    const pom = _eksportPominiete.has(f.ksefRef);
     const badge = f.kierunek === 'sprzedaz'
       ? '<span style="background:#7BE0A0;color:#000;font-weight:800;font-size:9px;padding:2px 5px;border-radius:4px;font-family:var(--font-c)">SPRZEDAŻ</span>'
       : '<span style="background:#7BA7E0;color:#000;font-weight:800;font-size:9px;padding:2px 5px;border-radius:4px;font-family:var(--font-c)">ZAKUP</span>';
     const kontrah = f.kierunek === 'sprzedaz' ? (f.nabywca?.nazwa || '—') : (f.sprzedawca?.nazwa || '—');
-    return `<label style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer">
-      <input type="checkbox" class="eksport-cb" data-idx="${i}" checked onchange="aktualizujLicznikEksport()">
-      <div style="flex:1;min-width:0">
-        <div style="font-weight:700;font-size:13px">${badge} ${escapeHtml(f.numer || '—')}</div>
-        <div style="font-size:11px;color:var(--text3)">${escapeHtml(f.dataWyst || '')} · ${escapeHtml(kontrah)}</div>
+
+    // Pominięta = szara, nie wysyłana. Przycisk przełącza Pomiń ↔ Przywróć.
+    const tloStyl = pom
+      ? 'opacity:0.45;background:var(--glass);border-style:dashed'
+      : 'background:transparent';
+    const btnPomin = pom
+      ? `<button onclick="przelaczPominiecie(${i},event)" style="flex-shrink:0;padding:7px 11px;background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent);border-radius:7px;font-size:11px;font-weight:700;cursor:pointer">↩ Przywróć</button>`
+      : `<button onclick="przelaczPominiecie(${i},event)" style="flex-shrink:0;padding:7px 11px;background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:7px;font-size:11px;font-weight:700;cursor:pointer">Pomiń</button>`;
+
+    return `<div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;${tloStyl}">
+      <div onclick="podejrzyjEksportFakture(${i})" style="flex:1;min-width:0;cursor:pointer">
+        <div style="font-weight:700;font-size:13px">${badge} ${escapeHtml(f.numer || '—')} ${pom ? '<span style=\"color:var(--text3);font-weight:600\">· pominięta</span>' : ''}</div>
+        <div style="font-size:11px;color:var(--text3)">${escapeHtml(f.dataWyst || '')} · ${escapeHtml(kontrah)} · <span style="color:var(--accent)">podgląd ›</span></div>
       </div>
       <div style="font-family:var(--font-c);font-weight:800;font-size:13px;white-space:nowrap">${formatKwota(f.sumaBrutto || 0)} zł</div>
-    </label>`;
+      ${btnPomin}
+    </div>`;
   }).join('');
+
+  const doWyslania = _eksportFaktury.length - _eksportPominiete.size;
   lista.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <span style="font-size:11px;color:var(--text3)">${_eksportFaktury.length} faktur</span>
-      <button onclick="przelaczWszystkieEksport()" style="background:transparent;border:1px solid var(--border);color:var(--text2);font-size:11px;padding:5px 10px;border-radius:6px;cursor:pointer">Zaznacz / odznacz wszystkie</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:11px">
+      <span style="color:var(--text3)">${_eksportFaktury.length} faktur · <strong style="color:var(--accent)">${doWyslania} do wysłania</strong>${_eksportPominiete.size ? ' · ' + _eksportPominiete.size + ' pominięte' : ''}</span>
+      <button onclick="przywrocWszystkieEksport()" style="background:transparent;border:1px solid var(--border);color:var(--text2);font-size:11px;padding:5px 10px;border-radius:6px;cursor:pointer">Odwołaj pominięcia</button>
     </div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:8px">Kliknij fakturę by zajrzeć do środka. „Pomiń" wyszarza — szare nie trafią do księgowej.</div>
     ${wiersze}`;
   document.getElementById('eksportBtnZip').style.display = 'block';
   aktualizujLicznikEksport();
 }
 
-function przelaczWszystkieEksport() {
-  const cbs = document.querySelectorAll('.eksport-cb');
-  const wszystkieZazn = Array.from(cbs).every(c => c.checked);
-  cbs.forEach(c => { c.checked = !wszystkieZazn; });
-  aktualizujLicznikEksport();
+// Przełącz pominięcie pojedynczej faktury (z listy)
+function przelaczPominiecie(i, ev) {
+  if (ev) ev.stopPropagation();
+  const f = _eksportFaktury[i];
+  if (!f) return;
+  if (_eksportPominiete.has(f.ksefRef)) _eksportPominiete.delete(f.ksefRef);
+  else _eksportPominiete.add(f.ksefRef);
+  renderEksportLista();
+}
+
+// Cofnij wszystkie pominięcia
+function przywrocWszystkieEksport() {
+  _eksportPominiete = new Set();
+  renderEksportLista();
+}
+
+// Podgląd faktury z poziomu eksportu — te same szczegóły co w Zakupach,
+// plus przycisk Pomiń/Przywróć w środku.
+function podejrzyjEksportFakture(i) {
+  const f = _eksportFaktury[i];
+  if (!f) return;
+  pokazSzczegolyFakturyZakupowej(f.ksefRef, i);
+}
+
+// Pomiń/Przywróć z poziomu podglądu — przełącza i wraca do listy eksportu
+function pominZPodgladu(i) {
+  const f = _eksportFaktury[i];
+  if (!f) return;
+  if (_eksportPominiete.has(f.ksefRef)) _eksportPominiete.delete(f.ksefRef);
+  else _eksportPominiete.add(f.ksefRef);
+  closeModal('modalSzczegolyZakup');
+  renderEksportLista();
+  showToast(_eksportPominiete.has(f.ksefRef) ? 'Pominięto — szara, nie wyśle się' : 'Przywrócono — wyśle się');
 }
 
 function aktualizujLicznikEksport() {
-  const n = document.querySelectorAll('.eksport-cb:checked').length;
+  const doWyslania = _eksportFaktury.length - _eksportPominiete.size;
   const btn = document.getElementById('eksportBtnZip');
-  btn.textContent = '📦 Eksportuj zaznaczone (' + n + ')';
-  btn.disabled = n === 0;
+  btn.textContent = '📦 Eksportuj do księgowej (' + doWyslania + ')';
+  btn.disabled = doWyslania === 0;
 }
 
 async function eksportujZaznaczone() {
-  const zazn = Array.from(document.querySelectorAll('.eksport-cb:checked'))
-    .map(cb => _eksportFaktury[parseInt(cb.dataset.idx, 10)])
-    .filter(Boolean);
-  if (zazn.length === 0) { showToast('Zaznacz przynajmniej jedną fakturę'); return; }
+  // Wysyłamy WSZYSTKIE oprócz pominiętych (szarych). Szare NIE idą do księgowej.
+  const zazn = _eksportFaktury.filter(f => !_eksportPominiete.has(f.ksefRef));
+  if (zazn.length === 0) { showToast('Wszystkie faktury pominięte — nic do wysłania'); return; }
 
   const env = ksefEnv();
   const token = ksefCurrentToken();
