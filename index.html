@@ -1093,7 +1093,7 @@ body {
           <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2" stroke="url(#orange-grad)"/><text x="12" y="15.5" font-family="Barlow Condensed,sans-serif" font-size="9" font-weight="800" fill="url(#white-grad)" text-anchor="middle" stroke="none">R</text></svg></div>
           <div><div class="s-title">Wersja Robion</div><div class="s-sub">Wersja stabilna</div></div>
         </div>
-        <div class="s-value" id="settingsVersionValue">1.0.0</div>
+        <div class="s-value" id="settingsVersionValue">1.1.0</div>
       </div>
       <div class="settings-row" onclick="clearData()">
         <div class="settings-left">
@@ -1119,6 +1119,11 @@ body {
       <!-- (Sesja 10 / Sprint 1C) Chip Bezfakturowa — ewidencja sprzedaży B2C bez faktury -->
       <button type="button" class="zrodlo-chip" data-zrodlo="bezfakturowa" onclick="setZrodloFiltr('bezfakturowa')" style="flex:1;min-width:0;padding:10px 4px;background:var(--glass);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-family:var(--font-c);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.2px;cursor:pointer;transition:all 0.15s;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:5px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="9" stroke="url(#orange-grad)"/><path d="M9 9l6 6M15 9l-6 6" stroke="url(#white-grad)" stroke-dasharray="1.5 1.5"/></svg><span>Bezfakt.</span></button>
     </div>
+
+    <!-- (Sesja 17) Eksport dla księgowej -->
+    <button type="button" onclick="otworzModalEksport()" style="width:100%;margin-bottom:10px;padding:11px;background:var(--glass);border:1px solid var(--accent-border);border-radius:10px;color:var(--accent);font-family:var(--font-c);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+      📦 Eksport faktur dla księgowej
+    </button>
 
     <!-- Status pill (KSeF query progress) -->
     <div style="text-align:center;margin-bottom:8px;min-height:24px">
@@ -1460,7 +1465,7 @@ body {
     <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="url(#orange-grad)"/><circle cx="12" cy="12" r="3" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Ustawienia</div>
   </div>
-  <div class="nav-version-info" id="navVersionInfo">v1.0.0</div>
+  <div class="nav-version-info" id="navVersionInfo">v1.1.0</div>
 </div>
 
 <button class="fab" id="fabBtn" onclick="fabAction()">+</button>
@@ -1661,6 +1666,31 @@ body {
           Anuluj — wrócę do edycji
         </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- (Sesja 17) MODAL: Eksport faktur dla księgowej -->
+<div class="modal-overlay" id="modalEksport">
+  <div class="modal" style="max-width:600px;max-height:90vh;display:flex;flex-direction:column">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <span class="modal-title">📦 Eksport dla księgowej</span>
+      <button class="modal-close" onclick="closeModal('modalEksport')">✕</button>
+    </div>
+    <div class="modal-body" style="overflow-y:auto;flex:1">
+      <div style="padding:10px 12px;background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.18);border-radius:8px;font-size:11px;line-height:1.5;color:var(--text2);margin-bottom:14px">
+        Pobierasz faktury z KSeF za wybrany miesiąc, zaznaczasz które mają iść do księgowej i pobierasz paczkę ZIP z plikami XML (FA(3)) + spisem. Wysyłasz ją mailem księgowej.
+      </div>
+      <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:14px">
+        <div style="flex:1">
+          <label class="form-label">Miesiąc</label>
+          <input type="month" class="form-input" id="eksportMiesiac">
+        </div>
+        <button class="btn-primary" onclick="eksportPobierzMiesiac()" style="width:auto;padding:12px 18px">Pobierz z KSeF</button>
+      </div>
+      <div id="eksportLista" style="margin-bottom:14px"></div>
+      <button class="btn-primary" id="eksportBtnZip" onclick="eksportujZaznaczone()" style="width:100%;padding:14px;font-weight:800;display:none">📦 Eksportuj zaznaczone</button>
     </div>
   </div>
 </div>
@@ -7152,7 +7182,7 @@ document.querySelectorAll('.modal-overlay').forEach(o => {
 // ═══════════════════════════════════════════════════════════════
 
 // ── STAŁA WERSJI APLIKACJI ──
-const ROBION_VERSION = '1.0.0'; // pierwsza pełna wersja — koniec bety
+const ROBION_VERSION = '1.1.0'; // + eksport faktur dla księgowej (ZIP z XML)
 
 // ─────────────────────────────────────────────────────────────
 // "WYSTAW FAKTURĘ" — przycisk w widoku formy
@@ -8855,6 +8885,223 @@ async function odswiezSprzedazoweZKSeF() {
       btn.disabled = false;
       btn.textContent = '🔄 Odśwież z KSeF';
     }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// (Sesja 17) EKSPORT DLA KSIĘGOWEJ
+// Pobiera faktury z KSeF za miesiąc, pozwala zaznaczyć które wysłać,
+// pakuje XML-e (FA(3)) + spis CSV do jednego ZIP-a.
+// ═══════════════════════════════════════════════════════════════
+
+// — Mini-ZIP (metoda "store", bez kompresji) + CRC32 —
+const _CRC_TABLE = (() => {
+  const t = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) {
+    let c = n;
+    for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+    t[n] = c >>> 0;
+  }
+  return t;
+})();
+function _crc32(bytes) {
+  let crc = -1;
+  for (let i = 0; i < bytes.length; i++) crc = (crc >>> 8) ^ _CRC_TABLE[(crc ^ bytes[i]) & 0xFF];
+  return (crc ^ -1) >>> 0;
+}
+function zrobZip(pliki) {
+  const enc = new TextEncoder();
+  const localParts = [], central = [];
+  let offset = 0;
+  for (const p of pliki) {
+    const nameB = enc.encode(p.nazwa);
+    const data = enc.encode(p.tekst);
+    const crc = _crc32(data);
+    const lh = new Uint8Array(30 + nameB.length);
+    const dv = new DataView(lh.buffer);
+    dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true); dv.setUint16(6, 0, true);
+    dv.setUint16(8, 0, true); dv.setUint16(10, 0, true); dv.setUint16(12, 0, true);
+    dv.setUint32(14, crc, true); dv.setUint32(18, data.length, true); dv.setUint32(22, data.length, true);
+    dv.setUint16(26, nameB.length, true); dv.setUint16(28, 0, true);
+    lh.set(nameB, 30);
+    localParts.push(lh, data);
+    const ch = new Uint8Array(46 + nameB.length);
+    const cv = new DataView(ch.buffer);
+    cv.setUint32(0, 0x02014b50, true); cv.setUint16(4, 20, true); cv.setUint16(6, 20, true);
+    cv.setUint16(8, 0, true); cv.setUint16(10, 0, true); cv.setUint16(12, 0, true); cv.setUint16(14, 0, true);
+    cv.setUint32(16, crc, true); cv.setUint32(20, data.length, true); cv.setUint32(24, data.length, true);
+    cv.setUint16(28, nameB.length, true); cv.setUint16(30, 0, true); cv.setUint16(32, 0, true);
+    cv.setUint16(34, 0, true); cv.setUint16(36, 0, true); cv.setUint32(38, 0, true); cv.setUint32(42, offset, true);
+    ch.set(nameB, 46);
+    central.push(ch);
+    offset += lh.length + data.length;
+  }
+  const centralSize = central.reduce((s, c) => s + c.length, 0);
+  const eo = new Uint8Array(22);
+  const ev = new DataView(eo.buffer);
+  ev.setUint32(0, 0x06054b50, true); ev.setUint16(4, 0, true); ev.setUint16(6, 0, true);
+  ev.setUint16(8, pliki.length, true); ev.setUint16(10, pliki.length, true);
+  ev.setUint32(12, centralSize, true); ev.setUint32(16, offset, true); ev.setUint16(20, 0, true);
+  return new Blob([...localParts, ...central, eo], { type: 'application/zip' });
+}
+
+// Stan eksportu — faktury pobrane do wyboru
+let _eksportFaktury = [];
+
+function otworzModalEksport() {
+  // Domyślnie poprzedni miesiąc (bo eksport robi się po jego zakończeniu)
+  const d = new Date();
+  d.setDate(1); d.setMonth(d.getMonth() - 1);
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  document.getElementById('eksportMiesiac').value = d.getFullYear() + '-' + mm;
+  _eksportFaktury = [];
+  document.getElementById('eksportLista').innerHTML = '<div style="color:var(--text3);font-size:13px;text-align:center;padding:20px">Wybierz miesiąc i kliknij „Pobierz z KSeF"</div>';
+  document.getElementById('eksportBtnZip').style.display = 'none';
+  document.getElementById('modalEksport').classList.add('open');
+}
+
+async function eksportPobierzMiesiac() {
+  const mies = document.getElementById('eksportMiesiac').value; // YYYY-MM
+  if (!mies) { showToast('Wybierz miesiąc'); return; }
+  const [rok, mc] = mies.split('-').map(Number);
+  const dateFrom = `${rok}-${String(mc).padStart(2,'0')}-01`;
+  const ostatni = new Date(rok, mc, 0).getDate();
+  const dateTo = `${rok}-${String(mc).padStart(2,'0')}-${String(ostatni).padStart(2,'0')}`;
+
+  const env = ksefEnv();
+  const token = ksefCurrentToken();
+  if (!token) { showToast('Skonfiguruj token KSeF w Ustawieniach'); return; }
+
+  const lista = document.getElementById('eksportLista');
+  lista.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2)">⏳ Pobieranie z KSeF (sprzedażowe + zakupowe)…</div>';
+
+  try {
+    setKsefContext(env);
+    const sprzed = await pobierzFakturyZKSeF('seller', dateFrom, dateTo, 100).catch(() => []);
+    const zakup = await pobierzFakturyZKSeF('buyer', dateFrom, dateTo, 100).catch(() => []);
+    _eksportFaktury = [
+      ...(sprzed || []).map(f => ({ ...f, kierunek: 'sprzedaz' })),
+      ...(zakup || []).map(f => ({ ...f, kierunek: 'zakup' }))
+    ].filter(f => f.ksefRef);
+
+    if (_eksportFaktury.length === 0) {
+      lista.innerHTML = '<div style="color:var(--text3);text-align:center;padding:20px">Brak faktur w tym miesiącu</div>';
+      document.getElementById('eksportBtnZip').style.display = 'none';
+      return;
+    }
+    renderEksportLista();
+  } catch (err) {
+    lista.innerHTML = '<div style="color:var(--danger);padding:14px">Błąd: ' + escapeHtml(err.message) + '</div>';
+  }
+}
+
+function renderEksportLista() {
+  const lista = document.getElementById('eksportLista');
+  const wiersze = _eksportFaktury.map((f, i) => {
+    const badge = f.kierunek === 'sprzedaz'
+      ? '<span style="background:#7BE0A0;color:#000;font-weight:800;font-size:9px;padding:2px 5px;border-radius:4px;font-family:var(--font-c)">SPRZEDAŻ</span>'
+      : '<span style="background:#7BA7E0;color:#000;font-weight:800;font-size:9px;padding:2px 5px;border-radius:4px;font-family:var(--font-c)">ZAKUP</span>';
+    const kontrah = f.kierunek === 'sprzedaz' ? (f.nabywca?.nazwa || '—') : (f.sprzedawca?.nazwa || '—');
+    return `<label style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer">
+      <input type="checkbox" class="eksport-cb" data-idx="${i}" checked onchange="aktualizujLicznikEksport()">
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:700;font-size:13px">${badge} ${escapeHtml(f.numer || '—')}</div>
+        <div style="font-size:11px;color:var(--text3)">${escapeHtml(f.dataWyst || '')} · ${escapeHtml(kontrah)}</div>
+      </div>
+      <div style="font-family:var(--font-c);font-weight:800;font-size:13px;white-space:nowrap">${formatKwota(f.sumaBrutto || 0)} zł</div>
+    </label>`;
+  }).join('');
+  lista.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <span style="font-size:11px;color:var(--text3)">${_eksportFaktury.length} faktur</span>
+      <button onclick="przelaczWszystkieEksport()" style="background:transparent;border:1px solid var(--border);color:var(--text2);font-size:11px;padding:5px 10px;border-radius:6px;cursor:pointer">Zaznacz / odznacz wszystkie</button>
+    </div>
+    ${wiersze}`;
+  document.getElementById('eksportBtnZip').style.display = 'block';
+  aktualizujLicznikEksport();
+}
+
+function przelaczWszystkieEksport() {
+  const cbs = document.querySelectorAll('.eksport-cb');
+  const wszystkieZazn = Array.from(cbs).every(c => c.checked);
+  cbs.forEach(c => { c.checked = !wszystkieZazn; });
+  aktualizujLicznikEksport();
+}
+
+function aktualizujLicznikEksport() {
+  const n = document.querySelectorAll('.eksport-cb:checked').length;
+  const btn = document.getElementById('eksportBtnZip');
+  btn.textContent = '📦 Eksportuj zaznaczone (' + n + ')';
+  btn.disabled = n === 0;
+}
+
+async function eksportujZaznaczone() {
+  const zazn = Array.from(document.querySelectorAll('.eksport-cb:checked'))
+    .map(cb => _eksportFaktury[parseInt(cb.dataset.idx, 10)])
+    .filter(Boolean);
+  if (zazn.length === 0) { showToast('Zaznacz przynajmniej jedną fakturę'); return; }
+
+  const env = ksefEnv();
+  const token = ksefCurrentToken();
+  const nip = (ust.firmaNIP || '').replace(/\D/g, '');
+  const btn = document.getElementById('eksportBtnZip');
+  btn.disabled = true;
+  btn.textContent = '⏳ Pobieranie XML-i z KSeF…';
+
+  try {
+    const resp = await fetch(KSEF_CLOUD + '/fetch-invoices-batch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ env, nip, token, ksefRefs: zazn.map(f => f.ksefRef) })
+    });
+    const data = await resp.json();
+    if (!data.ok) throw new Error(data.error || 'Błąd pobierania');
+
+    // Mapuj XML do faktur + buduj pliki ZIP
+    const xmlMap = {};
+    (data.faktury || []).forEach(f => { xmlMap[f.ksefRef] = f.xml; });
+
+    const pliki = [];
+    const csvWiersze = ['Kierunek;Numer;Data;Kontrahent;Kwota brutto;Numer KSeF'];
+    zazn.forEach(f => {
+      const xml = xmlMap[f.ksefRef];
+      if (!xml) return;
+      const bezpNumer = (f.numer || f.ksefRef).replace(/[^A-Za-z0-9_-]/g, '_');
+      const prefix = f.kierunek === 'sprzedaz' ? 'SPRZEDAZ' : 'ZAKUP';
+      pliki.push({ nazwa: prefix + '_' + bezpNumer + '.xml', tekst: xml });
+      const kontrah = (f.kierunek === 'sprzedaz' ? f.nabywca?.nazwa : f.sprzedawca?.nazwa) || '—';
+      csvWiersze.push([
+        f.kierunek === 'sprzedaz' ? 'Sprzedaż' : 'Zakup',
+        f.numer || '', f.dataWyst || '',
+        '"' + String(kontrah).replace(/"/g, '') + '"',
+        (parseFloat(f.sumaBrutto) || 0).toFixed(2).replace('.', ','),
+        f.ksefRef
+      ].join(';'));
+    });
+    // Spis treści
+    pliki.push({ nazwa: 'lista.csv', tekst: '﻿' + csvWiersze.join('\n') });
+
+    if (data.bledy && data.bledy.length) {
+      pliki.push({ nazwa: 'BLEDY.txt', tekst: 'Nie udało się pobrać:\n' + data.bledy.map(b => b.ksefRef + ' — ' + b.error).join('\n') });
+    }
+
+    const blob = zrobZip(pliki);
+    const mies = document.getElementById('eksportMiesiac').value;
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'faktury-ksiegowa-' + mies + '.zip';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showToast('✓ Wyeksportowano ' + (pliki.length - 1) + ' faktur');
+  } catch (err) {
+    showToast('✗ Błąd: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    aktualizujLicznikEksport();
   }
 }
 
