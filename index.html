@@ -857,7 +857,10 @@ body {
 <div class="app">
   <div class="header">
     <div class="header-top">
-      <div class="logo"><img src="logo-robion.png" alt="Robion" style="height:32px;width:auto;display:block"></div>
+      <div class="logo" style="display:flex;align-items:center;gap:10px">
+        <img src="logo-robion.png" alt="Robion" style="height:32px;width:auto;display:block">
+        <span style="font-family:var(--font-c);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text3);border-left:1px solid var(--border);padding-left:10px">Faktury</span>
+      </div>
     </div>
     <div class="page-title" id="pageTitle">Pulpit</div>
   </div>
@@ -1096,7 +1099,7 @@ body {
           <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2" stroke="url(#orange-grad)"/><text x="12" y="15.5" font-family="Barlow Condensed,sans-serif" font-size="9" font-weight="800" fill="url(#white-grad)" text-anchor="middle" stroke="none">R</text></svg></div>
           <div><div class="s-title">Wersja Robion</div><div class="s-sub">Wersja stabilna</div></div>
         </div>
-        <div class="s-value" id="settingsVersionValue">1.1.1</div>
+        <div class="s-value" id="settingsVersionValue">1.1.2</div>
       </div>
       <div class="settings-row" onclick="clearData()">
         <div class="settings-left">
@@ -1123,9 +1126,9 @@ body {
       <button type="button" class="zrodlo-chip" data-zrodlo="bezfakturowa" onclick="setZrodloFiltr('bezfakturowa')" style="flex:1;min-width:0;padding:10px 4px;background:var(--glass);border:1px solid var(--border);border-radius:10px;color:var(--text2);font-family:var(--font-c);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.2px;cursor:pointer;transition:all 0.15s;white-space:nowrap;display:flex;align-items:center;justify-content:center;gap:5px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="9" stroke="url(#orange-grad)"/><path d="M9 9l6 6M15 9l-6 6" stroke="url(#white-grad)" stroke-dasharray="1.5 1.5"/></svg><span>Bezfakt.</span></button>
     </div>
 
-    <!-- (Sesja 17) Eksport dla księgowej -->
+    <!-- (Sesja 17) Eksport dla księgowości -->
     <button type="button" onclick="otworzModalEksport()" style="width:100%;margin-bottom:10px;padding:11px;background:var(--glass);border:1px solid var(--accent-border);border-radius:10px;color:var(--accent);font-family:var(--font-c);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
-      📦 Eksport faktur dla księgowej
+      📦 Eksport faktur dla księgowości
     </button>
 
     <!-- Status pill (KSeF query progress) -->
@@ -1160,7 +1163,7 @@ body {
         <button type="button" onclick="eksportujSBdoCSV()" style="padding:9px 12px;background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:8px;font-family:var(--font-c);font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;flex-shrink:0">CSV ⬇</button>
       </div>
       <div style="margin-top:8px;padding:10px 12px;background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.18);border-radius:8px;font-size:11px;line-height:1.5;color:var(--text2)">
-        💡 Tu wpisujesz sprzedaż dla klientów którzy nie chcą faktury (osoby prywatne, korzystasz ze zwolnienia z kasy fiskalnej). Wpisy <strong>NIE idą do KSeF</strong> — to lokalna ewidencja dla Ciebie i księgowej.
+        💡 Tu wpisujesz sprzedaż dla klientów którzy nie chcą faktury (osoby prywatne, korzystasz ze zwolnienia z kasy fiskalnej). Wpisy <strong>NIE idą do KSeF</strong> — to lokalna ewidencja dla Ciebie i księgowości.
       </div>
     </div>
 
@@ -1468,7 +1471,7 @@ body {
     <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="url(#orange-grad)"/><circle cx="12" cy="12" r="3" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Ustawienia</div>
   </div>
-  <div class="nav-version-info" id="navVersionInfo">v1.1.1</div>
+  <div class="nav-version-info" id="navVersionInfo">v1.1.2</div>
 </div>
 
 <button class="fab" id="fabBtn" onclick="fabAction()">+</button>
@@ -1673,17 +1676,17 @@ body {
   </div>
 </div>
 
-<!-- (Sesja 17) MODAL: Eksport faktur dla księgowej -->
+<!-- (Sesja 17) MODAL: Eksport faktur dla księgowości -->
 <div class="modal-overlay" id="modalEksport">
   <div class="modal" style="max-width:600px;max-height:90vh;display:flex;flex-direction:column">
     <div class="modal-handle"></div>
     <div class="modal-header">
-      <span class="modal-title">📦 Eksport dla księgowej</span>
+      <span class="modal-title">📦 Eksport dla księgowości</span>
       <button class="modal-close" onclick="closeModal('modalEksport')">✕</button>
     </div>
     <div class="modal-body" style="overflow-y:auto;flex:1">
       <div style="padding:10px 12px;background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.18);border-radius:8px;font-size:11px;line-height:1.5;color:var(--text2);margin-bottom:14px">
-        Pobierasz faktury z KSeF za wybrany miesiąc, zaznaczasz które mają iść do księgowej i tworzysz paczkę ZIP (pliki XML FA(3) + spis). Na telefonie od razu „Udostępnij" → Mail/WhatsApp do księgowej; na komputerze plik się pobiera.
+        Pobierasz faktury z KSeF za wybrany miesiąc, zaznaczasz które mają iść do księgowości i tworzysz paczkę ZIP (pliki XML FA(3) + spis). Na telefonie od razu „Udostępnij" → Mail/WhatsApp do księgowości; na komputerze plik się pobiera.
       </div>
       <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:14px">
         <div style="flex:1">
@@ -1733,7 +1736,7 @@ body {
         <input type="number" inputmode="decimal" step="0.01" class="form-input" id="sbKwota" placeholder="np. 5000.00">
       </div>
       <div class="form-row" style="margin-bottom:10px">
-        <label class="form-label">Opis (krótki, dla księgowej)</label>
+        <label class="form-label">Opis (krótki, dla księgowości)</label>
         <input type="text" class="form-input" id="sbOpis" placeholder="np. Montaż pompy ciepła — klient indywidualny" maxlength="200">
       </div>
       <div class="form-row" style="margin-bottom:14px">
@@ -4171,7 +4174,7 @@ const POMOC_TEMATY = [
       <p>W apce wybierz tę opcję jeśli rozliczasz PIT ryczałtem ALE jesteś też vatowcem — apka dostosuje wygląd faktury.</p>
       <h3>VAT marża</h3>
       <p>Specyficzna opcja dla handlu używanymi towarami, dziełami sztuki, antykami. <strong>Niedotyczy</strong> typowych usług budowlanych. Jeśli nie wiesz czy to dla Ciebie — to znaczy że nie.</p>
-      <p style="font-size:13px;color:var(--text2);margin-top:14px;background:rgba(245,166,35,0.1);padding:12px;border-radius:10px;border:1px solid var(--accent-border)">⚠️ <strong>Status VAT to decyzja podatkowa</strong>, nie kosmetyczna. Jeśli nie masz pewności — zapytaj księgowej. Złe ustawienie = problemy z US.</p>
+      <p style="font-size:13px;color:var(--text2);margin-top:14px;background:rgba(245,166,35,0.1);padding:12px;border-radius:10px;border:1px solid var(--accent-border)">⚠️ <strong>Status VAT to decyzja podatkowa</strong>, nie kosmetyczna. Jeśli nie masz pewności — zapytaj księgowości. Złe ustawienie = problemy z US.</p>
     `
   },
   {
@@ -4213,7 +4216,7 @@ const POMOC_TEMATY = [
       <p>❌ <strong>Nie zmieniaj numeru faktury</strong> ręcznie. Numeracja musi być ciągła.</p>
       <h3>Jak wystawić w apce</h3>
       <p>Faktury → + → wybierz typ <strong>FK</strong>. W polu "Korekta do" wpisz numer oryginalnej faktury. Wpisz różnicę (in plus albo in minus).</p>
-      <p style="font-size:13px;color:var(--text2);margin-top:14px;background:rgba(245,166,35,0.1);padding:12px;border-radius:10px;border:1px solid var(--accent-border)">⚠️ Jeśli sprawa jest niejasna (np. korekta przeszłorocznej faktury, korekta + zmiana stawki VAT) — <strong>zapytaj księgowej</strong>. Korekty mają niuanse.</p>
+      <p style="font-size:13px;color:var(--text2);margin-top:14px;background:rgba(245,166,35,0.1);padding:12px;border-radius:10px;border:1px solid var(--accent-border)">⚠️ Jeśli sprawa jest niejasna (np. korekta przeszłorocznej faktury, korekta + zmiana stawki VAT) — <strong>zapytaj księgowości</strong>. Korekty mają niuanse.</p>
     `
   },
   {
@@ -7185,7 +7188,7 @@ document.querySelectorAll('.modal-overlay').forEach(o => {
 // ═══════════════════════════════════════════════════════════════
 
 // ── STAŁA WERSJI APLIKACJI ──
-const ROBION_VERSION = '1.1.1'; // eksport: podgląd faktur + pomijanie (szare nie idą)
+const ROBION_VERSION = '1.1.2'; // podpis 'Faktury' + neutralne wzmianki o księgowości
 
 // ─────────────────────────────────────────────────────────────
 // "WYSTAW FAKTURĘ" — przycisk w widoku formy
@@ -8715,8 +8718,8 @@ function renderSzczegolyFaktury(p, ksefRef, fromCache, eksportIdx) {
   if (eksportIdx != null && typeof _eksportPominiete !== 'undefined') {
     const pom = _eksportPominiete.has(ksefRef);
     pasekEksport = pom
-      ? `<button onclick="pominZPodgladu(${eksportIdx})" style="width:100%;margin-bottom:14px;padding:13px;background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent);border-radius:10px;font-weight:800;cursor:pointer">↩ Przywróć — wyślij do księgowej</button>`
-      : `<button onclick="pominZPodgladu(${eksportIdx})" style="width:100%;margin-bottom:14px;padding:13px;background:rgba(255,82,82,0.08);border:1px solid rgba(255,82,82,0.3);color:#FF8888;border-radius:10px;font-weight:800;cursor:pointer">Pomiń — NIE wysyłaj do księgowej</button>`;
+      ? `<button onclick="pominZPodgladu(${eksportIdx})" style="width:100%;margin-bottom:14px;padding:13px;background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent);border-radius:10px;font-weight:800;cursor:pointer">↩ Przywróć — wyślij do księgowości</button>`
+      : `<button onclick="pominZPodgladu(${eksportIdx})" style="width:100%;margin-bottom:14px;padding:13px;background:rgba(255,82,82,0.08);border:1px solid rgba(255,82,82,0.3);color:#FF8888;border-radius:10px;font-weight:800;cursor:pointer">Pomiń — NIE wysyłaj do księgowości</button>`;
   }
 
   body.innerHTML = pasekEksport + `
@@ -9043,7 +9046,7 @@ function renderEksportLista() {
       <span style="color:var(--text3)">${_eksportFaktury.length} faktur · <strong style="color:var(--accent)">${doWyslania} do wysłania</strong>${_eksportPominiete.size ? ' · ' + _eksportPominiete.size + ' pominięte' : ''}</span>
       <button onclick="przywrocWszystkieEksport()" style="background:transparent;border:1px solid var(--border);color:var(--text2);font-size:11px;padding:5px 10px;border-radius:6px;cursor:pointer">Odwołaj pominięcia</button>
     </div>
-    <div style="font-size:11px;color:var(--text3);margin-bottom:8px">Kliknij fakturę by zajrzeć do środka. „Pomiń" wyszarza — szare nie trafią do księgowej.</div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:8px">Kliknij fakturę by zajrzeć do środka. „Pomiń" wyszarza — szare nie trafią do księgowości.</div>
     ${wiersze}`;
   document.getElementById('eksportBtnZip').style.display = 'block';
   aktualizujLicznikEksport();
@@ -9087,12 +9090,12 @@ function pominZPodgladu(i) {
 function aktualizujLicznikEksport() {
   const doWyslania = _eksportFaktury.length - _eksportPominiete.size;
   const btn = document.getElementById('eksportBtnZip');
-  btn.textContent = '📦 Eksportuj do księgowej (' + doWyslania + ')';
+  btn.textContent = '📦 Eksportuj do księgowości (' + doWyslania + ')';
   btn.disabled = doWyslania === 0;
 }
 
 async function eksportujZaznaczone() {
-  // Wysyłamy WSZYSTKIE oprócz pominiętych (szarych). Szare NIE idą do księgowej.
+  // Wysyłamy WSZYSTKIE oprócz pominiętych (szarych). Szare NIE idą do księgowości.
   const zazn = _eksportFaktury.filter(f => !_eksportPominiete.has(f.ksefRef));
   if (zazn.length === 0) { showToast('Wszystkie faktury pominięte — nic do wysłania'); return; }
 
@@ -9152,7 +9155,7 @@ async function eksportujZaznaczone() {
         try {
           await navigator.share({
             files: [file],
-            title: 'Faktury dla księgowej — ' + mies,
+            title: 'Faktury dla księgowości — ' + mies,
             text: 'Faktury z KSeF za ' + mies + ' (' + liczba + ' szt.)'
           });
           showToast('✓ Udostępniono ' + liczba + ' faktur');
