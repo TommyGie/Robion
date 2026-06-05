@@ -1099,7 +1099,7 @@ body {
           <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2" stroke="url(#orange-grad)"/><text x="12" y="15.5" font-family="Barlow Condensed,sans-serif" font-size="9" font-weight="800" fill="url(#white-grad)" text-anchor="middle" stroke="none">R</text></svg></div>
           <div><div class="s-title">Wersja Robion</div><div class="s-sub">Wersja stabilna</div></div>
         </div>
-        <div class="s-value" id="settingsVersionValue">1.1.3</div>
+        <div class="s-value" id="settingsVersionValue">1.1.4</div>
       </div>
       <div class="settings-row" onclick="clearData()">
         <div class="settings-left">
@@ -1471,7 +1471,7 @@ body {
     <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="url(#orange-grad)"/><circle cx="12" cy="12" r="3" stroke="url(#white-grad)"/></svg></div>
     <div class="nav-label">Ustawienia</div>
   </div>
-  <div class="nav-version-info" id="navVersionInfo">v1.1.3</div>
+  <div class="nav-version-info" id="navVersionInfo">v1.1.4</div>
 </div>
 
 <button class="fab" id="fabBtn" onclick="fabAction()">+</button>
@@ -7188,7 +7188,7 @@ document.querySelectorAll('.modal-overlay').forEach(o => {
 // ═══════════════════════════════════════════════════════════════
 
 // ── STAŁA WERSJI APLIKACJI ──
-const ROBION_VERSION = '1.1.3'; // nagłówek: logo + ramka 'Faktury' pod logiem
+const ROBION_VERSION = '1.1.4'; // nagłówek: logo + ramka 'Faktury' pod logiem
 
 // ─────────────────────────────────────────────────────────────
 // "WYSTAW FAKTURĘ" — przycisk w widoku formy
@@ -8855,6 +8855,7 @@ async function odswiezZakupowe() {
     await pobierzFakturyZKSeF('buyer', dateFrom, dateTo, 30);
     renderListaZakupowych();
     showToast('✓ Pobrano z KSeF');
+    ksefNotifSprawdz();
   } catch (err) {
     console.error('Błąd pobierania zakupowych:', err);
     showToast('✗ Błąd: ' + err.message);
@@ -9245,6 +9246,71 @@ function renderListaSprzedazowychZKSeF() {
     '</div>';
   }).join('');
 }
+
+// ─────────────────────────────────────────────────────────────
+// POWIADOMIENIA KSeF — nowe faktury zakupowe
+// ─────────────────────────────────────────────────────────────
+const KSEF_NOTIF_SEEN_KEY = 'rob_ksef_notif_seen';
+
+function ksefNotifGetSeen() {
+  try { return new Set(JSON.parse(localStorage.getItem(KSEF_NOTIF_SEEN_KEY) || '[]')); }
+  catch { return new Set(); }
+}
+
+function ksefNotifSaveSeen(ids) {
+  const seen = ksefNotifGetSeen();
+  ids.forEach(id => seen.add(id));
+  const arr = [...seen].slice(-500);
+  localStorage.setItem(KSEF_NOTIF_SEEN_KEY, JSON.stringify(arr));
+}
+
+async function ksefNotifSprawdz() {
+  try {
+    const raw = localStorage.getItem('rob_faktury_zakupowe');
+    if (!raw) return;
+    const { faktury } = JSON.parse(raw);
+    if (!faktury?.length) return;
+
+    const seen = ksefNotifGetSeen();
+
+    // Przy pierwszym uruchomieniu (brak seen) — tylko zapamiętaj, nie powiadamiaj
+    if (seen.size === 0) {
+      ksefNotifSaveSeen(faktury.map(f => f.ksefRef).filter(Boolean));
+      return;
+    }
+
+    const nowe = faktury.filter(f => f.ksefRef && !seen.has(f.ksefRef));
+    ksefNotifSaveSeen(faktury.map(f => f.ksefRef).filter(Boolean));
+
+    if (!nowe.length) return;
+
+    if (!('Notification' in window)) return;
+    if (Notification.permission === 'default') await Notification.requestPermission();
+    if (Notification.permission !== 'granted') return;
+
+    const pierwsza = nowe[0];
+    const tytul = nowe.length === 1 ? 'Nowa faktura w KSeF' : `${nowe.length} nowych faktur w KSeF`;
+    const tresc = `Od: ${pierwsza.sprzedawca?.nazwa || 'nieznany kontrahent'} · ${pierwsza.numer || ''}`;
+
+    const n = new Notification(tytul, {
+      body: tresc,
+      icon: 'https://app.robion.pl/icons/icon-192.png',
+      tag: 'ksef-nowe',
+    });
+    n.onclick = () => { window.focus(); n.close(); };
+  } catch (err) {
+    console.log('KSeF notif error:', err.message);
+  }
+}
+
+// Auto-sprawdzenie przy starcie (10s opóźnienie żeby nie blokować UI)
+// i co 30 minut gdy apka otwarta
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('rob_ksef_token_prod')) {
+    setTimeout(() => odswiezZakupowe(), 10000);
+    setInterval(() => odswiezZakupowe(), 30 * 60 * 1000);
+  }
+});
 
 // ─────────────────────────────────────────────────────────────
 // KONIEC FILAR 2
