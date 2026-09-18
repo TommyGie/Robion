@@ -818,6 +818,19 @@ body {
   .app{padding:0;max-width:100%}
 }
 
+
+/* Wspólne wejścia do modułów ROBION */
+.robion-modules{position:relative;flex-shrink:0;margin-inline-start:auto;font-size:13px;letter-spacing:normal}
+.robion-modules summary{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 12px;list-style:none;cursor:pointer;border:1px solid var(--accent-border);border-radius:10px;background:var(--accent-dim);color:var(--accent);font-family:var(--font);font-weight:600}
+.robion-modules summary::-webkit-details-marker{display:none}
+.robion-modules summary:focus-visible,.robion-modules a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.robion-modules-panel{position:absolute;right:0;top:calc(100% + 8px);width:220px;max-width:calc(100vw - 40px);padding:6px;border:1px solid var(--border-strong,var(--border));border-radius:12px;background:#181818;box-shadow:0 12px 36px #0006}
+.robion-modules-panel a,.robion-modules-panel span[aria-current]{display:block;padding:12px 10px;border-radius:7px;color:var(--text);text-decoration:none;font-family:var(--font);font-size:14px;line-height:1.4}
+.robion-modules-panel a:hover,.robion-modules-panel [aria-current]{background:var(--accent-dim);color:var(--accent)}
+.header-top{gap:10px;flex-wrap:wrap}
+.robion-modules-desktop{display:none}
+@media(min-width:1024px){.robion-modules-desktop{display:block;width:100%;margin-bottom:12px}.robion-modules-desktop .robion-modules-panel{position:static;width:100%;margin-top:8px;box-shadow:none}}
+@media print{.robion-modules,.robion-modules-desktop{display:none}}
 </style>
 </head>
 <body>
@@ -861,6 +874,12 @@ body {
         <img src="logo-robion.png" alt="Robion" style="height:32px;width:auto;display:block">
         <span style="display:inline-block;border:1px solid var(--accent-border);background:var(--accent-dim);color:var(--accent);font-family:var(--font-c);font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:2px 5px;border-radius:3px;line-height:1.1">Faktury</span>
       </div>
+      <details class="robion-modules"><summary>Moduły ROBION <span aria-hidden="true">▾</span></summary><div class="robion-modules-panel" role="navigation" aria-label="Moduły ROBION">
+<a href="https://robion.pl/" target="_blank" rel="noopener" title="Otwiera się w nowej karcie">Strona główna</a>
+<span aria-current="page">Faktury</span>
+<a href="https://zlecenia.robion.pl/" target="_blank" rel="noopener" title="Otwiera się w nowej karcie">Zlecenia</a>
+<a href="https://konstrukcje.robion.pl/" target="_blank" rel="noopener" title="Otwiera się w nowej karcie">Konstrukcje 3D</a>
+</div></details>
     </div>
     <div class="page-title" id="pageTitle">Pulpit</div>
   </div>
@@ -1451,6 +1470,12 @@ body {
 <!-- Bottom nav -->
 <div class="bottom-nav">
   <img class="sidebar-logo" src="logo-robion.png" alt="Robion">
+  <div class="robion-modules-desktop"><details class="robion-modules"><summary>Moduły ROBION <span aria-hidden="true">▾</span></summary><div class="robion-modules-panel" role="navigation" aria-label="Moduły ROBION">
+<a href="https://robion.pl/" target="_blank" rel="noopener" title="Otwiera się w nowej karcie">Strona główna</a>
+<span aria-current="page">Faktury</span>
+<a href="https://zlecenia.robion.pl/" target="_blank" rel="noopener" title="Otwiera się w nowej karcie">Zlecenia</a>
+<a href="https://konstrukcje.robion.pl/" target="_blank" rel="noopener" title="Otwiera się w nowej karcie">Konstrukcje 3D</a>
+</div></details></div>
   <div class="nav-item active" onclick="navigate('pulpit',this)">
     <div class="rb-icon-frame"><svg class="rb-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="url(#orange-grad)"/><rect x="13" y="3" width="8" height="8" rx="1.5" stroke="url(#orange-grad)"/><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="url(#white-grad)"/><rect x="13" y="13" width="8" height="8" rx="1.5" stroke="url(#orange-grad)"/></svg></div>
     <div class="nav-label">Pulpit</div>
